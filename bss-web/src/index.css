@@ -1,0 +1,20 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=EB+Garamond:ital,wght@0,400..800;1,400..800&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+html{
+  min-height: 100%;
+  position:relative;
+  scrollbar-color: #6a6a6b #09090b;
+}
+
+body {
+  height: 250rem;
+  width: 100%;
+  margin: 0;
+  background: linear-gradient(#3D3C95, 20%, #030414);
+  overflow-y: scroll;
+}
