@@ -12,9 +12,31 @@ html{
 }
 
 body {
-  height: 250rem;
+  height: 170rem;
   width: 100%;
   margin: 0;
-  background: linear-gradient(#3D3C95, 20%, #030414);
+  background: linear-gradient(#3D3C95, 20%, #07092c);
   overflow-y: scroll;
+}
+
+p {
+  font: "Inter";
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+  color: white;
+  font-weight: 300;
+}
+
+h3 {
+  font-size: 2.5rem; 
+  line-height: 2rem;
+  color: white;
+  font-weight: 300;
+}
+
+h4 {
+  font-size: 2rem; 
+  line-height: 2rem;
+  color: white;
+  font-weight: 300;
 }

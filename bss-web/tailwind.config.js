@@ -6,12 +6,15 @@ export default {
   ],
   theme: {
     extend: {
-
+      colors: {
+        'purple': '#523794',
+      }
     },
     fontFamily: {
       sans: ['Inter'],
       serif: ['EB Garamond'],
-    }
+    },
+  
   },
   plugins: [],
 }
