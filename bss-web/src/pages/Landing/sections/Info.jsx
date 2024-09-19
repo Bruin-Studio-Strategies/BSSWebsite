@@ -1,6 +1,6 @@
-import Feature from "../components/Feature"
+import Feature from "../../../components/Feature"
 
-import { SearchIcon, AnalysisIcon } from "../assets/svg"
+import { SearchIcon, AnalysisIcon } from "../../../assets/svg"
 
 export default function Figures(){
 

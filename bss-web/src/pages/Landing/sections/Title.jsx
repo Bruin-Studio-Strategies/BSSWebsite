@@ -1,5 +1,5 @@
-import Hero from "../components/Hero.jsx";
-import RotatingLogo from "../components/RotatingLogo.jsx";
+import Hero from "../../../components/Hero.jsx";
+import RotatingLogo from "../../../components/RotatingLogo.jsx";
 
 export default function Title() {
   return (

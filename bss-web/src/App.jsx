@@ -1,21 +1,12 @@
-import Title from "./sections/Title";
-import Footer from "./components/Footer";
-import Info from "./sections/Info";
-import NavBar from "./components/NavBar"
-import Team from "./sections/Team";
+import { Route, Link, BrowserRouter as Router } from "react-router-dom";
+import Landing from "./pages/Landing/Landing.jsx"
 
-import waves from "./assets/waves.png"
 
 function App() {
   return (
-    <>
-      <NavBar />
-      <Title/>
-      <img src ={waves} className="w-full absolute"></img>
-      <Info/>
-      <Team/>
-      <Footer/>
-    </>
+    <Router>
+      <Route path="/" Component={Landing} exact/>
+    </Router>
   );
 }
 

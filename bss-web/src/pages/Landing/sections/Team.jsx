@@ -1,4 +1,4 @@
-import nodes from "../assets/nodes.png";
+import nodes from "../../../assets/nodes.png";
 
 export default function Team() {
   return (
