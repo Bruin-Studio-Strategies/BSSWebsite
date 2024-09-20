@@ -14,7 +14,8 @@ export default function NavBar() {
         <img src={logo} alt="Logo" className="h-14 mr-5" />
         <NavItem path="/">Home</NavItem>
         <NavItem path="/about">About Us</NavItem>
-        <NavItem path="/services">Services</NavItem>
+        <NavItem path="/clients">For Clients</NavItem>
+        <NavItem path="/recruitment">For Students</NavItem>
         <NavItem path="/team">Our Team</NavItem>
         <NavItem path="/contact">Contact</NavItem>
         <NavItem className="ml-auto" path="/recruitment">
