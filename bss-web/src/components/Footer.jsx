@@ -5,7 +5,7 @@ import FooterItem from "./FooterItem";
 
 export default function Footer() {
   return (
-    <footer className="w-full bg-[#112D4E] absolute bottom-0 h-28 px-10 pt-10 pb-20 flex">
+    <footer className="w-full bg-[#112D4E] relative bottom-0 h-28 px-10 pt-10 pb-20 flex">
       <img src={logo} alt="Logo" className="h-14 mr-5 ml-10" />
       <FooterItem path="/">Home</FooterItem>
       <FooterItem path="/about">About Us</FooterItem>

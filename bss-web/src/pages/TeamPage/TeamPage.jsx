@@ -1,7 +1,9 @@
-import { TEAM } from "./people.js"
+import { EXECUTIVES, CONSULTANTS, PRODUCT_MANAGERS } from "./people.js";
 
 import NavBar from "../../components/NavBar";
+import Footer from "../../components/Footer.jsx";
 import TeamCard from "../../components/TeamCard";
+import TeamContainer from "../../components/TeamContainer.jsx";
 
 export default function TeamPage() {
   return (
@@ -11,16 +13,28 @@ export default function TeamPage() {
         <h2 className="font-serif text-5xl text-white text-center mt-16 tracking-wider">
           Meet Our Team
         </h2>
-        <p className="text-center text-wrap w-1/3 mt-5">Lorem ipsum odor amet, consectetuer adipiscing elit. Condimentum mus maecenas erat pellentesque potenti elementum.</p>
+        <p className="text-center text-wrap w-1/3 mt-5">
+          Lorem ipsum odor amet, consectetuer adipiscing elit. Condimentum mus
+          maecenas erat pellentesque potenti elementum.
+        </p>
       </div>
-
-      <div className="flex flex-wrap justify-center gap-20">
-        {
-          TEAM.map((person)=>(
-            <TeamCard {...person}/>
-          ))
-        }
-      </div>
+      <hr className="fill-white w-1/4 mx-auto my-12 opacity-45" />
+      <TeamContainer title="Executives">
+        {EXECUTIVES.map((person) => (
+          <TeamCard {...person} />
+        ))}
+      </TeamContainer>
+      <TeamContainer title="Product Managers">
+        {PRODUCT_MANAGERS.map((person) => (
+          <TeamCard {...person} />
+        ))}
+      </TeamContainer>
+      <TeamContainer title="Consultants">
+        {CONSULTANTS.map((person) => (
+          <TeamCard {...person} />
+        ))}
+      </TeamContainer>
+      <Footer/>
     </>
   );
 }
