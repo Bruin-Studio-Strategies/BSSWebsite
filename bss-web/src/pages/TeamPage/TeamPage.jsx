@@ -1,4 +1,4 @@
-import "../../index.css";
+import { TEAM } from "./people.js"
 
 import NavBar from "../../components/NavBar";
 import TeamCard from "../../components/TeamCard";
@@ -14,8 +14,12 @@ export default function TeamPage() {
         <p className="text-center text-wrap w-1/3 mt-5">Lorem ipsum odor amet, consectetuer adipiscing elit. Condimentum mus maecenas erat pellentesque potenti elementum.</p>
       </div>
 
-      <div>
-        <TeamCard firstName="Ethan" lastName="Huang"/>
+      <div className="flex flex-wrap justify-center gap-20">
+        {
+          TEAM.map((person)=>(
+            <TeamCard {...person}/>
+          ))
+        }
       </div>
     </>
   );

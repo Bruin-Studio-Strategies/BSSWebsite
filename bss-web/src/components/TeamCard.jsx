@@ -1,11 +1,13 @@
-export default function TeamCard({firstName, lastName}){
+export default function TeamCard({first, last, major, grad, role, image, linkedIn}){
 
-// const headshot = require(`./Headshots/${firstName}_${lastName}.png`)
+  console.log("created");
 
   return (
-    <div className="flex flex-col">
-      <img src={require("./Headshots/Ethan_Huang.jpg")}></img>
-      <h4>{firstName + " " + lastName}</h4>
+    <div className="flex flex-col border-white border">
+      <img src={image} className="object-cover w-80 h-80 mb-3"></img>
+      <h5 className="font-serif font-thin text-2xl text-white tracking-wide mb-1">{first + " " + last}</h5>
+      <p className="text-sm">{major + " " + grad}</p>
+      <p className="text-sm">{role}</p>
     </div>
   )
 }
