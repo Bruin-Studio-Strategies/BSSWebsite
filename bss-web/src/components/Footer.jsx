@@ -1,12 +1,10 @@
 import { FaInstagram, FaSlack, FaLinkedin } from "react-icons/fa";
 
-import logo from "../assets/logo.png";
 import FooterItem from "./FooterItem";
 
 export default function Footer() {
   return (
-    <footer className="w-full bg-[#112D4E] relative bottom-0 h-28 px-10 pt-10 pb-20 flex">
-      <img src={logo} alt="Logo" className="h-14 mr-5 ml-10" />
+    <footer className="w-full bg-[#07092c] relative bottom-0 h-28 px-10 pt-10 pb-20 flex">
       <FooterItem path="/">Home</FooterItem>
       <FooterItem path="/about">About Us</FooterItem>
       <FooterItem path="/clients">For Clients</FooterItem>

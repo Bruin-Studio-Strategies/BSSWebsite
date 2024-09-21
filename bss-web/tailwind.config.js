@@ -1,21 +1,21 @@
 /** @type {import('tailwindcss').Config} */
 export default {
-  content: [
-    "./index.html",
-    "./src/**/*.{js,ts,jsx,tsx}",
-  ],
+  content: ["./index.html", "./src/**/*.{js,ts,jsx,tsx}"],
   theme: {
     extend: {
       colors: {
-        'purple': '#523794',
-      }
+        purple: "#523794",
+      },
     },
     fontFamily: {
-      sans: ['Inter'],
-      serif: ['EB Garamond'],
+      sans: ["Inter"],
+      serif: ["EB Garamond"],
     },
-  
+    screens: {
+      sm: "576px",
+      md: "960px",
+      lg: "1440px",
+    },
   },
   plugins: [],
-}
-
+};

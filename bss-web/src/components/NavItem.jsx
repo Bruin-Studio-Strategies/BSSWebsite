@@ -4,7 +4,7 @@ export default function NavItem({ className, path, children }) {
   return (
     <Link to={path} className={className}>
       <button
-        className={`h-0 hover:text-blue-500 hover:underline mb-5 ml-5 text-lg text-white`}
+        className={`h-0 hover:text-blue-500 hover:underline sm:text-sm sm:mb-2 sm:ml-2 xl:mb-5 xl:ml-5 xl:text-xl text-white`}
       >
         {children}
       </button>

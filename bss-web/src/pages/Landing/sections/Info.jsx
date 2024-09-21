@@ -4,12 +4,12 @@ import { SearchIcon, AnalysisIcon } from "../../../assets/svg";
 export default function Info() {
   return(
   <>
-    <h3 className="font-serif ml-28 my-20">What is BSS?</h3>
-    <div className="grid grid-cols-6 divide-x gap-y-32 pb-28">
-      <h1 className="font-sans font-light text-lg text-white col-span-1 text-left pl-40">
+    <h3 className="font-serif ml-28 my-20 text-4xl">What is BSS?</h3>
+    <div className="grid grid-cols-[20%_80%] divide-x gap-y-32 pb-28">
+      <h1 className="font-sans font-light text-lg text-white text-left pl-28">
         Who we are
       </h1>
-      <p className="col-span-5 font-serif text-2xl px-28">
+      <p className="font-serif sm:text-xl lg:text-2xl px-28">
         Lorem ipsum odor amet, consectetuer adipiscing elit. Nibh mi etiam
         congue rutrum non quam semper. Vitae eleifend himenaeos parturient
         lobortis sodales dapibus pulvinar nullam tempus. Tortor mi vitae; quam
@@ -18,10 +18,10 @@ export default function Info() {
         sit varius. Eu luctus faucibus mattis mus lectus non. Lectus nunc
         elementum proin habitant mi vel.
       </p>
-      <h1 className="font-sans font-light text-lg text-white col-span-1 text-left pl-40 border-none">
+      <h1 className="font-sans font-light text-lg text-white text-left pl-28 border-none">
         What we do
       </h1>
-      <div className="grid grid-cols-3 col-span-5 px-28 gap-x-10 gap-y-28">
+      <div className="grid grid-cols-3 px-28 gap-x-12 gap-y-28">
         <Feature
           className=""
           description="Lorem ipsum odor amet, consectetuer adipiscing elit. Vitae eleifend himenaeos parturient lobortis sodales."
