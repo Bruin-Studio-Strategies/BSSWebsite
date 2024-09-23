@@ -2,7 +2,7 @@ import nodes from "../../../assets/nodes.png";
 
 export default function Team() {
   return (
-    <div className="flex pt-28 pb-40 w-full">
+    <div className="flex pt-28 pb-60 w-full">
       <img src={nodes} className="h-[40vh] sm:ml-24 lg:ml-40" />
       <div className="ml-28">
         <h3 className="font-serif mb-10 text-4xl">Our Team</h3>

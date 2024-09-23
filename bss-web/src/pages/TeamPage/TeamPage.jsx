@@ -19,22 +19,24 @@ export default function TeamPage() {
         </p>
       </div>
       <hr className="fill-white w-1/4 mx-auto my-12 opacity-45" />
-      <TeamContainer title="Executives">
-        {EXECUTIVES.map((person) => (
-          <TeamCard {...person} />
-        ))}
-      </TeamContainer>
-      <TeamContainer title="Product Managers">
-        {PRODUCT_MANAGERS.map((person) => (
-          <TeamCard {...person} />
-        ))}
-      </TeamContainer>
-      <TeamContainer title="Consultants">
-        {CONSULTANTS.map((person) => (
-          <TeamCard {...person} />
-        ))}
-      </TeamContainer>
-      <Footer/>
+      <div className="mb-48">
+        <TeamContainer title="Executives">
+          {EXECUTIVES.map((person) => (
+            <TeamCard {...person} />
+          ))}
+        </TeamContainer>
+        <TeamContainer title="Product Managers">
+          {PRODUCT_MANAGERS.map((person) => (
+            <TeamCard {...person} />
+          ))}
+        </TeamContainer>
+        <TeamContainer title="Consultants">
+          {CONSULTANTS.map((person) => (
+            <TeamCard {...person} />
+          ))}
+        </TeamContainer>
+      </div>
+      <Footer />
     </>
   );
 }
