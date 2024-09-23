@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { FaLink, FaLinkedin } from "react-icons/fa";
+import { FaLinkedin, FaEnvelope } from "react-icons/fa";
 
 export default function TeamCard({
   first,
@@ -39,7 +39,7 @@ export default function TeamCard({
               )}
               {email && (
                 <a href={`mailto:${email}`}>
-                  <FaLink className="text-white" />
+                  <FaEnvelope className="text-white" />
                 </a>
               )}
             </div>

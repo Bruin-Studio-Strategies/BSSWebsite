@@ -9,7 +9,7 @@ export default function Info() {
       <h1 className="font-sans font-light text-lg text-white text-left pl-28">
         Who we are
       </h1>
-      <p className="font-serif sm:text-xl lg:text-2xl px-28">
+      <p className="font-serif sm:text-xl lg:text-2xl px-16">
         Lorem ipsum odor amet, consectetuer adipiscing elit. Nibh mi etiam
         congue rutrum non quam semper. Vitae eleifend himenaeos parturient
         lobortis sodales dapibus pulvinar nullam tempus. Tortor mi vitae; quam
@@ -21,7 +21,7 @@ export default function Info() {
       <h1 className="font-sans font-light text-lg text-white text-left pl-28 border-none">
         What we do
       </h1>
-      <div className="grid grid-cols-3 px-28 gap-x-12 gap-y-28">
+      <div className="grid grid-cols-3 px-16 gap-x-12 gap-y-28">
         <Feature
           className=""
           description="Lorem ipsum odor amet, consectetuer adipiscing elit. Vitae eleifend himenaeos parturient lobortis sodales."
