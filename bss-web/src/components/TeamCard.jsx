@@ -13,17 +13,19 @@ export default function TeamCard({
 }) {
   return (
     <div className="flex flex-col items-center">
-      <div className="relative w-[17rem] h-[17rem]">
+      <motion.div
+        className="relative w-[17rem] h-[17rem]"
+        whileHover={{ scale: 1.05 }}
+        transition={{ duration: 0.3 }}
+      >
         <motion.img
           src={image}
           className="object-cover w-full h-full rounded-md"
-          whileHover={{ scale: 1.05, opacity: 0.2 }}
         />
         <motion.div
           className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-0 rounded-md"
           whileHover={{ opacity: 1, backgroundColor: "rgba(0, 0, 0, 0.8)" }}
           initial={{ opacity: 0 }}
-          transition={{ duration: 0.3 }}
         >
           <div className="text-white text-center">
             <h5 className="font-serif font-thin text-2xl text-white tracking-wide mt-3">
@@ -45,7 +47,7 @@ export default function TeamCard({
             </div>
           </div>
         </motion.div>
-      </div>
+      </motion.div>
     </div>
   );
 }
