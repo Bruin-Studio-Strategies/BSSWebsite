@@ -62,7 +62,7 @@ export default function Form() {
       </div>
 
       <div className="mb-4">
-        <label htmlFor="message" className="block block text-white mb-2">
+        <label htmlFor="message" className="block text-white mb-2">
           Message <span className="text-gray-400">(required)</span>
         </label>
         <textarea

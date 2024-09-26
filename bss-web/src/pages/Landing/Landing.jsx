@@ -15,7 +15,7 @@ export default function Landing() {
         <img src={Wave} className="absolute top-60 w-full h-screen object-cover z-0"></img>
       </div>
       <Info />
-      <hr class="h-px my-8 bg-gray-100 border-0 w-11/12 m-auto opacity-50"></hr>
+      <hr className="h-px my-8 bg-gray-100 border-0 w-11/12 m-auto opacity-50"></hr>
       <Team />
       <Footer />
     </>

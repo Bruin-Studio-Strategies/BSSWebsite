@@ -8,6 +8,8 @@ import Landing from "./pages/Landing/Landing.jsx";
 import TeamPage from "./pages/TeamPage/TeamPage.jsx";
 import Contact from "./pages/Contact/Contact.jsx";
 import ErrorPage from "./pages/ErrorPage/ErrorPage.jsx";
+import Recruitment from "./pages/Recruitment/Recruitment.jsx";
+
 
 const router = createBrowserRouter([
   {
@@ -22,6 +24,10 @@ const router = createBrowserRouter([
   {
     path: "/contact",
     element: <Contact />,
+  },
+  {
+    path: "/recruitment",
+    element: <Recruitment />,
   },
 ]);
 
