@@ -30,6 +30,19 @@ export default function Recruitment() {
         </h3>
         <Timeline className="ml-10" />
       </div>
+
+      <div className="bg-blue-900 p-10 text-center my-20">
+        <h3 className="text-3xl font-serif font-medium">
+          Applications Are Open
+        </h3>
+        <p className="w-3/4 mx-auto my-4">
+          Lorem ipsum odor amet, consectetuer adipiscing elit. Condimentum mus
+          maecenas erat pellentesque potenti elementum. Lorem ipsum odor amet,
+          consectetuer adipiscing elit.
+        </p>
+        <button className="text-blue-900 bg-white rounded-sm p-2 hover:opacity-75 transition-opacity">Apply Here</button>
+      </div>
+
       <div className="w-4/5 mx-auto flex">
         <div className="w-2/3">
           <h3 className="font-serif text-3xl font-medium mb-4">
@@ -42,7 +55,6 @@ export default function Recruitment() {
             senectus conubia mus dignissim arcu natoque nisl dapibus ultrices.
           </p>
         </div>
-
         <FAQ />
       </div>
       <Footer />
