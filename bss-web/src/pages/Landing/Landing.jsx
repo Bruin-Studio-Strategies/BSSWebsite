@@ -6,6 +6,13 @@ import Team from "./sections/Team";
 
 import Wave from "../../assets/waves.png"
 
+// structure:
+// header & description
+// services
+// project process
+//    timeline under this
+// project team
+
 export default function Landing() {
   return (
     <>

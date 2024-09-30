@@ -1,5 +1,7 @@
 import NavBar from "../../components/NavBar";
 import Footer from "../../components/Footer";
+import Services from "./sections/Services";
+
 
 export default function Clients() {
   return (
@@ -15,7 +17,8 @@ export default function Clients() {
           services for creative and business ventures.
         </p>
       </div>
-      <Footer />
+      <hr className="h-px my-12 bg-gray-100 border-0 w-11/12 m-auto opacity-50"></hr>
+      <Services />  
     </>
   );
 }
