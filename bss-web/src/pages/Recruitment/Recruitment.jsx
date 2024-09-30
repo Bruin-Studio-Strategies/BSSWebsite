@@ -23,7 +23,7 @@ export default function Recruitment() {
           pellentesque potenti elementum.
         </p>
       </div>
-      <hr className="h-px mt-8 mb-12 bg-gray-100 border-0 w-11/12 m-auto opacity-50"></hr>
+      <hr className="h-px mt-12 mb-12 bg-gray-100 border-0 w-11/12 m-auto opacity-50"></hr>
       <div className="w-4/5 mx-auto">
         <h3 className="font-serif text-3xl font-medium mb-10">
           Recruiment Timeline
