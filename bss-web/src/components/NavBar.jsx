@@ -15,11 +15,12 @@ export default function NavBar() {
   return (
     <>
       <AnimatePresence>
-        {isOpen && <Sidebar toggleMenu={toggleMenu}></Sidebar>}
+        {isOpen && 
+        <Sidebar toggleMenu={toggleMenu}></Sidebar>}
       </AnimatePresence>
       <nav className="w-full h-24 p-4 pl-8 pr-20">
         <div className="flex justify-start sm:gap-x-8 lg:gap-x-11 items-center text-xl">
-          <button onClick={toggleMenu}>
+          <button onClick={toggleMenu} className="sm:hidden">
             <svg
               className="h-8 w-8 mr-8 sm:mr-0 fill-white"
               viewBox="0 0 12 12"

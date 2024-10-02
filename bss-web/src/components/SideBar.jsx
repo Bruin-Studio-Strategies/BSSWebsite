@@ -10,15 +10,15 @@
 
     return (
         <motion.nav
-        className="h-screen w-full items-center sm:w-1/5 p-4 pt-10 lg:pt-16 bg-blue-950 fixed top-0 z-30"
+        className="h-screen w-full items-center sm:w-1/5 p-4 sm:pt-10 lg:pt-16 bg-blue-950 fixed top-0 z-30"
         variants={menuVariants}
         transition={{ duration: 0.5 }}
         initial="hidden"
         animate="visible"
         exit="hidden"
         >
-        <button className="absolute right-0 sm:top-5 sm:right-5" onClick={toggleMenu}>
-            <MdClose className="sm:h-5 sm:w-5 lg:h-8 lg:w-8 fill-white" />
+        <button className="absolute top-4 right-4 sm:top-5 sm:right-5 z-40" onClick={toggleMenu}>
+            <MdClose className="h-5 w-5 lg:h-8 lg:w-8 fill-white" />
         </button>
         <div className="flex flex-col justify-start text-2xl sm:gap-y-10 lg:gap-y-20">
             <SideItem path="/">Home</SideItem>
@@ -26,7 +26,7 @@
             <SideItem path="/recruitment">For Students</SideItem>
             <SideItem path="/team">Our Team</SideItem>
             <SideItem path="/contact">Contact</SideItem>
-            <SideItem className="font-semibold sm:mt-28" path="/recruitment">
+            <SideItem className="font-semibold" path="/recruitment">
             Apply Now
             </SideItem>
         </div>
