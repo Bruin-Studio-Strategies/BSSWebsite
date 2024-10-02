@@ -1,4 +1,3 @@
-import NavBar from "../../components/NavBar";
 import Timeline from "./sections/Timeline";
 import FAQ from "./sections/FAQ";
 import Footer from "../../components/Footer";
@@ -11,7 +10,6 @@ export default function Recruitment() {
   //
   return (
     <>
-      <NavBar />
       <div className="flex flex-col items-center mt-10">
         <h2 className="font-serif text-5xl text-white text-center tracking-wider">
           Join Our Team

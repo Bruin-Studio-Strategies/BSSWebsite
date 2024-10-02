@@ -1,7 +1,6 @@
 import Title from "./sections/Title";
 import Footer from "../../components/Footer";
 import Info from "./sections/Info";
-import NavBar from "../../components/NavBar";
 import Team from "./sections/Team";
 
 import Wave from "../../assets/waves.png"
@@ -17,7 +16,6 @@ export default function Landing() {
   return (
     <>
       <div className="relative h-screen">
-        <NavBar />
         <Title />
         <img src={Wave} className="absolute top-60 w-full h-screen object-cover z-0"></img>
       </div>

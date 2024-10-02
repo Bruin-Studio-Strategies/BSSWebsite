@@ -1,4 +1,3 @@
-import NavBar from "../../components/NavBar";
 import Footer from "../../components/Footer";
 
 import { Link } from "react-router-dom";
@@ -6,7 +5,6 @@ import { Link } from "react-router-dom";
 export default function ErrorPage() {
   return (
     <>
-      <NavBar />
       <div className="flex gap-x-10 justify-center sm:mb-48">
         <h1 className="font-serif text-[18rem] text-white">404</h1>
         <div className="flex flex-col justify-center align-middle gap-y-10 mr-20">

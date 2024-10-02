@@ -1,3 +1,4 @@
+import { Link } from "react-router-dom";
 import nodes from "../../../assets/nodes.png";
 
 export default function Team() {
@@ -15,7 +16,11 @@ export default function Team() {
         </p>
         <h4 className="font-serif mt-10">Join Us</h4>
         <p className="my-5">Our next recruitment cycle will be in Fall 2024</p>
-        <button className="text-white bg-blue-900 hover:bg-blue-800 rounded-sm p-2">More Details</button>
+        <Link to="/recruitment">
+          <button className="text-white bg-blue-900 hover:bg-blue-800 rounded-sm p-2">
+            More Details
+          </button>
+        </Link>
       </div>
     </div>
   );

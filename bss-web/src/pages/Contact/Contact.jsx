@@ -1,11 +1,9 @@
-import NavBar from "../../components/NavBar";
 import Form from "./sections/Form";
 import Footer from "../../components/Footer";
 
 export default function Contact() {
   return (
     <>
-      <NavBar />
       {/* add a banner here possibly? ask alli */}
       <div className="grid grid-cols-[40%_60%] sm:mt-10 lg:mt-28 sm:max-lg:mb-40 w-10/12 m-auto">
         <div className="flex flex-col">

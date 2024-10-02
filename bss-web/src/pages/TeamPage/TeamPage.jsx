@@ -1,6 +1,5 @@
 import { EXECUTIVES, CONSULTANTS, PRODUCT_MANAGERS } from "./people.js";
 
-import NavBar from "../../components/NavBar";
 import Footer from "../../components/Footer.jsx";
 import TeamCard from "../../components/TeamCard";
 import TeamContainer from "../../components/TeamContainer.jsx";
@@ -8,7 +7,6 @@ import TeamContainer from "../../components/TeamContainer.jsx";
 export default function TeamPage() {
   return (
     <>
-      <NavBar />
       <div className="flex flex-col items-center mt-10">
         <h2 className="font-serif text-5xl text-white text-center tracking-wider">
           Meet Our Team
