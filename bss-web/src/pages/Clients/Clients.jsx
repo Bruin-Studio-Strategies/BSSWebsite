@@ -19,9 +19,10 @@ export default function Clients() {
       </div>
       <hr className="h-px my-12 bg-gray-100 border-0 w-11/12 m-auto opacity-50"></hr>
       <Services />
+      <hr className="h-px my-12 bg-gray-100 border-0 w-11/12 m-auto opacity-50"></hr>
       <div className="w-4/5 mx-auto flex gap-20">
         <div className="w-2/3 mr-5">
-          <h3 className="text-3xl font-serif sm:mb-4">Project Process</h3>
+          <h3 className="text-3xl font-serif sm:mb-4 font-medium">Project Process</h3>
           <p className="text-wrap my-5">
             Throughout a 8-week timeframe, we can provide impactful deliverables
             to clients.
@@ -40,14 +41,14 @@ export default function Clients() {
               className="my-10"
             />
             <div>
-              <h3 className="text-3xl font-serif sm:mb-4">Get Started</h3>
+              <h3 className="text-3xl font-serif sm:mb-4 font-medium">Get Started</h3>
               <p className="font-medium text-white">
-              Ready to start your project?
+                Ready to start your project?
               </p>
               <p className="text-wrap my-5">
-                Email us at {" "}  
+                Email us at{" "}
                 <span className="text-blue-400">
-                  bruinstudiostrategies@gmail.com {" "}
+                  bruinstudiostrategies@gmail.com{" "}
                 </span>
                 or fill out or contact form below
               </p>

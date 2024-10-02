@@ -4,7 +4,7 @@ import { FaChartLine, FaRegLightbulb, FaRegNewspaper } from "react-icons/fa";
 export default function Services() {
   return (
     <section className="mx-auto mb-10 w-4/5">
-      <h3 className="text-3xl font-serif sm:mb-4">Our Services</h3>
+      <h3 className="text-3xl font-serif sm:mb-4 font-medium">Our Services</h3>
       <div className="flex flex-wrap gap-1">
         <ServiceCard
           title="Market Research"
