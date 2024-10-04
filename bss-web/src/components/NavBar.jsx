@@ -1,36 +1,20 @@
 import NavItem from "./NavItem.jsx";
-import Sidebar from "./SideBar.jsx";
 import logo from "../assets/logo.png";
 import { Link } from "react-router-dom";
 
-import { useState } from "react";
-import { AnimatePresence } from "framer-motion";
-
 export default function NavBar() {
-  const [isOpen, setIsOpen] = useState(false);
-  const toggleMenu = () => {
-    setIsOpen((prev) => !prev);
-  };
-
   return (
     <>
-      <AnimatePresence>
-        {isOpen && 
-        <Sidebar toggleMenu={toggleMenu}></Sidebar>}
-      </AnimatePresence>
-      <nav className="w-full h-24 p-4 pl-8 pr-20">
-        <div className="flex justify-start sm:gap-x-8 lg:gap-x-11 items-center text-xl">
-          <button onClick={toggleMenu} className="sm:hidden">
-            <svg
-              className="h-8 w-8 mr-8 sm:mr-0 fill-white"
-              viewBox="0 0 12 12"
-            >
-              <path d="M.5 5.5h11v1H.5zM.5 2.5h11v1H.5zM.5 8.5h11v1H.5z" />
-            </svg>
-          </button>
-          <Link to="/">
-            <img src={logo} alt="Logo" className="h-10 sm:h-12 lg:h-14 mr-5" />
-          </Link>
+      <nav className="w-full h-24 p-4 pl-8 pr-20 flex">
+        <button className="sm:hidden">
+          <svg className="h-8 w-8 mr-8 sm:mr-0 fill-white" viewBox="0 0 12 12">
+            <path d="M.5 5.5h11v1H.5zM.5 2.5h11v1H.5zM.5 8.5h11v1H.5z" />
+          </svg>
+        </button>
+        <Link to="/">
+          <img src={logo} alt="Logo" className="h-10 sm:h-12 lg:h-14 mr-8  mt-3 sm:mt-0" />
+        </Link>
+        <div className="justify-start sm:gap-x-12 lg:gap-x-16 items-center w-full ml-5 hidden sm:flex">
           <NavItem path="/">Home</NavItem>
           <NavItem path="/clients">For Clients</NavItem>
           <NavItem path="/recruitment">For Students</NavItem>
