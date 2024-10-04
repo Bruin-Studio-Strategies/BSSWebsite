@@ -13,7 +13,7 @@ export default function Accordion({ title, children }) {
   return (
     <div>
       <button
-        className="w-full p-4 bg-blue-950 text-left text-xl font-medium font-serif text-white rounded-sm flex justify-between items-center"
+        className="sm:text-xl w-full p-4 bg-blue-950 text-left text-lg font-medium font-serif text-white rounded-sm flex justify-between items-center"
         onClick={handleClick}
       >
         {title} {active ? <FaSortDown className="mb-2"/> : <FaSortUp className="mt-2"/>}

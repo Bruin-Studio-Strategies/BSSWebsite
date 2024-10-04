@@ -2,7 +2,7 @@ import Accordion from "../../../components/Accordion";
 
 export default function FAQ() {
   return (
-    <div className="px-4 pb-4 w-[89%] mb-48 flex flex-col gap-y-6">
+    <div className="px-4 pb-4 w-[95%] sm:w-[89%] mb-48 flex flex-col gap-y-6 mx-auto sm:mx-0">
       <Accordion title="What does BSS look for in an applicant?">
         Lorem ipsum odor amet, consectetuer adipiscing elit. Sit parturient
         maximus lacinia potenti eros fames metus primis lacus. Blandit curabitur
