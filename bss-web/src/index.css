@@ -15,6 +15,7 @@ html, body {
   padding: 0;
   width: 100vw; /* Set the width of the body to 100% of the viewport width */
   overflow-x: hidden; /* Prevent horizontal overflow */
+  min-height: 100vh;
 }
 
 body {

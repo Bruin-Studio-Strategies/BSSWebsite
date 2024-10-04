@@ -30,7 +30,7 @@ export default function Form() {
   };
 
   return (
-    <form onSubmit={handleSubmit} className="w-3/4">
+    <form onSubmit={handleSubmit} className="w-5/6 sm:w-3/4 mx-auto">
       <div className="mb-4">
         <label htmlFor="name" className="block text-white mb-2">
           Name <span className="text-gray-400">(required)</span>

@@ -62,7 +62,6 @@ export default function Clients() {
         </div>
         <Process />
       </div>
-      <Footer />
     </>
   );
 }
