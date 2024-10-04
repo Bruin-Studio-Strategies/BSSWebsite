@@ -20,17 +20,17 @@ export default function TeamPage() {
       <div className="mb-80 sm:mb-48">
         <TeamContainer title="Executives">
           {EXECUTIVES.map((person) => (
-            <TeamCard {...person} />
+            <TeamCard {...person} key={person.id}/>
           ))}
         </TeamContainer>
         <TeamContainer title="Product Managers">
           {PRODUCT_MANAGERS.map((person) => (
-            <TeamCard {...person} />
+            <TeamCard {...person} key={person.id}/>
           ))}
         </TeamContainer>
         <TeamContainer title="Consultants">
           {CONSULTANTS.map((person) => (
-            <TeamCard {...person} />
+            <TeamCard {...person} key={person.id} />
           ))}
         </TeamContainer>
       </div>
