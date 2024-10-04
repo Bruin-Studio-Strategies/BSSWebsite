@@ -14,7 +14,7 @@ export default function TeamCard({
   return (
     <div className="flex flex-col items-center">
       <motion.div
-        className="relative w-[17rem] h-[17rem]"
+        className="relative w-60 h-60 sm:w-[17rem] sm:h-[17rem]"
         whileHover={{ scale: 1.05 }}
         transition={{ duration: 0.3 }}
       >
@@ -48,6 +48,25 @@ export default function TeamCard({
           </div>
         </motion.div>
       </motion.div>
+      <div className="sm:hidden">
+        <h5 className="font-serif font-thin text-xl text-white tracking-wide mt-3 text-center">
+          {first + " " + last}
+        </h5>
+        <p className="text-sm">{major + " " + grad}</p>
+        <p className="text-sm">{role}</p>
+        <div className="flex justify-center mt-3 space-x-2">
+          {linkedIn && (
+            <a href={linkedIn} target="_blank" rel="noopener noreferrer">
+              <FaLinkedin className="text-white" />
+            </a>
+          )}
+          {email && (
+            <a href={`mailto:${email}`}>
+              <FaEnvelope className="text-white" />
+            </a>
+          )}
+        </div>
+      </div>
     </div>
   );
 }

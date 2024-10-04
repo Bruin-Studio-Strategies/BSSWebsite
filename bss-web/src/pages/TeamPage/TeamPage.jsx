@@ -7,17 +7,17 @@ import TeamContainer from "../../components/TeamContainer.jsx";
 export default function TeamPage() {
   return (
     <>
-      <div className="flex flex-col items-center mt-10">
-        <h2 className="font-serif text-5xl text-white text-center tracking-wider">
+      <div className="flex flex-col items-center mt-5 sm:mt-10">
+        <h2 className="font-serif text-4xl sm:text-5xl text-white text-center tracking-wider">
           Meet Our Team
         </h2>
-        <p className="text-center text-wrap w-1/3 mt-5">
+        <p className="text-center text-wrap w-5/6 sm:w-1/3 mt-5">
           Lorem ipsum odor amet, consectetuer adipiscing elit. Condimentum mus
           maecenas erat pellentesque potenti elementum.
         </p>
       </div>
-      <hr className="fill-white w-1/4 mx-auto my-12 opacity-45" />
-      <div className="mb-48">
+      <hr className="fill-white w-1/2 sm:w-1/4 mx-auto my-12 opacity-45" />
+      <div className="mb-80 sm:mb-48">
         <TeamContainer title="Executives">
           {EXECUTIVES.map((person) => (
             <TeamCard {...person} />
