@@ -2,7 +2,7 @@ import ProcessCard from "../../../components/ProcessCard";
 
 export default function Process() {
   return (
-    <section className="w-4/5 mx-auto mb-48">
+    <section className="w-full sm:w-4/5 mx-auto mb-48">
       <div className="flex flex-col gap-y-4">
         <ProcessCard
           title="First Consultation"

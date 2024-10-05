@@ -20,8 +20,8 @@ export default function Clients() {
       <hr className="h-px my-12 bg-gray-100 border-0 w-11/12 m-auto opacity-50"></hr>
       <Services />
       <hr className="h-px my-12 bg-gray-100 border-0 w-11/12 m-auto opacity-50"></hr>
-      <div className="w-4/5 mx-auto flex gap-20">
-        <div className="w-2/3 mr-5">
+      <div className="w-4/5 mx-auto flex gap-20 flex-col sm:flex-row sm:mb-0 mb-32">
+        <div className="w-11/12 sm:w-2/3 sm:mr-5 text-center sm:text-left sm:mx-0 mx-auto">
           <h3 className="text-3xl font-serif sm:mb-4 font-medium">
             Project Process
           </h3>
@@ -66,6 +66,7 @@ export default function Clients() {
         </div>
         <Process />
       </div>
+      <Footer />
     </>
   );
 }
