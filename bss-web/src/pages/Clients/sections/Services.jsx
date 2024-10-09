@@ -30,18 +30,6 @@ export default function Services() {
           description="Lorem ipsum odor amet, consectetuer adipiscing elit. Sociosqu laoreet ultrices ligula; arcu nibh per litora. Ornare lacinia eu pretium consequat congue ultricies est."
           icon={FaChartLine}
         ></ServiceCard>
-        <ServiceCard
-          title="Market Research"
-          className="bg-blue-950"
-          description="Lorem ipsum odor amet, consectetuer adipiscing elit. Sociosqu laoreet ultrices ligula; arcu nibh per litora. Ornare lacinia eu pretium consequat congue ultricies est."
-          icon={FaChartLine}
-        ></ServiceCard>
-        <ServiceCard
-          title="Market Research"
-          className="bg-blue-950"
-          description="Lorem ipsum odor amet, consectetuer adipiscing elit. Sociosqu laoreet ultrices ligula; arcu nibh per litora. Ornare lacinia eu pretium consequat congue ultricies est."
-          icon={FaChartLine}
-        ></ServiceCard>
       </div>
     </section>
   );

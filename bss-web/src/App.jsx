@@ -15,7 +15,6 @@ import Clients from "./pages/Clients/Clients.jsx";
 import NavBar from "./components/NavBar.jsx";
 
 import { useEffect } from "react"; 
-import Footer from "./components/Footer.jsx";
 
 const pageVariants = {
   initial: { opacity: 0 },

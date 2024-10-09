@@ -12,7 +12,7 @@ export default function Recruitment() {
     <>
       <div className="flex flex-col items-center mt-5 sm:mt-10">
         <h2 className="font-serif text-4xl sm:text-5xl text-white text-center tracking-wider">
-          Meet Our Team
+        Join Our Team
         </h2>
         <p className="text-center text-wrap w-5/6 sm:w-1/2 mt-5 font-sans sm:text-base text-sm">
           Lorem ipsum odor amet, consectetuer adipiscing elit. Condimentum mus
