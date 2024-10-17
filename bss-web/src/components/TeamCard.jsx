@@ -48,7 +48,7 @@ export default function TeamCard({
           </div>
         </motion.div>
       </motion.div>
-      <div className="sm:hidden">
+      <div className="sm:hidden text-center">
         <h5 className="font-serif font-thin text-xl text-white tracking-wide mt-3 text-center">
           {first + " " + last}
         </h5>

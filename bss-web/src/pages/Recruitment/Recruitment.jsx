@@ -26,7 +26,7 @@ export default function Recruitment() {
         <Timeline className="ml-10" />
       </div>
 
-      <div className="bg-blue-900 p-6 sm:p-10 text-center my-16 sm:my-20">
+      <div className="bg-blue-900 p-6 pb-10 sm:p-10 text-center my-16 sm:my-20">
         <h3 className="text-2xl sm:text-3xl font-serif font-medium">
           Applications Are Open
         </h3>
