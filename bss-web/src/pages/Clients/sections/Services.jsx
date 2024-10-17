@@ -1,5 +1,5 @@
 import ServiceCard from "../../../components/ServiceCard";
-import { FaChartBar, FaChartLine, FaAward, FaChessKnight, FaDoorOpen, FaChess } from "react-icons/fa";
+import { FaChartBar, FaChartLine, FaAward, FaChessKnight, FaDoorOpen} from "react-icons/fa";
 import { FaMagnifyingGlassChart } from "react-icons/fa6";
 
 export default function Services() {
