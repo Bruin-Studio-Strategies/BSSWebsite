@@ -2,7 +2,6 @@ import Title from "./sections/Title";
 import Footer from "../../components/Footer";
 import Info from "./sections/Info";
 import Team from "./sections/Team";
-
 import Wave from "../../assets/waves.png"
 
 

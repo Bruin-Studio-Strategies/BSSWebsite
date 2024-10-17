@@ -20,6 +20,7 @@ export default function TeamCard({
       >
         <motion.img
           src={image}
+          alt={first + " " + last + " profile picture"}
           className="object-cover w-full h-full rounded-md"
         />
         <motion.div

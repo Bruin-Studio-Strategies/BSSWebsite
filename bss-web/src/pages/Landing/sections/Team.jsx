@@ -6,6 +6,7 @@ export default function Team() {
     <div className="flex pb-96 sm:pb-60 w-full">
       <img
         src={group}
+        alt="Bruin Studio Strategies group photo"
         className="hidden sm:inline sm:h-[50vh] lg:h-[40vh  ] sm:ml-24 lg:ml-40 sm:mt-20 rounded-md "
       />
       <div className="text-center sm:text-left sm:ml-28">

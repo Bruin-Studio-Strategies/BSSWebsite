@@ -21,7 +21,7 @@ export default function NavBar() {
           </svg>
         </button>
         <Link to="/">
-          <img src={logo} alt="Logo" className="h-10 sm:h-12 lg:h-14 mr-8 sm:mt-0" />
+          <img src={logo} alt="Bruin Studio Strategies Logo" className="h-10 sm:h-12 lg:h-14 mr-8 sm:mt-0" />
         </Link>
         <div className="justify-start sm:gap-x-12 lg:gap-x-16 items-center w-full ml-5 mt-4 hidden sm:flex">
           <NavItem path="/">Home</NavItem>
