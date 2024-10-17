@@ -8,6 +8,8 @@ export default function Form() {
     message: ""
   });
 
+  const [submitted, setSubmitted] = useState(false);
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setFormData({
@@ -27,6 +29,8 @@ export default function Form() {
       });
 
     setFormData({ name: "", email: "", message: "" });
+    setSubmitted(true);
+
   };
 
   return (
@@ -84,6 +88,11 @@ export default function Form() {
           Submit
         </button>
       </div>
+      {submitted && (
+        <p className="text-center text-white mt-4">
+          Thank you for your message! We'll get back to you soon.
+        </p>
+      )}
     </form>
   );
 }
