@@ -12,13 +12,10 @@ export default function Recruitment() {
     <>
       <div className="flex flex-col items-center mt-5 sm:mt-10">
         <h2 className="font-serif text-4xl sm:text-5xl text-white text-center tracking-wider">
-        Join Our Team
+          Join Our Team
         </h2>
         <p className="text-center text-wrap w-5/6 sm:w-1/2 mt-5 font-sans sm:text-base text-sm">
-          Lorem ipsum odor amet, consectetuer adipiscing elit. Condimentum mus
-          maecenas erat pellentesque potenti elementum. Lorem ipsum odor amet,
-          consectetuer adipiscing elit. Condimentum mus maecenas erat
-          pellentesque potenti elementum.
+          Interested in joining our team? Fall 2024 applications are now live!
         </p>
       </div>
       <hr className="h-px my-12 bg-gray-100 border-0 w-11/12 m-auto opacity-50"></hr>
@@ -33,14 +30,12 @@ export default function Recruitment() {
         <h3 className="text-2xl sm:text-3xl font-serif font-medium">
           Applications Are Open
         </h3>
-        <p className="w-11/12 sm:w-3/4 mx-auto my-4 font-sans text-sm sm:text-base">
-          Lorem ipsum odor amet, consectetuer adipiscing elit. Condimentum mus
-          maecenas erat pellentesque potenti elementum. Lorem ipsum odor amet,
-          consectetuer adipiscing elit.
+        <p className="w-11/12 sm:w-3/4 mx-auto my-5 font-sans text-sm sm:text-base">
+          Fall 2024 Applications are Live!
         </p>
-        <button className="text-blue-900 bg-white rounded-sm font-sans p-2 hover:opacity-75 transition-opacity">
+        <a className="text-blue-900 bg-white rounded-sm font-sans p-2 hover:opacity-75 transition-opacity" href="https://forms.gle/UvgfwtaU73gEwLZv6">
           Apply Here
-        </button>
+        </a>
       </div>
 
       <div className="w-11/12 sm:w-4/5 mx-auto flex sm:flex-row flex-col sm:mb-0 mb-36">
@@ -48,11 +43,10 @@ export default function Recruitment() {
           <h3 className="font-serif text-3xl font-medium mb-4">
             Frequently Asked Questions
           </h3>
-          <p className="text-white text-sm font-sans sm:w-3/4 w-full">
-            Lorem ipsum odor amet, consectetuer adipiscing elit. Varius amet
-            cursus pellentesque ultrices netus nibh aptent fringilla. Torquent
-            nibh rhoncus iaculis aptent, felis accumsan velit iaculis. Elementum
-            senectus conubia mus dignissim arcu natoque nisl dapibus ultrices.
+          <p className="text-white text-sm sm:text-base font-sans sm:w-3/4 w-full">
+            Interested in joining Bruin Studio Strategies or learning more about
+            our process? We’ve answered some of the most common questions below
+            to help you get started.
           </p>
         </div>
         <FAQ />

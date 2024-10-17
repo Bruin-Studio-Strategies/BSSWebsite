@@ -29,7 +29,7 @@ export default function NavBar() {
           <NavItem path="/recruitment">For Students</NavItem>
           <NavItem path="/team">Our Team</NavItem>
           <NavItem path="/contact">Contact</NavItem>
-          <NavItem className="ml-auto" path="/recruitment">
+          <NavItem className="ml-auto" path="https://forms.gle/UvgfwtaU73gEwLZv6">
             Apply Now
           </NavItem>
         </div>

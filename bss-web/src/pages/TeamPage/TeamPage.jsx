@@ -11,9 +11,8 @@ export default function TeamPage() {
         <h2 className="font-serif text-4xl sm:text-5xl text-white text-center tracking-wider">
           Meet Our Team
         </h2>
-        <p className="text-center text-wrap w-5/6 sm:w-1/3 mt-5">
-          Lorem ipsum odor amet, consectetuer adipiscing elit. Condimentum mus
-          maecenas erat pellentesque potenti elementum.
+        <p className="text-center text-wrap w-5/6 sm:w-1/2 mt-5">
+          Meet the team behind Bruin Studio Strategies. We come from a range of diverse backgrounds and experiences, but we all share a passion for creativity and innovation.  
         </p>
       </div>
       <hr className="fill-white w-1/2 sm:w-1/4 mx-auto my-12 opacity-45" />
@@ -23,7 +22,8 @@ export default function TeamPage() {
             <TeamCard {...person} key={person.id}/>
           ))}
         </TeamContainer>
-        <TeamContainer title="Product Managers">
+        
+        {/* <TeamContainer title="Product Managers">
           {PRODUCT_MANAGERS.map((person) => (
             <TeamCard {...person} key={person.id}/>
           ))}
@@ -32,7 +32,7 @@ export default function TeamPage() {
           {CONSULTANTS.map((person) => (
             <TeamCard {...person} key={person.id} />
           ))}
-        </TeamContainer>
+        </TeamContainer> */}
       </div>
       <Footer />
     </>

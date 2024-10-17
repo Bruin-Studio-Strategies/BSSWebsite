@@ -47,7 +47,7 @@ export default function Clients() {
                 Get Started
               </h3>
               <p className="font-medium text-white">
-                Ready to start your project?
+                Ready to receive our services?
               </p>
               <p className="text-wrap my-5">
                 Email us at{" "}

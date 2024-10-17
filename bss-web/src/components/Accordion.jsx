@@ -25,7 +25,7 @@ export default function Accordion({ title, children }) {
                 initial={{ opacity: 0, height: 0 }}
                 animate={{ opacity: 1, height: "auto" }}
                 exit={{ opacity: 0, height: 0 }}
-                className="px-2 py-4 text-white rounded-b-sm font-sans font-light text-sm"
+                className="px-2 pt-4 pb-2 text-white rounded-b-sm font-sans font-light text-sm"
               >
                 {children}
               </motion.div>

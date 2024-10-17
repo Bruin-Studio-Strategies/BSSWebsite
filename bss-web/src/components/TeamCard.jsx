@@ -23,7 +23,7 @@ export default function TeamCard({
           className="object-cover w-full h-full rounded-md"
         />
         <motion.div
-          className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-0 rounded-md"
+          className="absolute inset-0 flex items-center justify-center bg-black bg-opacity-0 rounded-md p-4"
           whileHover={{ opacity: 1, backgroundColor: "rgba(0, 0, 0, 0.8)" }}
           initial={{ opacity: 0 }}
         >
