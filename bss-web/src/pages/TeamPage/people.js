@@ -1,4 +1,4 @@
-import EthanHuang from "./Headshots/Ethan_Huang.JPG";
+import EthanHuang from "./Headshots/Ethan_Huang.jpg";
 import AdrienneLee from "./Headshots/Adrienne_Lee.jpg";
 import GiselleCarlos from "./Headshots/Giselle_Carlos.jpg";
 import CalebChor from "./Headshots/Caleb_Chor.jpg";

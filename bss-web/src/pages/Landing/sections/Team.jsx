@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import group from "../../../assets/group.jpg";
+import group from "../../../assets/group.JPG";
 
 export default function Team() {
   return (
