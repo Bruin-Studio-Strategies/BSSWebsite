@@ -1,4 +1,10 @@
-import { FaCoffee, FaHandshake, FaRocket, FaClipboard } from "react-icons/fa";
+import {
+  FaCoffee,
+  FaEnvelopeOpen,
+  FaClipboard,
+  FaCalendar,
+  FaInfoCircle
+} from "react-icons/fa";
 
 import TimelineItem from "../../../components/TimelineItem";
 
@@ -9,7 +15,7 @@ export default function Timeline({ className }) {
         title="Applications Open"
         time="October 7th, 2024"
         description="Submit your application and take the first step toward joining BSS, where you'll gain hands-on consulting experience in the entertainment industry."
-        icon={<FaHandshake className="fill-white h-6 w-6 block" />}
+        icon={<FaEnvelopeOpen className="fill-white h-6 w-6 block" />}
       />
       <TimelineItem
         title="Information Session"
@@ -17,13 +23,13 @@ export default function Timeline({ className }) {
         description="Learn more about BSS, meet current members, and get an inside look at what we do and how you can be part of the team."
         location="Online"
         attire="Casual"
-        icon={<FaRocket className="fill-white h-6 w-6 block" />}
+        icon={<FaInfoCircle className="fill-white h-6 w-6 block" />}
       />
       <TimelineItem
         title="Applications Due"
         time="October 18th, 2024"
         description="Be sure to complete and submit your application by this date to be considered for the next round of recruitment."
-        icon={<FaRocket className="fill-white h-6 w-6 block" />}
+        icon={<FaCalendar className="fill-white h-6 w-6 block stroke-none  " />}
       />
       <TimelineItem
         title="Coffee Chats (Invite Only)"

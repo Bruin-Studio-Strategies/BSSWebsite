@@ -1,5 +1,6 @@
 import Feature from "../../../components/Feature";
-import { SearchIcon, AnalysisIcon } from "../../../assets/svg";
+import { FaChartBar, FaChartLine, FaAward, FaChessKnight, FaDoorOpen } from "react-icons/fa";
+import { FaMagnifyingGlassChart } from "react-icons/fa6";
 
 export default function Info() {
   return (
@@ -32,37 +33,37 @@ export default function Info() {
             className=""
             description="Our team conducts thorough research to understand market trends, audience behaviors, and potential opportunities, enabling clients to make informed, data-driven decisions."
             title="Market Research"
-            icon={AnalysisIcon}
+            icon={FaChartBar}
           />
           <Feature
             className=""
             description="We collaborate with clients to develop and implement tailored strategies for scaling their businesses effectively and sustainably within the entertainment industry."
             title="Growth Strategy"
-            icon={SearchIcon}
+            icon={FaChartLine}
           />
           <Feature
             className=""
             description="Leveraging advanced data tools, we analyze key business metrics and trends to offer insights that drive smarter, evidence-based decisions."
             title="Data Analytics"
-            icon={AnalysisIcon}
+            icon={FaMagnifyingGlassChart}
           />
           <Feature
             className=""
             description="We develop compelling brand strategies that establish and reinforce a company’s unique identity, ensuring long-term brand recognition and loyalty."
             title="Brand Strategy"
-            icon={SearchIcon}
+            icon={FaAward}
           />
           <Feature
             className=""
             description="We provide in-depth analysis of competitors' strategies, identifying opportunities and gaps to give our clients an advantage in a crowded market."
             title="Competitive Analysis"
-            icon={AnalysisIcon}
+            icon={FaChessKnight}
           />
           <Feature
             className=""
             description="We help companies navigate new markets by providing detailed assessments and strategies for successful entry into new segments, maximizing growth opportunities."
             title="Market Entry"
-            icon={SearchIcon}
+            icon={FaDoorOpen}
           />
         </div>
       </div>

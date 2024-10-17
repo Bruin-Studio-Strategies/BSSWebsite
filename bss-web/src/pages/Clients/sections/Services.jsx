@@ -1,5 +1,6 @@
 import ServiceCard from "../../../components/ServiceCard";
-import { FaChartLine, FaRegLightbulb, FaRegNewspaper } from "react-icons/fa";
+import { FaChartBar, FaChartLine, FaAward, FaChessKnight, FaDoorOpen, FaChess } from "react-icons/fa";
+import { FaMagnifyingGlassChart } from "react-icons/fa6";
 
 export default function Services() {
   return (
@@ -12,7 +13,7 @@ export default function Services() {
           title="Market Research"
           className="bg-blue-950"
           description="Our team conducts thorough research to understand market trends, audience behaviors, and potential opportunities, enabling clients to make informed, data-driven decisions."
-          icon={FaChartLine}
+          icon={FaChartBar}
         ></ServiceCard>
         <ServiceCard
           title="Growth Strategy"
@@ -24,25 +25,25 @@ export default function Services() {
           title="Data Analytics"
           className="bg-blue-950"
           description="Leveraging advanced data tools, we analyze key business metrics and trends to offer insights that drive smarter, evidence-based decisions."
-          icon={FaChartLine}
+          icon={FaMagnifyingGlassChart}
         ></ServiceCard>
         <ServiceCard
           title="Brand Strategy"
           className="bg-blue-950"
           description="We develop compelling brand strategies that establish and reinforce a company’s unique identity, ensuring long-term brand recognition and loyalty."
-          icon={FaChartLine}
+          icon={FaAward}
         ></ServiceCard>
         <ServiceCard
           title="Competitive Analysis"
           className="bg-blue-950"
           description="We provide in-depth analysis of competitors' strategies, identifying opportunities and gaps to give our clients an advantage in a crowded market."
-          icon={FaChartLine}
+          icon={FaChessKnight}
         ></ServiceCard>
         <ServiceCard
           title="Market Entry"
           className="bg-blue-950"
           description="We help companies navigate new markets by providing detailed assessments and strategies for successful entry into new segments, maximizing growth opportunities."
-          icon={FaChartLine}
+          icon={FaDoorOpen}
         ></ServiceCard>
       </div>
     </section>

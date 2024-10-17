@@ -17,7 +17,7 @@ export default function ServiceCard({ title, description, className, icon: Icon 
         animate={{ opacity: isHovered ? 0 : 1, rotateY: isHovered ? 180 : 0 }}
         transition={{ duration: 0.5 }}
       >
-        <Icon className="text-white sm:w-5 sm:h-5 lg:w-7 lg:h-7 mb-2" />
+        <Icon className="text-white w-7 h-7 mb-2" />
         <h4 className="text-xl font-medium sm:text-xl lg:text-2xl text-white font-sans">{title}</h4>
       </motion.div>
       <motion.div
