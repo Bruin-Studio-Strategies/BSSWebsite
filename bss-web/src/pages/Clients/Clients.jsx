@@ -37,7 +37,7 @@ export default function Clients() {
               2 Project Managers <br />
               4-5 Consultants
             </p>
-            <div className="sm:mt-14">
+            <div className="mt-14">
               <h3 className="text-3xl font-serif sm:mb-4 font-medium">
                 Get Started
               </h3>

@@ -11,7 +11,7 @@ export default function Process() {
         />
         <ProcessCard
           title="Research and Analysis"
-          period="Weeks 1 to 4"
+          period="Weeks 1 to 4"   
           description="The team conducts extensive research and analysis to gather critical data and insights. A slide deck is also created to present these findings as well as the project process"
         />
         <ProcessCard
