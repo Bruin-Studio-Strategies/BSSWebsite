@@ -37,12 +37,7 @@ export default function Clients() {
               2 Project Managers <br />
               4-5 Consultants
             </p>
-            <img
-              src="https://via.placeholder.com/600x400"
-              alt="placeholder"
-              className="my-10"
-            />
-            <div>
+            <div className="sm:mt-14">
               <h3 className="text-3xl font-serif sm:mb-4 font-medium">
                 Get Started
               </h3>

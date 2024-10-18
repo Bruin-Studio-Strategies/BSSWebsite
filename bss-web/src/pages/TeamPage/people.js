@@ -4,6 +4,8 @@ import GiselleCarlos from "./Headshots/Giselle_Carlos.jpg";
 import CalebChor from "./Headshots/Caleb_Chor.jpg";
 import KimberlyCui from "./Headshots/Kimberly_Cui.JPEG";
 import BekTan from "./Headshots/Bek_Tan.JPG";
+import DlencyZheng from "./Headshots/Dlency_Zheng.jpg";
+import AlliMccabe from "./Headshots/Alli_Mccabe.jpg";
 
 export const EXECUTIVES = [
   {
@@ -47,8 +49,8 @@ export const EXECUTIVES = [
     grad: "2027",
     role: "Vice President of Projects",
     image: BekTan,
-    linkedIn: "https://www.linkedin.com/in/ethanwhuang/",
-    email: "ewchuang@ucla.edu"
+    linkedIn: "https://www.linkedin.com/in/bektan/",
+    email: "bekytan13@ucla.edu"
   },
   {
     id: "5",
@@ -74,25 +76,25 @@ export const EXECUTIVES = [
   },
   {
     id: "7",
-    first: "Ethan",
-    last: "Huang",
-    major: "Computer Science",
+    first: "Allison",
+    last: "McCabe",
+    major: "Cognitive Science",
     grad: "2027",
-    role: "Vice President of Technology",
-    image: EthanHuang,
-    linkedIn: "https://www.linkedin.com/in/ethanwhuang/",
-    email: "ewchuang@ucla.edu"
+    role: "Vice President of Marketing",
+    image: AlliMccabe,
+    linkedIn: "https://www.linkedin.com/in/allison-mccabe-2b1aa420b/",
+    email: "alliymcc@ucla.edu"
   },
   {
     id: "8",
-    first: "Ethan",
-    last: "Huang",
+    first: "Dlency",
+    last: "Zheng",
     major: "Computer Science",
     grad: "2027",
-    role: "Vice President of Technology",
-    image: EthanHuang,
-    linkedIn: "https://www.linkedin.com/in/ethanwhuang/",
-    email: "ewchuang@ucla.edu"
+    role: "Vice President of External Affairs",
+    image: DlencyZheng,
+    linkedIn: "https://www.linkedin.com/in/dlencyzheng/",
+    email: "dlencyz@gmail.com"
   },
 ];
 
