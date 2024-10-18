@@ -11,7 +11,7 @@ export default function Team() {
       />
       <div className="text-center sm:text-left sm:ml-28">
         <h3 className="font-serif mb-10 text-4xl">Our Team</h3>
-        <p className="w-5/6 mx-auto sm:mx-0 sm:w-10/12 text-sm sm:text-base">
+        <p className="w-3/4 mx-auto sm:mx-0 sm:w-10/12 text-sm sm:text-base">
           At Bruin Studio Strategies, our team is more than just a collection of
           UCLA students—it's a community of driven individuals, each bringing
           their own unique talents and passions to the table. United by our

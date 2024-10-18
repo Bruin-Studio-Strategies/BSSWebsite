@@ -13,13 +13,13 @@ export default function Footer() {
         <FooterItem path="/contact">Contact</FooterItem>
       </div>
 
-      <div className="flex justify-center sm:space-x-6 space-y-3 sm:space-y-0 mx-auto sm:mx-0 sm:ml-auto mt-2 flex-col sm:flex-row">
+      <div className="flex justify-center sm:space-x-6 space-y-2 sm:space-y-0 mx-auto sm:mx-0 sm:ml-auto mt-2 flex-col sm:flex-row">
         <a className="rounded-full border-white sm:border h-10 w-10 flex items-center hover:cursor-pointer" href="https://www.instagram.com/bruinstudiostrategies/">
           <FaInstagram className="fill-white h-6 w-6 block m-auto" />
         </a>
-        <a className="rounded-full border-white sm:border h-10 w-10 flex items-center hover:cursor-pointer">
+        {/* <a className="rounded-full border-white sm:border h-10 w-10 flex items-center hover:cursor-pointer">
           <FaSlack className="fill-white h-6 w-6 block m-auto" />
-        </a>
+        </a> */}
         <a className="rounded-full border-white sm:border h-10 w-10 flex items-center hover:cursor-pointer" href="https://www.linkedin.com/company/bruin-studio-strategies">
           <FaLinkedin className="fill-white h-6 w-6 block m-auto" />
         </a>
