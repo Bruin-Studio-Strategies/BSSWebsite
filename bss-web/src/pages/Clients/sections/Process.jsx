@@ -27,7 +27,7 @@ export default function Process() {
         <ProcessCard
           title="Final Deliverable"
           period="Week 9"
-          description="The final deliverable is completed and submitted to the client, concluding the project."
+          description="The final deliverable is completed and submitted to the client, concluding the project. The team will answer any questions and provide support as needed."
         />
       </div>
     </section>
