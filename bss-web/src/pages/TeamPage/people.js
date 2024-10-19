@@ -89,7 +89,7 @@ export const EXECUTIVES = [
     id: "8",
     first: "Dlency",
     last: "Zheng",
-    major: "Computer Science",
+    major: "Economics & Music Industry",
     grad: "2027",
     role: "Vice President of External Affairs",
     image: DlencyZheng,
