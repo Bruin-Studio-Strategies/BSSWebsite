@@ -8,7 +8,7 @@ export default function TimelineItem({
 }) {
   console.log(icon);
   return (
-    <li className="mb-14 ms-10">
+    <li className="mb-10 ms-10">
       <div className="absolute w-10 h-10 bg-blue-900 rounded-full -start-5 flex justify-center items-center">
         {icon}
       </div>

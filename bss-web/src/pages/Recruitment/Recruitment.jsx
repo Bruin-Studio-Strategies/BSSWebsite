@@ -31,9 +31,9 @@ export default function Recruitment() {
           Applications Are Open
         </h3>
         <p className="w-11/12 sm:w-3/4 mx-auto my-5 font-sans text-sm sm:text-base">
-          Fall 2024 Applications are Live!
+          Winter 2025 Applications are Live!
         </p>
-        <a className="text-blue-900 bg-white rounded-sm font-sans p-2 hover:opacity-75 transition-opacity" href="https://forms.gle/UvgfwtaU73gEwLZv6">
+        <a className="text-blue-900 bg-white rounded-sm font-sans p-2 hover:opacity-75 transition-opacity" href="https://forms.gle/FV2C9Ahamki44ZaN9">
           Apply Here
         </a>
       </div>
