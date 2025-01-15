@@ -19,7 +19,7 @@ export default function Timeline({ className }) {
       />
       <TimelineItem
         title="Information Session"
-        time="January 10th, 2025"
+        time="January 15th, 2025"
         description="Learn more about BSS, meet current members, and get an inside look at what we do and how you can be part of the team."
         location="Online - Zoom"
         attire="Casual"
@@ -27,13 +27,13 @@ export default function Timeline({ className }) {
       />
       <TimelineItem
         title="Applications Due"
-        time="January 17th, 2025"
+        time="January 18th, 2025"
         description="Be sure to complete and submit your application by this date to be considered for the next round of recruitment."
         icon={<FaCalendar className="fill-white h-6 w-6 block stroke-none  " />}
       />
       <TimelineItem
         title="Coffee Chats (Invite Only)"
-        time="January 20nd, 2024"
+        time="January 22nd, 2024"
         description="An informal opportunity to chat with BSS members, learn about their experiences, and see if BSS is the right fit for you."
         location="TBA"
         attire="Business Casual"
@@ -41,7 +41,7 @@ export default function Timeline({ className }) {
       />
       <TimelineItem
         title="Final Interviews (Invite Only)"
-        time="January 23rd & 24th, 2024"
+        time="January 24rd & 25th, 2024"
         description="Selected candidates will participate in final interviews, showcasing their simple casing skills and passion for entertainment consulting. "
         location="TBA"
         attire="Business Formal"
