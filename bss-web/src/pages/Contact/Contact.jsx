@@ -13,8 +13,8 @@ export default function Contact() {
           <p className="sm:mb-5 lg:text-lg mb-5">Whether you are a company, organization, or student on campus, we would love to get in touch with you</p>
           <p className="sm:mb-5 text-lg mb-5">bruinstudiostrategies@gmail.com</p>
           <p className="font-medium text-sm sm:text-base font-sans sm:mb-2 lg:text-lg mb-2">President: <br/><span className="font-light font-sans">adriennelee@g.ucla.edu</span></p>
-          <p className="font-medium text-sm sm:text-base font-sans sm:mb-2 lg:text-lg mb-2">Director of External: <br/><span className="font-light font-sans">dlencyz@gmail.com</span></p>
-          <p className="font-medium text-sm sm:text-base font-sans sm:mb-2 lg:text-lg mb-2">Director of Internal Relations: <br/><span className="font-light font-sans">gisellecarlos@g.ucla.edu</span></p>
+          <p className="font-medium text-sm sm:text-base font-sans sm:mb-2 lg:text-lg mb-2">VP of External Affairs: <br/><span className="font-light font-sans">dlencyz@gmail.com</span></p>
+          <p className="font-medium text-sm sm:text-base font-sans sm:mb-2 lg:text-lg mb-2">VP of Internal Relations: <br/><span className="font-light font-sans">gisellecarlos@g.ucla.edu</span></p>
         </div>
         <div className="flex justify-center sm:justify-start sm:ml-20 mb-80">
           <Form />

@@ -15,7 +15,7 @@ export default function Recruitment() {
           Join Our Team
         </h2>
         <p className="text-center text-wrap w-5/6 sm:w-1/2 mt-5 font-sans sm:text-base text-sm">
-          Interested in joining our team? Fall 2024 applications are now live!
+          Interested in joining our team? Our next recruitment cycle will be in Spring 2024!
         </p>
       </div>
       <hr className="h-px my-12 bg-gray-100 border-0 w-11/12 m-auto opacity-50"></hr>
@@ -26,7 +26,7 @@ export default function Recruitment() {
         <Timeline className="ml-10" />
       </div>
 
-      <div className="bg-blue-900 p-6 pb-10 sm:p-10 text-center my-16 sm:my-20">
+      {/* <div className="bg-blue-900 p-6 pb-10 sm:p-10 text-center my-16 sm:my-20">
         <h3 className="text-2xl sm:text-3xl font-serif font-medium">
           Applications Are Open
         </h3>
@@ -36,7 +36,7 @@ export default function Recruitment() {
         <a className="text-blue-900 bg-white rounded-sm font-sans p-2 hover:opacity-75 transition-opacity" href="https://forms.gle/FV2C9Ahamki44ZaN9">
           Apply Here
         </a>
-      </div>
+      </div> */}
 
       <div className="w-11/12 sm:w-4/5 mx-auto flex sm:flex-row flex-col sm:mb-0 mb-36">
         <div className="w-11/12 sm:w-2/3 sm:mx-0 mx-auto sm:text-left text-center sm:mb-0 mb-12">
