@@ -19,13 +19,13 @@ export default function Recruitment() {
         </p>
       </div>
       <hr className="h-px my-12 bg-gray-100 border-0 w-11/12 m-auto opacity-50"></hr>
-      <div className="w-full sm:w-4/5 mx-auto sm:px-0 px-3">
+      <div className="w-full sm:w-4/5 mx-auto sm:px-0 px-3 mb-32">  { /* get rid of mb when banner is up */}
         <h3 className="font-serif text-2xl sm:text-3xl font-medium mb-6 sm:mb-10 sm:text-left text-center">
           Recruiment Timeline
         </h3>
         <Timeline className="ml-10" />
       </div>
-
+      
       {/* <div className="bg-blue-900 p-6 pb-10 sm:p-10 text-center my-16 sm:my-20">
         <h3 className="text-2xl sm:text-3xl font-serif font-medium">
           Applications Are Open
