@@ -3,7 +3,7 @@ import Footer from "../../components/Footer";
 import Services from "./sections/Services";
 import Process from "./sections/Process";
 import { Link } from "react-router-dom";
-
+import board from "../../assets/board.jpg";
 export default function Clients() {
   return (
     <>
@@ -37,7 +37,7 @@ export default function Clients() {
               2 Project Managers <br />
               4-5 Consultants
             </p>
-            <div className="mt-14">
+            <div className="mt-14 ">
               <h3 className="text-3xl font-serif sm:mb-4 font-medium">
                 Get Started
               </h3>
@@ -52,10 +52,11 @@ export default function Clients() {
                 or fill out or contact form below
               </p>
               <Link to="/contact" className="text-blue-950">
-                <button className="text-white bg-blue-900 hover:bg-blue-800 rounded-sm p-2">
+                <button className="text-white bg-blue-900 hover:bg-blue-800 rounded-sm p-2 mb-14">
                   Contact Us
                 </button>
               </Link>
+              <img src={board}/>
             </div>
           </div>
         </div>

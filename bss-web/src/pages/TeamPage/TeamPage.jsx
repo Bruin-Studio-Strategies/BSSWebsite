@@ -27,12 +27,12 @@ export default function TeamPage() {
           {PRODUCT_MANAGERS.map((person) => (
             <TeamCard {...person} key={person.id}/>
           ))}
-        </TeamContainer>
+        </TeamContainer> */}
         <TeamContainer title="Consultants">
           {CONSULTANTS.map((person) => (
             <TeamCard {...person} key={person.id} />
           ))}
-        </TeamContainer> */}
+        </TeamContainer>
       </div>
       <Footer />
     </>
