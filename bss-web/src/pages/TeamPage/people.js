@@ -317,16 +317,6 @@ export const CONSULTANTS = [
   },
   {
     id: "220",
-    first: "Connor",
-    last: "Chung",
-    major: "Computer Science and Linguistics",
-    grad: "2028",
-    role: "Consultant",
-    image: ConnorChung,
-    linkedIn: "https://www.linkedin.com/in/connorjchung"
-  },
-  {
-    id: "221",
     first: "Gina",
     last: "Decas",
     major: "Business Economics",
@@ -336,7 +326,7 @@ export const CONSULTANTS = [
     linkedIn: "https://www.linkedin.com/in/gina-decas-0428a8338"
   },
   {
-    id: "222",
+    id: "221",
     first: "Sebastine",
     last: "Chun",
     major: "Political Science",
