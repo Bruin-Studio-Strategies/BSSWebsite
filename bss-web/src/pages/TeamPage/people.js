@@ -37,7 +37,7 @@ import JaiRaman from "./Headshots/Jai_Raman.jpg";
 import PriyalSharma from "./Headshots/Priyal_Sharma.jpg";
 import IrvinQi from "./Headshots/Irvin_Qi.jpg";
 import KhushiTekriwal from "./Headshots/Khushi_Tekriwal.jpg";
-import Placeholder from "./Headshots/placeholder.jpg";
+import Placeholder from "./Headshots/Placeholder.jpg";
 
 export const EXECUTIVES = [
   {
