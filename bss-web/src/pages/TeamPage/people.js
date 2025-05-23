@@ -29,100 +29,108 @@ import MatthewYbarra from "./Headshots/Matthew_Ybarra.jpeg";
 import GinaDecas from "./Headshots/Gina_Decas.JPG";
 import SebastineChun from "./Headshots/Sebastine_Chun.jpg";
 
-  export const EXECUTIVES = [
-    {
-      id: "1",
-      first: "Adrienne",
-      last: "Lee",
-      major: "Public Affairs & Statistics and Data Science",
-      grad: "2027",
-      role: "President",
-      image: AdrienneLee,
-      linkedIn: "https://www.linkedin.com/in/adrienne-lee-11457026b/",
-      email: "adrienneleehs@gmail.com"
-    },
-    {
-      id: "2",
-      first: "Giselle",
-      last: "Carlos",
-      major: "Political Science & Minor in Film and TV",
-      grad: "2027",
-      role: "Vice President of Internal",
-      image: GiselleCarlos,
-      linkedIn: "https://www.linkedin.com/in/giselle-carlos-03449b298/",
-      email: "gisellecarlos@ucla.edu"
-    },
-    {
-      id: "3",
-      first: "Caleb",
-      last: "Chor",
-      major: "Cognitive Science & Philosophy",
-      grad: "2027",
-      role: "Vice President of Membership",
-      image: CalebChor,
-      linkedIn: "https://www.linkedin.com/in/caleb-chor/",
-      email: "calebchor27@ucla.edu"
-    },
-    {
-      id: "4",
-      first: "Bek",
-      last: "Tan",
-      major: "Cognitive Science",
-      grad: "2027",
-      role: "Vice President of Projects",
-      image: BekTan,
-      linkedIn: "https://www.linkedin.com/in/bektan/",
-      email: "bekytan13@ucla.edu"
-    },
-    {
-      id: "5",
-      first: "Kimberly",
-      last: "Cui",
-      major: "Statistics and Data Science & Economics",
-      grad: "2027",
-      role: "Vice President of Finance",
-      image: KimberlyCui,
-      linkedIn: "https://www.linkedin.com/in/kimberlycui/",
-      email: "kcui@ucla.edu"
-    },
-    {
-      id: "6",
-      first: "Ethan",
-      last: "Huang",
-      major: "Computer Science",
-      grad: "2027",
-      role: "Vice President of Technology",
-      image: EthanHuang,
-      linkedIn: "https://www.linkedin.com/in/ethanwhuang/",
-      email: "ewchuang@ucla.edu"
-    },
-    {
-      id: "7",
-      first: "Allison",
-      last: "McCabe",
-      major: "Cognitive Science",
-      grad: "2027",
-      role: "Vice President of Marketing",
-      image: AlliMccabe,
-      linkedIn: "https://www.linkedin.com/in/allison-mccabe-2b1aa420b/",
-      email: "alliymcc@ucla.edu"
-    },
-    {
-      id: "8",
-      first: "Dlency",
-      last: "Zheng",
-      major: "Economics & Music Industry",
-      grad: "2027",
-      role: "Vice President of External Affairs",
-      image: DlencyZheng,
-      linkedIn: "https://www.linkedin.com/in/dlencyzheng/",
-      email: "dlencyz@gmail.com"
-    },
-  ];
+import PiperTenney from "./Headshots/Piper_Tenney.jpg";
+import KalaniCaetano from "./Headshots/Kalani_Caetano.jpg";
+import KaylaKinsey from "./Headshots/Kayla_Kinsey.jpg";
+import AnikaChatradhi from "./Headshots/Anika_Chatradhi.jpg";
+import JaiRaman from "./Headshots/Jai_Raman.jpg";
+import PriyalSharma from "./Headshots/Priyal_Sharma.jpg";
+import IrvinQi from "./Headshots/Irvin_Qi.jpg";
+import KhushiTekriwal from "./Headshots/Khushi_Tekriwal.jpg";
+import Placeholder from "./Headshots/placeholder.jpg";
 
-export const PRODUCT_MANAGERS = [
-
+export const EXECUTIVES = [
+  {
+    id: "1",
+    first: "Adrienne",
+    last: "Lee",
+    major: "Public Affairs & Statistics and Data Science",
+    grad: "2027",
+    role: "President",
+    image: AdrienneLee,
+    linkedIn: "https://www.linkedin.com/in/adrienne-lee-11457026b/",
+    email: "adrienneleehs@gmail.com",
+  },
+  {
+    id: "2",
+    first: "Giselle",
+    last: "Carlos",
+    major: "Political Science & Minor in Film and TV",
+    grad: "2027",
+    role: "Vice President of Internal",
+    image: GiselleCarlos,
+    linkedIn: "https://www.linkedin.com/in/giselle-carlos-03449b298/",
+    email: "gisellecarlos@ucla.edu",
+  },
+  {
+    id: "3",
+    first: "Caleb",
+    last: "Chor",
+    major: "Cognitive Science & Philosophy",
+    grad: "2027",
+    role: "Vice President of Membership",
+    image: CalebChor,
+    linkedIn: "https://www.linkedin.com/in/caleb-chor/",
+    email: "calebchor27@ucla.edu",
+  },
+  {
+    id: "4",
+    first: "Bek",
+    last: "Tan",
+    major: "Cognitive Science",
+    grad: "2027",
+    role: "Vice President of Projects",
+    image: BekTan,
+    linkedIn: "https://www.linkedin.com/in/bektan/",
+    email: "bekytan13@ucla.edu",
+  },
+  {
+    id: "5",
+    first: "Kimberly",
+    last: "Cui",
+    major: "Statistics and Data Science & Economics",
+    grad: "2027",
+    role: "Vice President of Finance",
+    image: KimberlyCui,
+    linkedIn: "https://www.linkedin.com/in/kimberlycui/",
+    email: "kcui@ucla.edu",
+  },
+  {
+    id: "6",
+    first: "Ethan",
+    last: "Huang",
+    major: "Computer Science",
+    grad: "2027",
+    role: "Vice President of Technology",
+    image: EthanHuang,
+    linkedIn: "https://www.linkedin.com/in/ethanwhuang/",
+    email: "ewchuang@ucla.edu",
+  },
+  {
+    id: "7",
+    first: "Allison",
+    last: "McCabe",
+    major: "Cognitive Science",
+    grad: "2027",
+    role: "Vice President of Marketing",
+    image: AlliMccabe,
+    linkedIn: "https://www.linkedin.com/in/allison-mccabe-2b1aa420b/",
+    email: "alliymcc@ucla.edu",
+  },
+  {
+    id: "8",
+    first: "Dlency",
+    last: "Zheng",
+    major: "Economics & Music Industry",
+    grad: "2027",
+    role: "Vice President of External Affairs",
+    image: DlencyZheng,
+    linkedIn: "https://www.linkedin.com/in/dlencyzheng/",
+    email: "dlencyz@gmail.com",
+  },
 ];
+
+export const PRODUCT_MANAGERS = [];
 
 export const CONSULTANTS = [
   {
@@ -133,7 +141,7 @@ export const CONSULTANTS = [
     grad: "2028",
     role: "Consultant",
     image: LiamHolmes,
-    linkedIn: "https://www.linkedin.com/in/liam-holmes-baa378251"
+    linkedIn: "https://www.linkedin.com/in/liam-holmes-baa378251",
   },
   {
     id: "202",
@@ -143,7 +151,7 @@ export const CONSULTANTS = [
     grad: "2028",
     role: "Consultant",
     image: CarlieHarwood,
-    linkedIn: "https://www.linkedin.com/in/carlie-harwood"
+    linkedIn: "https://www.linkedin.com/in/carlie-harwood",
   },
   {
     id: "203",
@@ -153,7 +161,7 @@ export const CONSULTANTS = [
     grad: "2028",
     role: "Consultant",
     image: RyanKobayashi,
-    linkedIn: "https://www.linkedin.com/in/ryan-kobayashi-ucla"
+    linkedIn: "https://www.linkedin.com/in/ryan-kobayashi-ucla",
   },
   {
     id: "204",
@@ -163,7 +171,7 @@ export const CONSULTANTS = [
     grad: "2027",
     role: "Consultant",
     image: RiyaPatel,
-    linkedIn: "https://www.linkedin.com/in/riya-patel-555977281"
+    linkedIn: "https://www.linkedin.com/in/riya-patel-555977281",
   },
   {
     id: "205",
@@ -173,7 +181,7 @@ export const CONSULTANTS = [
     grad: "2026",
     role: "Consultant",
     image: HeidiYu,
-    linkedIn: "https://www.linkedin.com/in/heidijyyu"
+    linkedIn: "https://www.linkedin.com/in/heidijyyu",
   },
   {
     id: "206",
@@ -183,7 +191,7 @@ export const CONSULTANTS = [
     grad: "2028",
     role: "Consultant",
     image: ConnorChung,
-    linkedIn: "https://www.linkedin.com/in/connorjchung"
+    linkedIn: "https://www.linkedin.com/in/connorjchung",
   },
   {
     id: "207",
@@ -193,7 +201,7 @@ export const CONSULTANTS = [
     grad: "2028",
     role: "Consultant",
     image: RianneKe,
-    linkedIn: "https://www.linkedin.com/in/rianne-ke-3b89192a5"
+    linkedIn: "https://www.linkedin.com/in/rianne-ke-3b89192a5",
   },
   {
     id: "208",
@@ -203,7 +211,7 @@ export const CONSULTANTS = [
     grad: "2027",
     role: "Consultant",
     image: AshlynChin,
-    linkedIn: "https://www.linkedin.com/in/ashlync128"
+    linkedIn: "https://www.linkedin.com/in/ashlync128",
   },
   {
     id: "209",
@@ -213,7 +221,7 @@ export const CONSULTANTS = [
     grad: "2026",
     role: "Consultant",
     image: JesseAcostaHuerta,
-    linkedIn: "https://www.linkedin.com/in/jesseacosta-huerta"
+    linkedIn: "https://www.linkedin.com/in/jesseacosta-huerta",
   },
   {
     id: "210",
@@ -223,7 +231,7 @@ export const CONSULTANTS = [
     grad: "2026",
     role: "Consultant",
     image: AidanSingh,
-    linkedIn: "https://www.linkedin.com/in/aidansingh"
+    linkedIn: "https://www.linkedin.com/in/aidansingh",
   },
   {
     id: "211",
@@ -233,7 +241,7 @@ export const CONSULTANTS = [
     grad: "2027",
     role: "Consultant",
     image: LuisaChen,
-    linkedIn: "https://www.linkedin.com/in/luisachen05"
+    linkedIn: "https://www.linkedin.com/in/luisachen05",
   },
   {
     id: "212",
@@ -243,7 +251,7 @@ export const CONSULTANTS = [
     grad: "2026",
     role: "Consultant",
     image: KianKazranian,
-    linkedIn: "https://www.linkedin.com/in/kiankazranian"
+    linkedIn: "https://www.linkedin.com/in/kiankazranian",
   },
   {
     id: "213",
@@ -253,7 +261,7 @@ export const CONSULTANTS = [
     grad: "2027",
     role: "Consultant",
     image: TiaBreaux,
-    linkedIn: "https://www.linkedin.com/in/tia-breaux"
+    linkedIn: "https://www.linkedin.com/in/tia-breaux",
   },
   {
     id: "214",
@@ -263,7 +271,7 @@ export const CONSULTANTS = [
     grad: "2028",
     role: "Consultant",
     image: JackBooher,
-    linkedIn: "https://www.linkedin.com/in/jack-booher-581aa1258"
+    linkedIn: "https://www.linkedin.com/in/jack-booher-581aa1258",
   },
   {
     id: "215",
@@ -273,7 +281,7 @@ export const CONSULTANTS = [
     grad: "2026",
     role: "Consultant",
     image: AmmarWahab,
-    linkedIn: "https://www.linkedin.com/in/ammarwahab"
+    linkedIn: "https://www.linkedin.com/in/ammarwahab",
   },
   {
     id: "216",
@@ -283,9 +291,10 @@ export const CONSULTANTS = [
     grad: "2028",
     role: "Consultant",
     image: AnannyaShah,
-    linkedIn: "https://www.linkedin.com/in/anannya-shah"
+    linkedIn: "https://www.linkedin.com/in/anannya-shah",
   },
-  { // kits link doesnt work
+  {
+    // kits link doesnt work
     id: "217",
     first: "Kit",
     last: "He",
@@ -293,7 +302,7 @@ export const CONSULTANTS = [
     grad: "2027",
     role: "Consultant",
     image: KitHe,
-    linkedIn: "https://www.linkedin.com/in/kit-jiaying-he-542260298/"
+    linkedIn: "https://www.linkedin.com/in/kit-jiaying-he-542260298/",
   },
   {
     id: "218",
@@ -303,7 +312,7 @@ export const CONSULTANTS = [
     grad: "2027",
     role: "Consultant",
     image: VivaanTurakhia,
-    linkedIn: "https://www.linkedin.com/in/vivaanturakhia"
+    linkedIn: "https://www.linkedin.com/in/vivaanturakhia",
   },
   {
     id: "219",
@@ -313,7 +322,7 @@ export const CONSULTANTS = [
     grad: "2028",
     role: "Consultant",
     image: MatthewYbarra,
-    linkedIn: "https://www.linkedin.com/in/matthew-a-ybarra"
+    linkedIn: "https://www.linkedin.com/in/matthew-a-ybarra",
   },
   {
     id: "220",
@@ -323,7 +332,7 @@ export const CONSULTANTS = [
     grad: "2027",
     role: "Consultant",
     image: GinaDecas,
-    linkedIn: "https://www.linkedin.com/in/gina-decas-0428a8338"
+    linkedIn: "https://www.linkedin.com/in/gina-decas-0428a8338",
   },
   {
     id: "221",
@@ -333,8 +342,96 @@ export const CONSULTANTS = [
     grad: "2028",
     role: "Consultant",
     image: SebastineChun,
-    linkedIn: "https://www.linkedin.com/in/sebastinechun"
-  }
+    linkedIn: "https://www.linkedin.com/in/sebastinechun",
+  },
+  {
+    id: "230",
+    first: "Khushi",
+    last: "Tekriwal",
+    major: "Statistics and Data Science & Mathematics",
+    grad: "2027",
+    role: "Associate Consultant",
+    image: KhushiTekriwal,
+    linkedIn: "https://www.linkedin.com/in/khushi-tekriwal/details/education/",
+  },
+  {
+    id: "223",
+    first: "Piper",
+    last: "Tenney",
+    major: "Business Economics",
+    grad: "2028",
+    role: "Consultant",
+    image: PiperTenney,
+    linkedIn: "https://www.linkedin.com/in/piper-tenney-b735b0276/",
+  },
+  {
+    id: "224",
+    first: "Kalani",
+    last: "Caetano",
+    major: "Statistics and Data Science & Economics",
+    grad: "2027",
+    role: "Consultant",
+    image: KalaniCaetano,
+    linkedIn: "https://www.linkedin.com/in/kalanicaetano/", 
+  },
+  {
+    id: "225",
+    first: "Kayla",
+    last: "Kinsey",
+    major: "N/A",
+    grad: "2028",
+    role: "Consultant",
+    image: KaylaKinsey,
+    linkedIn: "https://www.linkedin.com/in/kayla-kinsey-015343331/",
+  },
+  {
+    id: "226",
+    first: "Anika",
+    last: "Chatradhi",
+    major: "Statistics and Data Science",
+    grad: "2027",
+    role: "Consultant",
+    image: AnikaChatradhi,
+    linkedIn: "https://www.linkedin.com/in/anika-chatradhi/",
+  },
+  {
+    id: "227",
+    first: "Jai",
+    last: "Raman",
+    major: "Music Industry",
+    grad: "2028",
+    role: "Consultant",
+    image: JaiRaman,
+    linkedIn: "N/A",
+  },
+  {
+    id: "228",
+    first: "Priyal",
+    last: "Sharma",
+    major: "Statistics and Data Science",
+    grad: "2027",
+    role: "Consultant",
+    image: PriyalSharma,
+    linkedIn: "https://www.linkedin.com/in/priyalsh/",
+  },
+  {
+    id: "229",
+    first: "Irvin",
+    last: "Qi",
+    major: "Computer Science",
+    grad: "2027",
+    role: "Consultant",
+    image: IrvinQi,
+    linkedIn: "https://www.linkedin.com/in/irvin-qi",
+  },
+  { 
+    id: "222",
+    first: "Danny",
+    last: "Guo",
+    major: "Statistics and Data Science & Economics",
+    grad: "2028",
+    role: "Consultant",
+    image: Placeholder,
+    linkedIn: "https://www.linkedin.com/in/bohan-guo-9078a8326/",
+  },
 ];
-
-

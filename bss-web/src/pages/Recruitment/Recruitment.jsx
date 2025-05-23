@@ -15,7 +15,7 @@ export default function Recruitment() {
           Join Our Team
         </h2>
         <p className="text-center text-wrap w-5/6 sm:w-1/2 mt-5 font-sans sm:text-base text-sm">
-          Interested in joining our team? Our next recruitment cycle will be in Spring 2024!
+          Interested in joining our team? Our next recruitment cycle will be in Fall 2025!
         </p>
       </div>
       <hr className="h-px my-12 bg-gray-100 border-0 w-11/12 m-auto opacity-50"></hr>
