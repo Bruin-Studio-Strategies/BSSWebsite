@@ -30,7 +30,7 @@ export default function Team() {
         </p>
         <h4 className="font-serif mt-10 text-xl">Join Us</h4>
         <p className="my-5 px-10 sm:px-0">
-          Our next recruitment cycle will be in Spring 2025
+          Our next recruitment cycle will be in Fall 2025
         </p>
         <Link to="/recruitment">
           <button className="text-white bg-blue-900 hover:bg-blue-800 rounded-sm p-2">
