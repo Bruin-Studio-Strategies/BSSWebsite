@@ -372,7 +372,7 @@ export const CONSULTANTS = [
     grad: "2027",
     role: "Consultant",
     image: KalaniCaetano,
-    linkedIn: "https://www.linkedin.com/in/kalanicaetano/", 
+    linkedIn: "https://www.linkedin.com/in/kalanicaetano/",
   },
   {
     id: "225",
@@ -385,16 +385,6 @@ export const CONSULTANTS = [
     linkedIn: "https://www.linkedin.com/in/kayla-kinsey-015343331/",
   },
   {
-    id: "226",
-    first: "Anika",
-    last: "Chatradhi",
-    major: "Statistics and Data Science",
-    grad: "2027",
-    role: "Consultant",
-    image: AnikaChatradhi,
-    linkedIn: "https://www.linkedin.com/in/anika-chatradhi/",
-  },
-  {
     id: "227",
     first: "Jai",
     last: "Raman",
@@ -403,16 +393,6 @@ export const CONSULTANTS = [
     role: "Consultant",
     image: JaiRaman,
     linkedIn: "N/A",
-  },
-  {
-    id: "228",
-    first: "Priyal",
-    last: "Sharma",
-    major: "Statistics and Data Science",
-    grad: "2027",
-    role: "Consultant",
-    image: PriyalSharma,
-    linkedIn: "https://www.linkedin.com/in/priyalsh/",
   },
   {
     id: "229",
@@ -424,7 +404,17 @@ export const CONSULTANTS = [
     image: IrvinQi,
     linkedIn: "https://www.linkedin.com/in/irvin-qi",
   },
-  { 
+  {
+    id: "228",
+    first: "Priyal",
+    last: "Sharma",
+    major: "Statistics and Data Science",
+    grad: "2027",
+    role: "Consultant",
+    image: Placeholder,
+    linkedIn: "https://www.linkedin.com/in/priyalsh/",
+  },
+  {
     id: "222",
     first: "Danny",
     last: "Guo",
