@@ -1,33 +1,21 @@
-import { useState } from 'react';
 import { motion } from 'framer-motion';
 
 export default function ServiceCard({ title, description, className, icon: Icon }) {
-  const [isHovered, setIsHovered] = useState(false);
-
   return (
-    <motion.div 
-      className={`relative flex mx-auto sm:mx-0 flex-col w-60 h-56 sm:w-60 sm:h-56 lg:w-80 lg:h-72 gap-2 lg:p-6 ${className} rounded-sm p-4 bg-[#253b86] drop-shadow-md shadow-lg`}
-      onHoverStart={() => setIsHovered(true)}
-      onHoverEnd={() => setIsHovered(false)}
-      onClick={() => setIsHovered(!isHovered)}
+    <motion.div
+      className={`flex flex-col w-72 h-80 rounded-2xl shadow-xl overflow-hidden mx-auto sm:mx-0`}
+      whileHover={{ scale: 1.05, boxShadow: '0 8px 32px rgba(37,59,134,0.18)' }}
+      transition={{ type: 'spring', stiffness: 300, damping: 20 }}
     >
-      <motion.div 
-        className={`absolute inset-0 flex flex-col justify-center items-center`}
-        initial={{ opacity: 1, rotateY: 0 }}
-        animate={{ opacity: isHovered ? 0 : 1, rotateY: isHovered ? 180 : 0 }}
-        transition={{ duration: 0.5 }}
-      >
-        <Icon className="text-white w-7 h-7 mb-2" />
-        <h4 className="text-xl font-medium sm:text-xl lg:text-2xl text-white font-sans">{title}</h4>
-      </motion.div>
-      <motion.div
-        className={`absolute inset-0 flex justify-center items-center p-8 text-sm sm:text-base sm:p-6`}
-        initial={{ opacity: 0, rotateY: -180 }}
-        animate={{ opacity: isHovered ? 1 : 0, rotateY: isHovered ? 0 : -180 }}
-        transition={{ duration: 0.5 }}
-      >
-        <p className="sm:text-sm lg:text-base text-white">{description}</p>
-      </motion.div>
+      {/* Top color block */}
+      <div className={`flex flex-col items-center justify-center h-1/3 min-h-[100px] w-full ${className}`}>
+        <Icon className="text-white w-9 h-9 mb-2" />
+        <h4 className="text-lg font-semibold text-white text-center">{title}</h4>
+      </div>
+      {/* Bottom white block */}
+      <div className="flex-1 bg-white flex items-center justify-center px-6 py-4 w-full">
+        <p className="text-center text-gray-800 text-base leading-relaxed">{description}</p>
+      </div>
     </motion.div>
   );
 }
