@@ -1,4 +1,4 @@
-import { EXECUTIVES, CONSULTANTS, PRODUCT_MANAGERS } from "./people.js";
+import { EXECUTIVES, CONSULTANTS, PRODUCT_MANAGERS, ADVISORYBOARD } from "./people.js";
 
 import Footer from "../../components/Footer.jsx";
 import TeamCard from "../../components/TeamCard";
@@ -19,6 +19,11 @@ export default function TeamPage() {
       <div className="mb-80 sm:mb-48">
         <TeamContainer title="Executives">
           {EXECUTIVES.map((person) => (
+            <TeamCard {...person} key={person.id}/>
+          ))}
+        </TeamContainer>
+        <TeamContainer title="Advisory Board">
+          {ADVISORYBOARD.map((person) => (
             <TeamCard {...person} key={person.id}/>
           ))}
         </TeamContainer>
