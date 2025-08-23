@@ -12,7 +12,7 @@ export default function TeamPage() {
           Meet Our Team
         </h2>
         <p className="text-center text-wrap w-5/6 sm:w-1/2 mt-5">
-          Meet the team behind Bruin Studio Strategies. We come from a range of diverse backgrounds and experiences, but we all share a passion for creativity and innovation.  
+        Diverse, passionate, and innovative.
         </p>
       </div>
       <hr className="fill-white w-1/2 sm:w-1/4 mx-auto my-12 opacity-45" />

@@ -12,21 +12,9 @@ export default function Team() {
       <div className="text-center sm:text-left sm:ml-28">
         <h3 className="font-serif mb-10 text-4xl">Our Team</h3>
         <p className="w-3/4 mx-auto sm:mx-0 sm:w-10/12 text-sm sm:text-base">
-          At Bruin Studio Strategies, our team is more than just a collection of
-          UCLA students—it's a community of driven individuals, each bringing
-          their own unique talents and passions to the table. United by our
-          commitment to redefining the entertainment consulting space, our
-          members come from a diverse range of academic disciplines, including
-          data science, economics, policy, film, business, and media studies.
-          This diversity allows us to tackle complex industry challenges from
-          multiple angles, combining analytical rigor with creative thinking. 
-          <br/><br/>
-          We pride ourselves on fostering an environment where innovative ideas
-          flourish, and collaboration is at the heart of everything we do.
-          Whether it’s dissecting the latest market trends, developing strategic
-          insights, or providing cutting-edge data analytics, our team is
-          dedicated to delivering results that push boundaries in the
-          entertainment industry.
+        At Bruin Studio Strategies, we are more than UCLA students—we are a community of innovators reshaping entertainment consulting. With diverse backgrounds in fields including data science, economics, policy, film, business, and computer science, our members bring diverse perspectives that blend analytical rigor with creative insight.
+      <br/><br/>We pride ourselves on fostering a free-flowing and creative environment where innovative ideas flourish, turning market research and unique ideas into actionable strategies. Driven through innovation, our team delivers bold solutions that push the boundaries of the entertainment industry.
+
         </p>
         <h4 className="font-serif mt-10 text-xl">Join Us</h4>
         <p className="my-5 px-10 sm:px-0">
