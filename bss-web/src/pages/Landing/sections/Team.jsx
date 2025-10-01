@@ -18,14 +18,15 @@ export default function Team() {
         </p>
         <h4 className="font-serif mt-10 text-xl">Join Us</h4>
         <p className="my-5 px-10 sm:px-0">
-          Our next recruitment cycle will be in Fall 2025
+          Our application for Fall 2025 is live.
         </p>
-        <Link to="/recruitment">
+        <Link to="https://forms.gle/xVDESkpmkP4MtpHm6?fbclid=PAZXh0bgNhZW0CMTEAAadFbpo77M3Dkz2vW5t2s1JFopI-tHdqMWIHL94-D59BH2cufaXQy7bJv9014w_aem_RXmJvNtWU_Pw87TpkvdRGQ">
           <button className="text-white bg-blue-900 hover:bg-blue-800 rounded-sm p-2">
-            More Details
+            Apply Now
           </button>
         </Link>
       </div>
-    </div>
+    </div> 
   );
 }
+//<Link to="/recruitment"> for offseason on line 23
