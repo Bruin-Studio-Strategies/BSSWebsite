@@ -19,9 +19,9 @@ export default function Timeline({ className }) {
       />
       <TimelineItem
         title="Information Session"
-        time="TBA"
+        time="10/6 (7 PM)"
         description="Learn more about BSS, meet current members, and get an inside look at what we do and how you can be part of the team."
-        location="Online - Zoom"
+        location="Pauley Pavilion Club M10A"
         attire="Casual"
         icon={<FaInfoCircle className="fill-white h-6 w-6 block" />}
       />
