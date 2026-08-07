@@ -5,11 +5,15 @@ export default {
     extend: {
       colors: {
         purple: "#523794",
+        navy: "#0F172E",
+        sky: "#5288C7",
+        magenta: "#B73593",
       },
     },
     fontFamily: {
       sans: ["Inter"],
       serif: ["EB Garamond"],
+      display: ["Agatho", "serif"],
     },
     screens: {
       sm: "576px",
