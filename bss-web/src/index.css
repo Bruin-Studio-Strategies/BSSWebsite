@@ -40,20 +40,31 @@
 html{
   position:relative;
   scrollbar-color: #6a6a6b #09090b;
+  /* Reserves the scrollbar's width up front so the page doesn't shift when
+     content height crosses the viewport threshold — same effect as the old
+     `body { overflow-y: scroll }`, but that rule made <body> its own scroll
+     container instead of the real viewport, which silently breaks
+     position:sticky for any descendant (its "stick" point is computed against
+     the wrong scrolling ancestor). */
+  scrollbar-gutter: stable;
+  /* Lives only here, not on body too: per the CSS overflow spec, if
+     overflow-x is non-visible the browser forces overflow-y to compute as
+     "auto" even when never set — putting overflow-x:hidden on BOTH html and
+     body silently turned body into a second, bogus scroll container (it never
+     actually scrolls; html does), which is exactly what breaks sticky. */
+  overflow-x: hidden;
 }
 
 html, body {
   margin: 0;
   padding: 0;
   width: 100vw; /* Set the width of the body to 100% of the viewport width */
-  overflow-x: hidden; /* Prevent horizontal overflow */
   min-height: 100vh;
 }
 
 body {
   margin: 0;
   background: linear-gradient(#3D3C95, 20%, #0a0d3d);
-  overflow-y: scroll;
 }
 
 p {
