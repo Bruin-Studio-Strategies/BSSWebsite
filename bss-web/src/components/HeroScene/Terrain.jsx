@@ -38,9 +38,20 @@ export default function Terrain({ scrollYProgress, reducedMotion, segments }) {
     for (let i = 0; i < pos.count; i++) {
       const x = pos.getX(i);
       const z = pos.getZ(i);
-      const ridge = Math.abs(noise2D(x * 0.09, z * 0.09));
-      const detail = noise2D(x * 0.25, z * 0.25) * 0.35;
-      const h = (1 - ridge) * 2.6 + detail;
+      // Additive (not averaged) layers, unlike ridged 1-n*n noise, stay smooth and rounded
+      // like dune crests instead of folding into sharp mountain ridgelines. Averaging the
+      // layers instead of adding them cancels out relief, so amplitudes stack here.
+      const primary = noise2D(x * 0.05, z * 0.05);
+      const secondary = noise2D(x * 0.12 + 100, z * 0.12 + 100) * 0.4;
+      const ripple = noise2D(x * 0.5, z * 0.5) * 0.07;
+      const raw = (primary + secondary + 1.4) * 1.2 + ripple;
+      // Floor rises toward the far edge (z -9, the boundary shared with
+      // DistantRidge) so a low noise dip there can't open a gap revealing
+      // background between the two meshes. Untouched over the front
+      // two-thirds so the near dunes keep their full range of relief.
+      const backT = THREE.MathUtils.clamp((-z - 3) / 6, 0, 1);
+      const floor = THREE.MathUtils.lerp(0, 0.9, backT);
+      const h = Math.max(raw, floor);
       heights[i] = h;
       if (h < minH) minH = h;
       if (h > maxH) maxH = h;
@@ -50,7 +61,10 @@ export default function Terrain({ scrollYProgress, reducedMotion, segments }) {
     for (let i = 0; i < pos.count; i++) {
       const h = heights[i];
       pos.setY(i, h);
-      const t = THREE.MathUtils.clamp((h - minH) / (maxH - minH || 1), 0, 1);
+      const rawT = THREE.MathUtils.clamp((h - minH) / (maxH - minH || 1), 0, 1);
+      // Lifts the floor a bit so the lowest dips land a shade above pure NAVY
+      // instead of at it — softer shadows without changing the color itself.
+      const t = 0.17 + rawT * 0.83;
       const c = heightColor(t);
       colors[i * 3] = c.r;
       colors[i * 3 + 1] = c.g;
@@ -64,15 +78,34 @@ export default function Terrain({ scrollYProgress, reducedMotion, segments }) {
   }, [noise2D, segments]);
 
   useFrame(() => {
-    const target = reducedMotion ? 0 : scrollYProgress.get();
+    const raw = reducedMotion ? 0 : scrollYProgress.get();
+    // Scaled down instead of clamped — CAMERA_TARGET sits close enough to the
+    // ground that a tall dune under the random noise seed can occasionally clip
+    // through the near clip plane at the very end, so the dolly still needs to
+    // stop just short of 1. A hard Math.min(raw, 0.9) meant the camera reached
+    // that cap quickly then sat frozen for the rest of the scroll — scaling the
+    // whole range keeps it easing continuously the entire way instead.
+    const target = raw * 0.9;
     dolly.current += (target - dolly.current) * 0.06;
     camera.position.lerpVectors(CAMERA_START, CAMERA_TARGET, dolly.current);
     camera.lookAt(0, 0.4, -6);
   });
 
   return (
-    <mesh geometry={geometry}>
-      <meshBasicMaterial vertexColors wireframe transparent opacity={0.85} />
-    </mesh>
+    <>
+      <mesh geometry={geometry}>
+        <meshStandardMaterial
+          vertexColors
+          roughness={0.85}
+          metalness={0.05}
+          polygonOffset
+          polygonOffsetFactor={1}
+          polygonOffsetUnits={1}
+        />
+      </mesh>
+      <mesh geometry={geometry}>
+        <meshBasicMaterial vertexColors wireframe transparent opacity={0.4} />
+      </mesh>
+    </>
   );
 }
