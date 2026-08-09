@@ -14,7 +14,7 @@ export default function NavBar() {
 
   return (
     <>
-      <nav className="w-full h-24 p-4 pl-8 pr-20 flex items-center">
+      <nav className="relative z-20 w-full h-24 p-4 pl-8 pr-20 flex items-center">
         <button className="sm:hidden" onClick={toggleMenu}>
           <svg className="h-8 w-8 mr-8 sm:mr-0 fill-white" viewBox="0 0 12 12">
             <path d="M.5 5.5h11v1H.5zM.5 2.5h11v1H.5zM.5 8.5h11v1H.5z" />
