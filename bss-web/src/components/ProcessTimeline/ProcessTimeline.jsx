@@ -13,7 +13,11 @@ const pct = (week) => `${(week / LAST_WEEK) * 100}%`;
 // One shared grid for the header, every row, and the playhead overlay, so a
 // phase's bar sits under the week number that labels it. Changing the label
 // column width here moves all three together.
-const ROW_GRID = "md:grid md:grid-cols-[minmax(0,26rem)_1fr] md:gap-x-10";
+// The text column takes the free space and the ruler is capped, not the other
+// way round: a Gantt track is mostly empty by nature, so giving it `1fr` made
+// every description wrap early against a wall of blank grid. Nine weeks across
+// ~26rem still leaves ~46px per week, which is more than enough to read.
+const ROW_GRID = "md:grid md:grid-cols-[1fr_minmax(0,26rem)] md:gap-x-12";
 
 // The track is inset from its column's edges because week 0 and week 9 sit at 0%
 // and 100% — without the inset their centered labels hang off both sides.
@@ -134,7 +138,7 @@ function PhaseRow({ phase, index, isActive, reducedMotion }) {
           {phase.title}
         </h3>
         <p
-          className={`mt-2 max-w-prose font-sans text-sm leading-relaxed transition-colors duration-500 ${
+          className={`mt-2 max-w-[42rem] font-sans text-sm leading-relaxed transition-colors duration-500 ${
             isActive ? "text-white/75" : "text-white/50"
           }`}
         >

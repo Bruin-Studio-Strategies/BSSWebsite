@@ -24,34 +24,26 @@ export default function Clients() {
           team shape — set beside it as a spec rather than stacked as loose
           sentences. With no metrics or case studies to point at, this concrete
           detail is the credibility the page has. */}
-      <div className="mx-auto mb-14 w-4/5">
+      <div className="mx-auto mb-14 w-4/5 max-w-6xl">
         <span className="inline-block font-sans text-xs font-semibold uppercase tracking-[0.2em] text-sky">
           How We Work
         </span>
         <h3 className="mt-4 font-display text-4xl leading-[1.1] text-white sm:text-5xl">
           Project Process
         </h3>
-        <div className="mt-6 flex flex-col gap-8 sm:flex-row sm:items-start sm:gap-14">
-          <p className="max-w-xl font-sans text-base leading-relaxed text-white/70">
-            Throughout a 8-week timeframe, we can provide impactful deliverables
-            to clients.
-          </p>
-          <div className="shrink-0 border-l border-white/15 pl-5">
-            <p className="font-sans text-[0.6875rem] font-semibold uppercase tracking-[0.2em] text-white/60">
-              Each project includes
-            </p>
-            <p className="mt-2 font-sans text-sm leading-relaxed text-white/70">
-              2 project managers
-              <br />
-              4&ndash;5 consultants
-            </p>
-          </div>
-        </div>
+        {/* Team shape reads as a second sentence rather than a floating spec
+            box. Set beside the paragraph it left a hole on wide screens, and
+            stacked under it, it was a labelled card holding six words. */}
+        <p className="mt-6 max-w-[42rem] font-sans text-base leading-relaxed text-white/70">
+          Throughout an 8-week timeframe, we can provide impactful deliverables
+          to clients. Each project runs with 2 project managers and 4&ndash;5
+          consultants.
+        </p>
       </div>
       <Process />
       {/* Closing CTA. The magenta button is the only magenta on this page — it
           is the one action the whole page is asking for. */}
-      <div className="mx-auto mb-32 mt-24 grid w-4/5 gap-10 md:grid-cols-2 md:items-center md:gap-16">
+      <div className="mx-auto mb-32 mt-24 grid w-4/5 max-w-6xl gap-10 md:grid-cols-2 md:items-center md:gap-16">
         <div>
           <span className="inline-block font-sans text-xs font-semibold uppercase tracking-[0.2em] text-sky">
             Next Step

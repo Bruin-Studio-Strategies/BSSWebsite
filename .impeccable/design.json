@@ -91,6 +91,10 @@
       "label": {
         "displayName": "Label",
         "purpose": "The sky-blue uppercase 0.2em-tracked eyebrow. The system's most recognizable small detail."
+      },
+      "label-micro": {
+        "displayName": "Label Micro",
+        "purpose": "One step below Label, for annotation inside a diagram rather than labelling a block of content: week numerals on the project schedule, its legend, row numbering, spec blocks. Never a section eyebrow."
       }
     },
     "shadows": [

@@ -8,16 +8,19 @@
 export const LAST_WEEK = 9;
 
 // `activeFrom`/`activeTo` are the slice of the week ruler during which a row is
-// the focused one as the playhead crosses. They are not the phase's duration —
-// a single-dated milestone still needs a readable window around its week, or the
-// playhead would skip past "Midterm Deliverable" in one frame and it would never
-// be the focused row.
+// the focused one as the playhead crosses. They are deliberately NOT the phase's
+// duration. A single-dated milestone occupies no width at all, and even a narrow
+// window fails in practice: one mouse-wheel tick moves the playhead further than
+// a window of ~1 week, so "Midterm Deliverable" was being jumped straight over
+// and never became the focused row. Every phase therefore gets a share of the
+// travel wide enough to actually land on, weighted toward the longer work
+// phases but never below roughly a sixth of the ruler.
 export const PHASES = [
   {
     type: "milestone",
     week: 0,
     activeFrom: 0,
-    activeTo: 0.6,
+    activeTo: 1,
     title: "Project Kickoff",
     period: "Week 0",
     description:
@@ -27,8 +30,8 @@ export const PHASES = [
     type: "span",
     from: 1,
     to: 4,
-    activeFrom: 0.6,
-    activeTo: 3.6,
+    activeFrom: 1,
+    activeTo: 3.4,
     title: "Research and Analysis",
     period: "Weeks 1 to 4",
     description:
@@ -37,8 +40,8 @@ export const PHASES = [
   {
     type: "milestone",
     week: 4,
-    activeFrom: 3.6,
-    activeTo: 4.6,
+    activeFrom: 3.4,
+    activeTo: 5,
     deliverable: true,
     title: "Midterm Deliverable",
     period: "Week 4",
@@ -49,8 +52,8 @@ export const PHASES = [
     type: "span",
     from: 5,
     to: 9,
-    activeFrom: 4.6,
-    activeTo: 8.4,
+    activeFrom: 5,
+    activeTo: 8,
     title: "Additional Research and Refinements",
     period: "Weeks 5 to 9",
     description:
@@ -59,7 +62,7 @@ export const PHASES = [
   {
     type: "milestone",
     week: 9,
-    activeFrom: 8.4,
+    activeFrom: 8,
     activeTo: 9.001,
     deliverable: true,
     title: "Final Deliverable",

@@ -51,6 +51,12 @@ typography:
     fontWeight: 600
     lineHeight: 1
     letterSpacing: "0.2em"
+  label-micro:
+    fontFamily: "Inter, system-ui, sans-serif"
+    fontSize: "0.6875rem"
+    fontWeight: 600
+    lineHeight: 1
+    letterSpacing: "0.2em"
 rounded:
   none: "0px"
   sm: "2px"
@@ -216,6 +222,7 @@ distance between them is the hierarchy.
 - **Title** (Agatho 500, `text-xl` → `text-2xl`, line-height 1.3): card and panel headings, timeline entries, accordion questions.
 - **Body** (Inter 300, `text-base` → `text-lg`, line-height 1.625, max width ~`max-w-xl` / 65–75ch): all running text, at white/70. Never justified, never full-bleed.
 - **Label** (Inter 600, `text-xs` → `text-sm`, uppercase, letter-spacing `0.2em`, Instrument Sky): the eyebrow above headings, phase markers on process cards, category tags. This is the system's most recognizable small detail.
+- **Label Micro** (Inter 600, `0.6875rem`, uppercase, letter-spacing `0.2em`): one step below Label, for annotation that sits *inside* a diagram rather than labelling a block of content — week numerals on the project schedule, its legend, row numbering, and the "each project includes" spec. Never use it for a section eyebrow; if a label introduces content, it is a Label.
 
 ### Named Rules
 
