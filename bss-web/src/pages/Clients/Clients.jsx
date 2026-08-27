@@ -20,47 +20,67 @@ export default function Clients() {
       <hr className="h-px my-12 bg-gray-100 border-0 w-11/12 m-auto opacity-50"></hr>
       <Services />
       <hr className="h-px my-12 bg-gray-100 border-0 w-11/12 m-auto opacity-50"></hr>
-      <div className="w-4/5 mx-auto text-center sm:text-left mb-16">
-        <h3 className="text-3xl font-display sm:mb-4 font-medium">
+      {/* Section opener, then the engagement's two fixed facts — duration and
+          team shape — set beside it as a spec rather than stacked as loose
+          sentences. With no metrics or case studies to point at, this concrete
+          detail is the credibility the page has. */}
+      <div className="mx-auto mb-14 w-4/5">
+        <span className="inline-block font-sans text-xs font-semibold uppercase tracking-[0.2em] text-sky">
+          How We Work
+        </span>
+        <h3 className="mt-4 font-display text-4xl leading-[1.1] text-white sm:text-5xl">
           Project Process
         </h3>
-        <p className="text-wrap my-5">
-          Throughout a 8-week timeframe, we can provide impactful deliverables
-          to clients.
-        </p>
-        <div>
-          <p className="text-white font-medium font-sans">
-            Each project includes:
+        <div className="mt-6 flex flex-col gap-8 sm:flex-row sm:items-start sm:gap-14">
+          <p className="max-w-xl font-sans text-base leading-relaxed text-white/70">
+            Throughout a 8-week timeframe, we can provide impactful deliverables
+            to clients.
           </p>
-          <p>
-            2 Project Managers <br />
-            4-5 Consultants
-          </p>
+          <div className="shrink-0 border-l border-white/15 pl-5">
+            <p className="font-sans text-[0.6875rem] font-semibold uppercase tracking-[0.2em] text-white/60">
+              Each project includes
+            </p>
+            <p className="mt-2 font-sans text-sm leading-relaxed text-white/70">
+              2 project managers
+              <br />
+              4&ndash;5 consultants
+            </p>
+          </div>
         </div>
       </div>
       <Process />
-      <div className="w-4/5 mx-auto flex gap-12 flex-col sm:flex-row sm:items-center mt-20 mb-32">
-        <div className="w-11/12 sm:w-2/3 text-center sm:text-left sm:mx-0 mx-auto">
-          <h3 className="text-3xl font-display sm:mb-4 font-medium">
+      {/* Closing CTA. The magenta button is the only magenta on this page — it
+          is the one action the whole page is asking for. */}
+      <div className="mx-auto mb-32 mt-24 grid w-4/5 gap-10 md:grid-cols-2 md:items-center md:gap-16">
+        <div>
+          <span className="inline-block font-sans text-xs font-semibold uppercase tracking-[0.2em] text-sky">
+            Next Step
+          </span>
+          <h3 className="mt-4 font-display text-4xl leading-[1.1] text-white sm:text-5xl">
             Get Started
           </h3>
-          <p className="font-medium text-white">
-            Ready to receive our services?
+          <p className="mt-6 max-w-xl font-sans text-base leading-relaxed text-white/70">
+            Ready to receive our services? Email us at{" "}
+            <a
+              href="mailto:bruinstudiostrategies@gmail.com"
+              className="text-sky underline decoration-sky/40 underline-offset-4 transition-colors duration-200 hover:decoration-sky"
+            >
+              bruinstudiostrategies@gmail.com
+            </a>{" "}
+            or fill out our contact form.
           </p>
-          <p className="text-wrap my-5">
-            Email us at{" "}
-            <span className="text-blue-400">
-              bruinstudiostrategies@gmail.com{" "}
-            </span>
-            or fill out or contact form below
-          </p>
-          <Link to="/contact" className="text-blue-950">
-            <button className="rounded-sm bg-magenta px-6 py-3 font-sans text-sm font-semibold uppercase tracking-wide text-white transition-all duration-150 hover:-translate-y-0.5 hover:bg-magenta/80">
-              Contact Us
-            </button>
+          <Link
+            to="/contact"
+            className="mt-8 inline-flex items-center rounded-sm bg-magenta px-6 py-3 font-sans text-sm font-semibold uppercase tracking-wide text-white transition-all duration-150 hover:-translate-y-0.5 hover:bg-magenta/80 hover:shadow-lg hover:shadow-magenta/30 active:translate-y-0 active:shadow-none"
+          >
+            Contact Us
           </Link>
         </div>
-        <img src={board} className="w-11/12 sm:w-1/3 rounded-2xl object-cover shadow-2xl ring-1 ring-white/10 mx-auto sm:mx-0" />
+        <img
+          src={board}
+          alt="Bruin Studio Strategies consultants working with a client team"
+          className="w-full rounded-2xl object-cover shadow-2xl ring-1 ring-white/10"
+        />
       </div>
       <Footer />
     </>
