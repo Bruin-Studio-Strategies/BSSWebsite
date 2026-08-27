@@ -1,0 +1,300 @@
+{
+  "schemaVersion": 2,
+  "generatedAt": "2026-08-26T00:00:00.000Z",
+  "title": "Design System: Bruin Studio Strategies",
+  "extensions": {
+    "colorMeta": {
+      "magenta": {
+        "role": "primary",
+        "displayName": "Signal Magenta",
+        "canonical": "#B73593",
+        "tonalRamp": ["#3B1130", "#691E54", "#962B78", "#C3389D", "#D264B3", "#DF91C9", "#ECBEDF", "#F9EBF5"]
+      },
+      "sky": {
+        "role": "primary",
+        "displayName": "Instrument Sky",
+        "canonical": "#5288C7",
+        "tonalRamp": ["#13253A", "#214166", "#2F5D92", "#3D79BE", "#6897CE", "#94B5DC", "#C0D3EB", "#ECF2F9"]
+      },
+      "purple": {
+        "role": "secondary",
+        "displayName": "Deep Iris",
+        "canonical": "#523794",
+        "tonalRamp": ["#1F1538", "#362562", "#4E348D", "#6644B7", "#886DC9", "#AA97D9", "#CDC2E8", "#F0ECF8"]
+      },
+      "navy": {
+        "role": "neutral",
+        "displayName": "Studio Navy",
+        "canonical": "#0F172E",
+        "tonalRamp": ["#131D3A", "#213366", "#2F4992", "#3E5FBE", "#6882CE", "#94A6DC", "#C0CBEA", "#ECEFF9"]
+      },
+      "horizon-indigo": {
+        "role": "neutral",
+        "displayName": "Horizon Indigo",
+        "canonical": "#3D3C95",
+        "tonalRamp": ["#161637", "#272760", "#38378A", "#4948B3", "#7170C5", "#9A9AD6", "#C4C3E7", "#EDEDF8"]
+      },
+      "deep-night": {
+        "role": "neutral",
+        "displayName": "Deep Night",
+        "canonical": "#0A0D3D",
+        "tonalRamp": ["#0B0E42", "#131974", "#1B23A6", "#232ED8", "#535BE3", "#858BEB", "#B7BBF3", "#E9EAFB"]
+      },
+      "night-sky": {
+        "role": "neutral",
+        "displayName": "Night Sky",
+        "canonical": "#141338",
+        "tonalRamp": ["#161536", "#272460", "#38348A", "#4944B3", "#716DC5", "#9A97D6", "#C4C2E7", "#EDECF8"]
+      },
+      "ridge-shadow": {
+        "role": "neutral",
+        "displayName": "Ridge Shadow",
+        "canonical": "#211D4E",
+        "tonalRamp": ["#181538", "#2A2562", "#3C348D", "#4E44B7", "#746DC9", "#9D97D8", "#C5C2E8", "#EDECF8"]
+      },
+      "starlight": {
+        "role": "neutral",
+        "displayName": "Starlight",
+        "canonical": "#E8E6FF",
+        "tonalRamp": ["#06004C", "#0B0087", "#0F00C1", "#1400FB", "#4737FF", "#7C71FF", "#B2ABFF", "#E8E5FF"]
+      },
+      "lilac-ambient": {
+        "role": "neutral",
+        "displayName": "Lilac Ambient",
+        "canonical": "#C9BEFF",
+        "tonalRamp": ["#1D004C", "#330087", "#4900C1", "#5F00FB", "#8137FF", "#A371FF", "#C6ABFF", "#E8E5FF"]
+      },
+      "orchid-key": {
+        "role": "neutral",
+        "displayName": "Orchid Key",
+        "canonical": "#B98CE0",
+        "tonalRamp": ["#2C0F4C", "#4E1B87", "#6F26C1", "#9132FB", "#AB5FFF", "#C48CFF", "#DDB8FF", "#F6E5FF"]
+      }
+    },
+    "typographyMeta": {
+      "display": {
+        "displayName": "Display",
+        "purpose": "Page-opening headlines. Landing hero only at present. The scale is the point; never use it at half size for decoration."
+      },
+      "headline": {
+        "displayName": "Headline",
+        "purpose": "Section headings. Always preceded by a sky-blue uppercase eyebrow."
+      },
+      "title": {
+        "displayName": "Title",
+        "purpose": "Card and panel headings, timeline entries, accordion questions."
+      },
+      "body": {
+        "displayName": "Body",
+        "purpose": "All running text, set Inter 300 at white/70, capped near 65-75ch."
+      },
+      "label": {
+        "displayName": "Label",
+        "purpose": "The sky-blue uppercase 0.2em-tracked eyebrow. The system's most recognizable small detail."
+      }
+    },
+    "shadows": [
+      {
+        "name": "hover-lift",
+        "value": "0 10px 15px -3px rgba(183,53,147,0.30)",
+        "purpose": "Primary CTA on hover only, paired with a 2px translate. A colored glow, never a black drop shadow."
+      },
+      {
+        "name": "figure-frame",
+        "value": "0 25px 50px -12px rgba(0,0,0,0.25)",
+        "purpose": "Photographs only, with a 1px white/10 ring, to separate a bright rectangle from the dark field."
+      },
+      {
+        "name": "gradient-bloom",
+        "value": "background: linear-gradient(to bottom right, rgba(82,136,199,0.30), rgba(82,55,148,0.20), rgba(183,53,147,0.30)); filter: blur(40px)",
+        "purpose": "Luminous depth behind a framed photograph. Light comes from behind the object, never from above it. Breathes 55%-80% opacity over 6s."
+      }
+    ],
+    "motion": [
+      {
+        "name": "ease-project",
+        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
+        "purpose": "The only easing curve in the system. Fast start settling into a long tail. Used for every transition and reveal."
+      },
+      {
+        "name": "duration-state",
+        "value": "200ms",
+        "purpose": "Hover, focus, and color state changes."
+      },
+      {
+        "name": "duration-reveal-small",
+        "value": "500ms",
+        "purpose": "Small element reveals, footer and nav entry."
+      },
+      {
+        "name": "duration-reveal-section",
+        "value": "700ms",
+        "purpose": "Section fade-up reveals on scroll."
+      },
+      {
+        "name": "stagger-children",
+        "value": "120ms",
+        "purpose": "Section opener groups. Mobile nav and footer use 60-80ms."
+      },
+      {
+        "name": "bloom-cycle",
+        "value": "6000ms",
+        "purpose": "The slow opacity/scale breath of the gradient bloom behind framed figures."
+      }
+    ],
+    "breakpoints": [
+      { "name": "sm", "value": "576px" },
+      { "name": "md", "value": "960px" },
+      { "name": "lg", "value": "1440px" }
+    ]
+  },
+  "components": [
+    {
+      "name": "Primary Button",
+      "kind": "button",
+      "refersTo": "button-primary",
+      "description": "The single most important action on a screen. Magenta, near-square, uppercase, lifts on hover.",
+      "html": "<a class=\"ds-btn-primary\" href=\"#\">Apply Now <svg class=\"ds-btn-primary__arrow\" viewBox=\"0 0 448 512\" width=\"10\" height=\"10\" aria-hidden=\"true\"><path fill=\"currentColor\" d=\"M438.6 278.6c12.5-12.5 12.5-32.8 0-45.3l-160-160c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3L338.8 224 32 224c-17.7 0-32 14.3-32 32s14.3 32 32 32l306.7 0L233.4 393.4c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0l160-160z\"/></svg></a>",
+      "css": ".ds-btn-primary { display: inline-flex; align-items: center; gap: 12px; background: #B73593; color: #fff; padding: 12px 24px; border: none; border-radius: 2px; font-family: Inter, system-ui, sans-serif; font-size: 0.875rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.025em; text-decoration: none; transition: all 150ms cubic-bezier(0.16, 1, 0.3, 1); } .ds-btn-primary__arrow { transition: transform 200ms cubic-bezier(0.16, 1, 0.3, 1); } .ds-btn-primary:hover { background: rgba(183,53,147,0.80); transform: translateY(-2px); box-shadow: 0 10px 15px -3px rgba(183,53,147,0.30); } .ds-btn-primary:hover .ds-btn-primary__arrow { transform: translateX(4px); } .ds-btn-primary:focus-visible { outline: 2px solid #5288C7; outline-offset: 3px; } .ds-btn-primary:active { transform: translateY(0); background: #B73593; box-shadow: none; }"
+    },
+    {
+      "name": "Outline Button",
+      "kind": "button",
+      "refersTo": "button-outline",
+      "description": "The standing recruitment CTA in the navbar and mobile menu. Transparent with a magenta hairline that fills solid on hover.",
+      "html": "<a class=\"ds-btn-outline\" href=\"#\">Apply Now</a>",
+      "css": ".ds-btn-outline { display: inline-flex; align-items: center; background: transparent; color: #fff; padding: 8px 16px; border: 1px solid #B73593; border-radius: 2px; font-family: Inter, system-ui, sans-serif; font-size: 0.875rem; text-decoration: none; transition: background-color 200ms cubic-bezier(0.16, 1, 0.3, 1), transform 200ms cubic-bezier(0.16, 1, 0.3, 1); } .ds-btn-outline:hover { background: #B73593; transform: translateY(-2px); } .ds-btn-outline:focus-visible { outline: 2px solid #5288C7; outline-offset: 3px; } .ds-btn-outline:active { transform: translateY(0); }"
+    },
+    {
+      "name": "Nav Item",
+      "kind": "nav",
+      "refersTo": "nav-item",
+      "description": "Primary navigation link. A sky-blue underline scales in from the left on hover and stays drawn on the active route.",
+      "html": "<nav class=\"ds-nav\"><a class=\"ds-nav__item ds-nav__item--active\" href=\"#\">Home</a><a class=\"ds-nav__item\" href=\"#\">For Clients</a><a class=\"ds-nav__item\" href=\"#\">For Students</a><a class=\"ds-nav__item\" href=\"#\">Our Team</a></nav>",
+      "css": ".ds-nav { display: flex; align-items: center; gap: 48px; } .ds-nav__item { position: relative; display: inline-block; font-family: Inter, system-ui, sans-serif; font-size: 0.875rem; color: rgba(255,255,255,0.80); text-decoration: none; transition: color 200ms cubic-bezier(0.16, 1, 0.3, 1); } .ds-nav__item::after { content: ''; position: absolute; left: 0; bottom: -6px; width: 100%; height: 1px; background: #5288C7; transform: scaleX(0); transform-origin: left; transition: transform 300ms cubic-bezier(0.16, 1, 0.3, 1); } .ds-nav__item:hover { color: #fff; } .ds-nav__item:hover::after, .ds-nav__item--active::after { transform: scaleX(1); } .ds-nav__item:focus-visible { outline: 2px solid #5288C7; outline-offset: 4px; }"
+    },
+    {
+      "name": "Section Opener",
+      "kind": "custom",
+      "refersTo": "eyebrow",
+      "description": "The three-beat section opening: sky eyebrow, Agatho headline, white/70 body. The most-reused pattern in the system.",
+      "html": "<div class=\"ds-opener\"><span class=\"ds-opener__eyebrow\">Who We Are</span><h2 class=\"ds-opener__headline\">What is BSS?</h2><p class=\"ds-opener__body\">UCLA's first and premier entertainment consulting group, uniting consulting fundamentals with Gen-Z insight.</p></div>",
+      "css": ".ds-opener { max-width: 36rem; } .ds-opener__eyebrow { display: inline-block; font-family: Inter, system-ui, sans-serif; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.2em; color: #5288C7; } .ds-opener__headline { font-family: Agatho, serif; font-size: clamp(2.25rem, 4.5vw, 3.75rem); font-weight: 400; line-height: 1.1; color: #fff; margin: 16px 0 24px; } .ds-opener__body { font-family: Inter, system-ui, sans-serif; font-size: 1.125rem; font-weight: 300; line-height: 1.625; color: rgba(255,255,255,0.70); margin: 0; }"
+    },
+    {
+      "name": "Flat Panel",
+      "kind": "card",
+      "refersTo": "panel-flat",
+      "description": "The default content panel over the flat page gradient. No blur, no resting shadow: a hairline border and tonal fill only.",
+      "html": "<div class=\"ds-panel\"><p class=\"ds-panel__eyebrow\">Weeks 1-2</p><h3 class=\"ds-panel__title\">Scoping</h3><p class=\"ds-panel__body\">We define the question, agree the deliverable, and set the checkpoints before any analysis starts.</p></div>",
+      "css": ".ds-panel { border: 1px solid rgba(255,255,255,0.10); border-radius: 12px; padding: 24px; background: transparent; transition: border-color 200ms cubic-bezier(0.16, 1, 0.3, 1), background-color 200ms cubic-bezier(0.16, 1, 0.3, 1), transform 200ms cubic-bezier(0.16, 1, 0.3, 1); } .ds-panel__eyebrow { font-family: Inter, system-ui, sans-serif; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.2em; color: #5288C7; margin: 0 0 8px; } .ds-panel__title { font-family: Agatho, serif; font-size: 1.5rem; font-weight: 500; line-height: 1.3; color: #fff; margin: 0 0 8px; } .ds-panel__body { font-family: Inter, system-ui, sans-serif; font-size: 1rem; font-weight: 300; line-height: 1.625; color: rgba(255,255,255,0.60); margin: 0; } .ds-panel:hover { border-color: rgba(183,53,147,0.40); background: rgba(255,255,255,0.05); transform: translateX(4px); }"
+    },
+    {
+      "name": "Glass Panel",
+      "kind": "card",
+      "refersTo": "panel-glass",
+      "description": "Only for content sitting directly over the live 3D scene, where blur is what keeps text legible. Never over the flat page gradient.",
+      "html": "<div class=\"ds-panel-glass\"><p class=\"ds-panel-glass__eyebrow\">Over the scene</p><h3 class=\"ds-panel-glass__title\">Legible on moving pixels</h3></div>",
+      "css": ".ds-panel-glass { background: rgba(255,255,255,0.03); backdrop-filter: blur(4px); -webkit-backdrop-filter: blur(4px); border: 1px solid rgba(255,255,255,0.10); border-radius: 12px; padding: 24px; } .ds-panel-glass__eyebrow { font-family: Inter, system-ui, sans-serif; font-size: 0.75rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.2em; color: #5288C7; margin: 0 0 8px; } .ds-panel-glass__title { font-family: Agatho, serif; font-size: 1.5rem; font-weight: 500; color: #fff; margin: 0; }"
+    },
+    {
+      "name": "Framed Figure",
+      "kind": "custom",
+      "refersTo": "figure-framed",
+      "description": "How every real photograph is presented: 16px radius, white/10 ring, and a brand-gradient bloom breathing behind it.",
+      "html": "<figure class=\"ds-figure\"><div class=\"ds-figure__bloom\" aria-hidden=\"true\"></div><div class=\"ds-figure__img\"></div></figure>",
+      "css": ".ds-figure { position: relative; margin: 0; } .ds-figure__bloom { position: absolute; inset: -12px; border-radius: 16px; background: linear-gradient(to bottom right, rgba(82,136,199,0.30), rgba(82,55,148,0.20), rgba(183,53,147,0.30)); filter: blur(40px); animation: ds-bloom 6s ease-in-out infinite; } .ds-figure__img { position: relative; aspect-ratio: 5 / 3; border-radius: 16px; box-shadow: 0 25px 50px -12px rgba(0,0,0,0.25); outline: 1px solid rgba(255,255,255,0.10); outline-offset: -1px; background: linear-gradient(135deg, #211D4E, #0F172E); transition: transform 400ms cubic-bezier(0.16, 1, 0.3, 1); } .ds-figure:hover .ds-figure__img { transform: scale(1.02); } @keyframes ds-bloom { 0%, 100% { opacity: 0.55; transform: scale(1); } 50% { opacity: 0.80; transform: scale(1.05); } } @media (prefers-reduced-motion: reduce) { .ds-figure__bloom { animation: none; opacity: 0.70; } .ds-figure:hover .ds-figure__img { transform: none; } }"
+    },
+    {
+      "name": "Section Divider",
+      "kind": "custom",
+      "refersTo": null,
+      "description": "The hairline gradient rule that separates major sections. Replaces the legacy solid hr entirely.",
+      "html": "<hr class=\"ds-divider\">",
+      "css": ".ds-divider { border: 0; height: 1px; width: 100%; max-width: 48rem; margin: 16px auto; background: linear-gradient(to right, transparent, rgba(255,255,255,0.20), transparent); }"
+    }
+  ],
+  "narrative": {
+    "northStar": "The Overlook",
+    "overview": "You are standing above a computed landscape at sunset. Below you, a wireframe terrain runs to a horizon where a triangular sun is setting; the sky bleeds from indigo down into a near-black night. That world is generated, not photographed - it is a rendering, and it is honest about being one. The interface you read it through is the opposite: quiet, exact, and institutional. Hairline rules. A serif that carries weight. Small-caps labels. Enormous margins. Nothing decorative that isn't load-bearing.\n\nThe tension between those two halves is the whole identity. A student consulting club has to look like it belongs in a room with a studio executive, which argues for old-money restraint - ruled structure, generous air, a display serif with gravity, no gimmicks. But it also has to look like it was built this decade by people who understand the medium, which is what the landscape supplies. Neither half is allowed to win outright. The atmosphere lives in the background layer and in the hero; the foreground stays disciplined. When a surface feels loud, the fix is always to quiet the interface, never to dim the world.\n\nConfirmed rejections, all of them from the site's own prior state: white cards with saturated color headers; Tailwind's stock blue and gray families standing in for brand colors; EB Garamond as a display face; decorative icon circles doing the work that structure should do; and any surface that requires statistics, client logo walls, or case studies the club does not have. The 2024 site is evidence of what to avoid, not a base to polish.",
+    "keyCharacteristics": [
+      "Dark-field always. The page is a navy-to-indigo gradient; there is no light mode.",
+      "Agatho for anything that carries authority; Inter for anything that carries information.",
+      "Sky blue labels the structure. Magenta marks the one action. Everything else is white at a chosen opacity.",
+      "Motion is one easing curve, always, and it always defers to prefers-reduced-motion.",
+      "Depth comes from hairlines and tonal shifts, not shadows - except directly over the 3D scene, where blur is the only thing keeping text legible."
+    ],
+    "rules": [
+      {
+        "name": "The One Action Rule",
+        "body": "Magenta marks the single most important action on a screen and nothing else - under about 5% of any viewport. If two things on a page are magenta, one of them is wrong. Sky blue takes every accent job that isn't a call to action.",
+        "section": "colors"
+      },
+      {
+        "name": "The No Stock Blue Rule",
+        "body": "Tailwind's default blue-*, gray-*, and slate-* families are banned. bg-blue-950 is not Studio Navy, bg-blue-900 is not Deep Iris, and text-gray-400 is not white-at-50%. Every color on screen comes from a brand token or a white/black alpha value. Existing violations in the legacy components are drift, not precedent.",
+        "section": "colors"
+      },
+      {
+        "name": "The Gray-Is-White Rule",
+        "body": "There is no gray in this system. Secondary text is white at reduced opacity, so it sits correctly on every one of the dark fields - gradient, navy, glass, or live 3D - without a second palette.",
+        "section": "colors"
+      },
+      {
+        "name": "The Eyebrow Rule",
+        "body": "Every major section opens with a sky-blue uppercase 0.2em-tracked label, then the Agatho headline, then body at white/70. That three-beat opening is how a section announces itself; it is consistent across every page and should not be improvised per-surface.",
+        "section": "typography"
+      },
+      {
+        "name": "The Serif-Asserts Rule",
+        "body": "Agatho is for statements - headings, the wordmark, numerals used as structure. It never sets running text, never sets UI labels, and never sets anything the user has to read quickly.",
+        "section": "typography"
+      },
+      {
+        "name": "The Absolute Footer Rule",
+        "body": "The footer is position: absolute at a fixed height (h-60 mobile / h-24 from sm), not in normal flow. Every page must reserve its own bottom clearance or content will sit under it. This is a known structural debt: when a page is rebuilt, prefer moving it into flow over adding another magic padding value.",
+        "section": "layout"
+      },
+      {
+        "name": "The Air Rule",
+        "body": "When a section feels cramped, remove an element before reducing spacing. Generous vertical rhythm is doing identity work here, not just readability work.",
+        "section": "layout"
+      },
+      {
+        "name": "The Two-Ground Rule",
+        "body": "Blur is a function of what is behind the element, not of taste. Over the live 3D scene: translucent fill plus backdrop-blur is correct. Over the flat page gradient: flat fill and a hairline border, no blur, no resting shadow. Never apply frosted glass to a panel sitting on a static background - it costs GPU, buys no legibility, and is the first thing that will look dated.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Flat-At-Rest Rule",
+        "body": "Shadows are a response to state, never a property of a surface. If an element has a shadow while nobody is touching it, remove it.",
+        "section": "elevation"
+      },
+      {
+        "name": "The Square-Button Rule",
+        "body": "Interactive controls stay at 2px radius. Pill buttons and heavily rounded cards read as a startup landing page and break the institutional half of the identity.",
+        "section": "shapes"
+      }
+    ],
+    "dos": [
+      "Do open every section with the eyebrow to Agatho headline to white/70 body sequence.",
+      "Do express secondary text as white at reduced opacity (70/50/30), never as a gray.",
+      "Do keep primary buttons at 2px radius, uppercase, with the 2px hover lift.",
+      "Do use cubic-bezier(0.16, 1, 0.3, 1) for every transition and reveal, and guard every one of them with prefers-reduced-motion.",
+      "Do present photographs in the framed-figure pattern - 16px radius, white/10 ring, gradient bloom behind.",
+      "Do design against the project's real breakpoints (576 / 960 / 1440), mobile-first.",
+      "Do reserve bottom clearance for the absolutely-positioned footer on any new page."
+    ],
+    "donts": [
+      "Don't use Tailwind's stock blue-*, gray-*, or slate-* classes. Every color comes from a brand token or a white alpha.",
+      "Don't put more than one magenta element on a screen, or use magenta for anything that isn't the primary action.",
+      "Don't apply backdrop-blur to a panel that sits on the flat page gradient - glass is only for surfaces over the live 3D scene.",
+      "Don't give a surface a shadow at rest; shadows respond to hover only, and they are colored glows rather than black drops.",
+      "Don't build white cards with saturated color header blocks (the legacy ServiceCard pattern). Panels are dark, bounded by hairlines.",
+      "Don't set headings in EB Garamond, or set running text in Agatho.",
+      "Don't wrap decorative icons in colored circles to create hierarchy - structure and type do that job.",
+      "Don't design a layout that structurally needs statistics, a client logo wall, or case studies; the club has one testimonial and no metrics (see PRODUCT.md).",
+      "Don't redraw the logo mark with a different number of triangles, unequal sizes, or a pivot other than the shared right-hand tip."
+    ]
+  }
+}
