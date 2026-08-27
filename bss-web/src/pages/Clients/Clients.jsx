@@ -43,7 +43,11 @@ export default function Clients() {
       <Process />
       {/* Closing CTA. The magenta button is the only magenta on this page — it
           is the one action the whole page is asking for. */}
-      <div className="mx-auto mb-32 mt-24 grid w-4/5 max-w-6xl gap-10 md:grid-cols-2 md:items-center md:gap-16">
+      {/* Bottom margin clears the footer, which is position:absolute at a fixed
+          height (h-60 below sm, h-24 from sm) rather than sitting in flow. The
+          previous mb-32 (128px) was less than the mobile footer's own 240px, so
+          the footer was overlapping this block, not merely crowding it. */}
+      <div className="mx-auto mb-72 mt-24 grid w-4/5 max-w-6xl gap-10 sm:mb-44 md:grid-cols-2 md:items-center md:gap-16">
         <div>
           <span className="inline-block font-sans text-xs font-semibold uppercase tracking-[0.2em] text-sky">
             Next Step

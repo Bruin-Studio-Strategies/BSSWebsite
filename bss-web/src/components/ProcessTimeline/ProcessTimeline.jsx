@@ -1,8 +1,7 @@
-import { useState } from "react";
-import { motion, useMotionValueEvent, useReducedMotion, useTransform } from "framer-motion";
+import { motion, useReducedMotion, useTransform } from "framer-motion";
 
-import useSectionProgress from "../../hooks/useSectionProgress.js";
-import { DELIVERABLE_WEEKS, LAST_WEEK, PHASES, phaseIndexAtWeek } from "./phases.js";
+import { DELIVERABLE_WEEKS, LAST_WEEK, PHASES } from "./phases.js";
+import useScheduleFocus from "./useScheduleFocus.js";
 
 const EASE = [0.16, 1, 0.3, 1];
 
@@ -11,12 +10,11 @@ const WEEKS = Array.from({ length: LAST_WEEK + 1 }, (_, i) => i);
 const pct = (week) => `${(week / LAST_WEEK) * 100}%`;
 
 // One shared grid for the header, every row, and the playhead overlay, so a
-// phase's bar sits under the week number that labels it. Changing the label
-// column width here moves all three together.
-// The text column takes the free space and the ruler is capped, not the other
-// way round: a Gantt track is mostly empty by nature, so giving it `1fr` made
-// every description wrap early against a wall of blank grid. Nine weeks across
-// ~26rem still leaves ~46px per week, which is more than enough to read.
+// phase's bar sits under the week number that labels it; changing the column
+// template here moves all three together. The text column takes the free space
+// and the ruler is capped, not the other way round: a Gantt track is mostly
+// empty by nature, so giving it `1fr` made every description wrap early against
+// a wall of blank grid. Nine weeks across ~26rem still leaves ~46px per week.
 const ROW_GRID = "md:grid md:grid-cols-[1fr_minmax(0,26rem)] md:gap-x-12";
 
 // The track is inset from its column's edges because week 0 and week 9 sit at 0%
@@ -90,23 +88,24 @@ function WeekHeader() {
 // inactive rows out. Dimming a row to the point where it reads as "off" would
 // drop its body copy to roughly 2:1 against this background; every state below
 // stays at or above 5:1.
-function PhaseRow({ phase, index, isActive, reducedMotion }) {
+function PhaseRow({ phase, index, isActive, reducedMotion, rowRef }) {
   const isMilestone = phase.type === "milestone";
 
   return (
     <motion.li
+      ref={rowRef}
       variants={{
         hidden: { opacity: 0, y: reducedMotion ? 0 : 16 },
         show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: EASE } },
       }}
       aria-current={isActive ? "step" : undefined}
-      className={`relative border-t border-white/10 py-6 transition-colors duration-500 first:border-t-0 first:pt-0 ${ROW_GRID}`}
+      className={`relative border-t border-white/10 py-8 transition-colors sm:py-10 duration-500 first:border-t-0 first:pt-0 ${ROW_GRID}`}
     >
       {/* Active row gets a faint wash rather than the inactive rows getting a
           fade — same focus read, no contrast cost. */}
       <span
         aria-hidden="true"
-        className={`pointer-events-none absolute inset-y-0 -inset-x-4 rounded bg-white/[0.035] transition-opacity duration-500 ${
+        className={`pointer-events-none absolute inset-y-0 -inset-x-4 rounded bg-white/[0.035] transition-opacity duration-300 ${
           isActive ? "opacity-100" : "opacity-0"
         }`}
       />
@@ -116,14 +115,14 @@ function PhaseRow({ phase, index, isActive, reducedMotion }) {
       <div className="relative">
         <div className="flex items-baseline gap-3">
           <span
-            className={`font-sans text-[0.6875rem] tabular-nums tracking-[0.2em] transition-colors duration-500 ${
+            className={`font-sans text-[0.6875rem] tabular-nums tracking-[0.2em] transition-colors duration-300 ${
               isActive ? "text-white/70" : "text-white/40"
             }`}
           >
             {String(index + 1).padStart(2, "0")}
           </span>
           <span
-            className={`font-sans text-xs font-semibold uppercase tracking-[0.2em] transition-colors duration-500 ${
+            className={`font-sans text-xs font-semibold uppercase tracking-[0.2em] transition-colors duration-300 ${
               isActive ? "text-sky" : "text-sky/70"
             }`}
           >
@@ -131,14 +130,14 @@ function PhaseRow({ phase, index, isActive, reducedMotion }) {
           </span>
         </div>
         <h3
-          className={`mt-2 font-display text-xl leading-snug transition-colors duration-500 sm:text-2xl ${
+          className={`mt-2 font-display text-xl leading-snug transition-colors duration-300 sm:text-2xl ${
             isActive ? "text-white" : "text-white/60"
           }`}
         >
           {phase.title}
         </h3>
         <p
-          className={`mt-2 max-w-[42rem] font-sans text-sm leading-relaxed transition-colors duration-500 ${
+          className={`mt-2 max-w-[42rem] font-sans text-sm leading-relaxed transition-colors duration-300 ${
             isActive ? "text-white/75" : "text-white/50"
           }`}
         >
@@ -159,7 +158,7 @@ function PhaseRow({ phase, index, isActive, reducedMotion }) {
           // -translate-x-1/2` className is silently dropped the moment this
           // animates and the diamond renders as an off-centre square.
           <motion.span
-            className={`absolute top-2 h-2.5 w-2.5 transition-colors duration-500 ${
+            className={`absolute top-2 h-2.5 w-2.5 transition-colors duration-300 ${
               isActive ? "bg-white" : "bg-white/45"
             }`}
             style={{ left: pct(phase.week) }}
@@ -176,7 +175,7 @@ function PhaseRow({ phase, index, isActive, reducedMotion }) {
           />
         ) : (
           <motion.span
-            className={`absolute top-[0.65rem] h-1.5 origin-left rounded-full transition-colors duration-500 ${
+            className={`absolute top-[0.65rem] h-1.5 origin-left rounded-full transition-colors duration-300 ${
               isActive ? "bg-sky" : "bg-sky/35"
             }`}
             style={{ left: pct(phase.from), width: pct(phase.to - phase.from) }}
@@ -193,20 +192,14 @@ function PhaseRow({ phase, index, isActive, reducedMotion }) {
 
 export default function ProcessTimeline() {
   const reducedMotion = useReducedMotion();
-  const { ref, progress } = useSectionProgress();
-  const [activeIndex, setActiveIndex] = useState(0);
+  const { setRowRef, activeIndex, week } = useScheduleFocus();
 
-  // Changes at most five times across the whole section; the playhead itself
-  // rides a MotionValue straight to the compositor and never re-renders React.
-  useMotionValueEvent(progress, "change", (p) => {
-    const next = phaseIndexAtWeek(p * LAST_WEEK);
-    setActiveIndex((prev) => (prev === next ? prev : next));
-  });
-
-  const playheadLeft = useTransform(progress, (p) => `${p * 100}%`);
+  // The week rides a MotionValue straight to the compositor; only the focused
+  // row's index goes through React, and that changes five times at most.
+  const playheadLeft = useTransform(week, (w) => `${(w / LAST_WEEK) * 100}%`);
 
   return (
-    <div ref={ref} className="relative">
+    <div className="relative">
       <Legend />
 
       <motion.div
@@ -221,6 +214,7 @@ export default function ProcessTimeline() {
           {PHASES.map((phase, i) => (
             <PhaseRow
               key={phase.title}
+              rowRef={setRowRef(i)}
               phase={phase}
               index={i}
               isActive={i === activeIndex}
