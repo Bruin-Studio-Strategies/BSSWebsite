@@ -1,3 +1,4 @@
+import { motion } from "framer-motion";
 import Title from "./sections/Title";
 import Footer from "../../components/Footer";
 import Info from "./sections/Info";
@@ -31,7 +32,13 @@ export default function Landing() {
         </div>
       </div>
       <Info />
-      <hr className="h-px my-16 sm:my-24 bg-gray-100 border-0 w-11/12 m-auto opacity-50"></hr>
+      <motion.div
+        initial={{ scaleX: 0 }}
+        whileInView={{ scaleX: 1 }}
+        viewport={{ once: true, amount: 1 }}
+        transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
+        className="mx-auto my-4 h-px w-11/12 max-w-3xl bg-gradient-to-r from-transparent via-white/20 to-transparent"
+      />
       <Team />
       <Footer />
     </>

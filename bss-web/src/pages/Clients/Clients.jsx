@@ -20,47 +20,47 @@ export default function Clients() {
       <hr className="h-px my-12 bg-gray-100 border-0 w-11/12 m-auto opacity-50"></hr>
       <Services />
       <hr className="h-px my-12 bg-gray-100 border-0 w-11/12 m-auto opacity-50"></hr>
-      <div className="w-4/5 mx-auto flex gap-20 flex-col sm:flex-row sm:mb-0 mb-32">
-        <div className="w-11/12 sm:w-2/3 sm:mr-5 text-center sm:text-left sm:mx-0 mx-auto">
-          <h3 className="text-3xl font-serif sm:mb-4 font-medium">
-            Project Process
-          </h3>
-          <p className="text-wrap my-5">
-            Throughout a 8-week timeframe, we can provide impactful deliverables
-            to clients.
+      <div className="w-4/5 mx-auto text-center sm:text-left mb-16">
+        <h3 className="text-3xl font-display sm:mb-4 font-medium">
+          Project Process
+        </h3>
+        <p className="text-wrap my-5">
+          Throughout a 8-week timeframe, we can provide impactful deliverables
+          to clients.
+        </p>
+        <div>
+          <p className="text-white font-medium font-sans">
+            Each project includes:
           </p>
-          <div>
-            <p className="text-white font-medium font-sans">
-              Each project includes:
-            </p>
-            <p>
-              2 Project Managers <br />
-              4-5 Consultants
-            </p>
-            <div className="mt-14 ">
-              <h3 className="text-3xl font-serif sm:mb-4 font-medium">
-                Get Started
-              </h3>
-              <p className="font-medium text-white">
-                Ready to receive our services?
-              </p>
-              <p className="text-wrap my-5">
-                Email us at{" "}
-                <span className="text-blue-400">
-                  bruinstudiostrategies@gmail.com{" "}
-                </span>
-                or fill out or contact form below
-              </p>
-              <Link to="/contact" className="text-blue-950">
-                <button className="text-white bg-blue-900 hover:bg-blue-800 rounded-sm p-2 mb-14">
-                  Contact Us
-                </button>
-              </Link>
-              <img src={board}/>
-            </div>
-          </div>
+          <p>
+            2 Project Managers <br />
+            4-5 Consultants
+          </p>
         </div>
-        <Process />
+      </div>
+      <Process />
+      <div className="w-4/5 mx-auto flex gap-12 flex-col sm:flex-row sm:items-center mt-20 mb-32">
+        <div className="w-11/12 sm:w-2/3 text-center sm:text-left sm:mx-0 mx-auto">
+          <h3 className="text-3xl font-display sm:mb-4 font-medium">
+            Get Started
+          </h3>
+          <p className="font-medium text-white">
+            Ready to receive our services?
+          </p>
+          <p className="text-wrap my-5">
+            Email us at{" "}
+            <span className="text-blue-400">
+              bruinstudiostrategies@gmail.com{" "}
+            </span>
+            or fill out or contact form below
+          </p>
+          <Link to="/contact" className="text-blue-950">
+            <button className="rounded-sm bg-magenta px-6 py-3 font-sans text-sm font-semibold uppercase tracking-wide text-white transition-all duration-150 hover:-translate-y-0.5 hover:bg-magenta/80">
+              Contact Us
+            </button>
+          </Link>
+        </div>
+        <img src={board} className="w-11/12 sm:w-1/3 rounded-2xl object-cover shadow-2xl ring-1 ring-white/10 mx-auto sm:mx-0" />
       </div>
       <Footer />
     </>

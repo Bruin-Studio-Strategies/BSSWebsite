@@ -1,29 +1,73 @@
-import { FaInstagram, FaSlack, FaLinkedin } from "react-icons/fa";
-
+import { motion, useReducedMotion } from "framer-motion";
+import { FaInstagram, FaLinkedin } from "react-icons/fa";
+import logo from "../assets/logo-plain.png";
 import FooterItem from "./FooterItem";
 
+const EASE = [0.16, 1, 0.3, 1];
+
+const stagger = {
+  hidden: {},
+  show: { transition: { staggerChildren: 0.08 } },
+};
+
+const fadeUp = {
+  hidden: { opacity: 0, y: 16 },
+  show: { opacity: 1, y: 0, transition: { duration: 0.5, ease: EASE } },
+};
+
+const viewport = { once: true, amount: 0.6 };
+
 export default function Footer() {
+  const reducedMotion = useReducedMotion();
+
   return (
-    <footer className="w-full bg-[#07092c] absolute bottom-0 h-60 sm:h-24 sm:px-10 pt-10 pb-20 flex">
-      <div className="flex flex-col sm:flex-row">
+    // Absolutely positioned (not in normal flow) at a fixed height — every page that
+    // renders this hand-tunes its own bottom padding/margin to leave clearance for it,
+    // so this height must stay in sync with those (see Team.jsx, Contact.jsx, etc).
+    <motion.footer
+      initial="hidden"
+      whileInView="show"
+      viewport={viewport}
+      variants={stagger}
+      className="absolute bottom-0 flex h-60 w-full flex-col justify-center gap-6 border-t border-white/10 bg-navy px-6 pb-8 pt-8 sm:h-24 sm:flex-row sm:items-center sm:gap-0 sm:px-10 sm:py-0"
+    >
+      <motion.div variants={fadeUp} className="flex items-center gap-3 sm:mr-10">
+        <img src={logo} alt="" className="h-6 w-6 opacity-80" />
+        <span className="font-display text-sm text-white/70">Bruin Studio Strategies</span>
+      </motion.div>
+
+      <motion.div variants={fadeUp} className="flex flex-col items-center gap-2 sm:flex-row sm:gap-8">
         <FooterItem path="/">Home</FooterItem>
         <FooterItem path="/clients">For Clients</FooterItem>
         <FooterItem path="/recruitment">For Students</FooterItem>
         <FooterItem path="/team">Our Team</FooterItem>
         <FooterItem path="/contact">Contact</FooterItem>
-      </div>
+      </motion.div>
 
-      <div className="flex justify-center sm:space-x-6 space-y-2 sm:space-y-0 mx-auto sm:mx-0 sm:ml-auto mt-2 flex-col sm:flex-row">
-        <a className="rounded-full border-white sm:border h-10 w-10 flex items-center hover:cursor-pointer" href="https://www.instagram.com/bruinstudiostrategies/">
-          <FaInstagram className="fill-white h-6 w-6 block m-auto" />
-        </a>
-        {/* <a className="rounded-full border-white sm:border h-10 w-10 flex items-center hover:cursor-pointer">
-          <FaSlack className="fill-white h-6 w-6 block m-auto" />
-        </a> */}
-        <a className="rounded-full border-white sm:border h-10 w-10 flex items-center hover:cursor-pointer" href="https://www.linkedin.com/company/bruin-studio-strategies">
-          <FaLinkedin className="fill-white h-6 w-6 block m-auto" />
-        </a>
-      </div>
-    </footer>
+      <motion.div variants={fadeUp} className="flex items-center justify-center gap-4 sm:ml-auto">
+        <motion.a
+          whileHover={reducedMotion ? undefined : { scale: 1.1, rotate: -8 }}
+          transition={{ type: "spring", stiffness: 300, damping: 15 }}
+          className="flex h-9 w-9 items-center justify-center rounded-full border border-white/20 text-white/70 transition-colors duration-200 hover:border-magenta hover:text-magenta"
+          href="https://www.instagram.com/bruinstudiostrategies/"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Bruin Studio Strategies on Instagram"
+        >
+          <FaInstagram className="h-4 w-4" />
+        </motion.a>
+        <motion.a
+          whileHover={reducedMotion ? undefined : { scale: 1.1, rotate: 8 }}
+          transition={{ type: "spring", stiffness: 300, damping: 15 }}
+          className="flex h-9 w-9 items-center justify-center rounded-full border border-white/20 text-white/70 transition-colors duration-200 hover:border-sky hover:text-sky"
+          href="https://www.linkedin.com/company/bruin-studio-strategies"
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="Bruin Studio Strategies on LinkedIn"
+        >
+          <FaLinkedin className="h-4 w-4" />
+        </motion.a>
+      </motion.div>
+    </motion.footer>
   );
 }
