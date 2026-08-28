@@ -3,7 +3,6 @@ import Footer from "../../components/Footer";
 import Services from "./sections/Services";
 import Process from "./sections/Process";
 import { Link } from "react-router-dom";
-import board from "../../assets/board.jpg";
 export default function Clients() {
   return (
     <>
@@ -41,43 +40,47 @@ export default function Clients() {
         </p>
       </div>
       <Process />
-      {/* Closing CTA. The magenta button is the only magenta on this page — it
-          is the one action the whole page is asking for. */}
-      {/* Bottom margin clears the footer, which is position:absolute at a fixed
-          height (h-60 below sm, h-24 from sm) rather than sitting in flow. The
-          previous mb-32 (128px) was less than the mobile footer's own 240px, so
-          the footer was overlapping this block, not merely crowding it. */}
-      <div className="mx-auto mb-72 mt-24 grid w-4/5 max-w-6xl gap-10 sm:mb-44 md:grid-cols-2 md:items-center md:gap-16">
-        <div>
-          <span className="inline-block font-sans text-xs font-semibold uppercase tracking-[0.2em] text-sky">
-            Next Step
-          </span>
-          <h3 className="mt-4 font-display text-4xl leading-[1.1] text-white sm:text-5xl">
-            Get Started
-          </h3>
-          <p className="mt-6 max-w-xl font-sans text-base leading-relaxed text-white/70">
-            Ready to receive our services? Email us at{" "}
-            <a
-              href="mailto:bruinstudiostrategies@gmail.com"
-              className="text-sky underline decoration-sky/40 underline-offset-4 transition-colors duration-200 hover:decoration-sky"
+      {/* Closing CTA as a ruled band, on the same two-column template as the
+          schedule above it: headline over the text column, the ask over the
+          ruler column. Carrying that grid down here is what keeps the bottom of
+          the page speaking the same language as its middle. The photo that used
+          to sit here was decorative — a group shot doing no persuading at the
+          moment of the ask, while outweighing the button that is the actual
+          point. The magenta button is the only magenta on this page.
+
+          Bottom margin clears the footer, which is position:absolute at a fixed
+          height (h-60 below sm, h-24 from sm) rather than sitting in flow. */}
+      <section className="mx-auto mb-72 mt-28 w-4/5 max-w-6xl sm:mb-44">
+        <div className="border-t border-white/15 pt-10 md:grid md:grid-cols-[1fr_minmax(0,26rem)] md:items-start md:gap-x-12">
+          <div>
+            <span className="inline-block font-sans text-xs font-semibold uppercase tracking-[0.2em] text-sky">
+              Next Step
+            </span>
+            <h3 className="mt-4 font-display text-4xl leading-[1.1] text-white sm:text-5xl">
+              Get Started
+            </h3>
+          </div>
+
+          <div className="mt-8 md:mt-2">
+            <p className="font-sans text-base leading-relaxed text-white/70">
+              Ready to receive our services? Email us at{" "}
+              <a
+                href="mailto:bruinstudiostrategies@gmail.com"
+                className="text-sky underline decoration-sky/40 underline-offset-4 transition-colors duration-200 hover:decoration-sky"
+              >
+                bruinstudiostrategies@gmail.com
+              </a>{" "}
+              or fill out our contact form.
+            </p>
+            <Link
+              to="/contact"
+              className="mt-7 inline-flex items-center rounded-sm bg-magenta px-6 py-3 font-sans text-sm font-semibold uppercase tracking-wide text-white transition-all duration-150 hover:-translate-y-0.5 hover:bg-magenta/80 hover:shadow-lg hover:shadow-magenta/30 active:translate-y-0 active:shadow-none"
             >
-              bruinstudiostrategies@gmail.com
-            </a>{" "}
-            or fill out our contact form.
-          </p>
-          <Link
-            to="/contact"
-            className="mt-8 inline-flex items-center rounded-sm bg-magenta px-6 py-3 font-sans text-sm font-semibold uppercase tracking-wide text-white transition-all duration-150 hover:-translate-y-0.5 hover:bg-magenta/80 hover:shadow-lg hover:shadow-magenta/30 active:translate-y-0 active:shadow-none"
-          >
-            Contact Us
-          </Link>
+              Contact Us
+            </Link>
+          </div>
         </div>
-        <img
-          src={board}
-          alt="Bruin Studio Strategies consultants working with a client team"
-          className="w-full rounded-2xl object-cover shadow-2xl ring-1 ring-white/10"
-        />
-      </div>
+      </section>
       <Footer />
     </>
   );
