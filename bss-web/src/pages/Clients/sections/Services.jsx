@@ -1,4 +1,5 @@
-import { motion, useReducedMotion } from "framer-motion";
+import { useState } from "react";
+import { animate, motion, useMotionValue, useReducedMotion, useTransform } from "framer-motion";
 
 import ServiceMotif from "../../../components/ServiceMotifs/Motifs.jsx";
 import useCardProgress from "../../../components/ServiceMotifs/useCardProgress.js";
@@ -53,14 +54,30 @@ const SERVICES = [
 ];
 
 function ServiceCell({ service, index, reduced }) {
-  // Scroll position drives the motif's actor, not hover. Hover never fired on
-  // touch at all, which meant most visitors saw six static drawings; now the
-  // motion plays for everyone as the card crosses the viewport.
+  // Two drivers, combined by whichever is further along.
+  //
+  // Scroll is the base so the motifs are alive on touch, where hover does not
+  // exist and every visitor would otherwise see six static drawings. Hover then
+  // completes the actor's journey on demand, which is the interaction that makes
+  // the cards feel worth pointing at.
   const { ref, progress } = useCardProgress(!reduced);
+  const hoverProgress = useMotionValue(0);
+  const combined = useTransform([progress, hoverProgress], ([scrolled, hovered]) =>
+    Math.max(scrolled, hovered)
+  );
+  const [hovered, setHovered] = useState(false);
+
+  const onHover = (isOver) => {
+    setHovered(isOver);
+    if (reduced) return;
+    animate(hoverProgress, isOver ? 1 : 0, { duration: isOver ? 0.7 : 0.45, ease: EASE });
+  };
 
   return (
     <motion.li
       ref={ref}
+      onHoverStart={() => onHover(true)}
+      onHoverEnd={() => onHover(false)}
       initial="hidden"
       whileInView="show"
       viewport={{ once: true, amount: 0.35 }}
@@ -72,10 +89,19 @@ function ServiceCell({ service, index, reduced }) {
           transition: { duration: 0.6, ease: EASE, delay: (index % 3) * 0.08 },
         },
       }}
-      className="group relative border-t border-white/10 pt-6"
+      // A real card, so it is obvious there is something to point at. The hover
+      // border is sky rather than magenta: magenta belongs to the one action on
+      // the page, and six cards warming to it would break that.
+      className={`group relative rounded-xl border p-5 transition-colors duration-300 sm:p-6 ${
+        hovered ? "border-sky/40 bg-white/[0.04]" : "border-white/10 bg-transparent"
+      }`}
     >
       <div className="flex items-baseline gap-3">
-        <span className="font-sans text-[0.6875rem] tabular-nums tracking-[0.2em] text-white/40">
+        <span
+          className={`font-sans text-[0.6875rem] tabular-nums tracking-[0.2em] transition-colors duration-300 ${
+            hovered ? "text-sky" : "text-white/40"
+          }`}
+        >
           {String(index + 1).padStart(2, "0")}
         </span>
         <h4 className="font-display text-xl leading-snug text-white sm:text-2xl">
@@ -84,7 +110,7 @@ function ServiceCell({ service, index, reduced }) {
       </div>
 
       <div className="mt-5">
-        <ServiceMotif name={service.motif} progress={progress} />
+        <ServiceMotif name={service.motif} progress={combined} />
       </div>
 
       <p className="mt-5 font-sans text-sm leading-relaxed text-white/60">
@@ -106,7 +132,7 @@ export default function Services() {
         Our Services
       </h3>
 
-      <ul className="mt-12 grid grid-cols-1 gap-x-12 gap-y-12 sm:grid-cols-2 md:grid-cols-3">
+      <ul className="mt-12 grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3">
         {SERVICES.map((service, i) => (
           <ServiceCell key={service.title} service={service} index={i} reduced={reduced} />
         ))}
