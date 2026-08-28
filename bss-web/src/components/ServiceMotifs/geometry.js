@@ -37,18 +37,6 @@ export function ridgePath(row, { amplitude = 14, baseline = 60, samples = 24 } =
   return toSmoothPath(points);
 }
 
-/** A ridge that also trends upward left to right — the growth curve. */
-export function risingRidgePath({ samples = 24 } = {}) {
-  const points = [];
-  for (let i = 0; i <= samples; i += 1) {
-    const t = i / samples;
-    const x = t * BOX.w;
-    const wobble = noise2D(t * 2.6, 9.5) * 9;
-    const climb = 88 - t * 58;
-    points.push([x, climb + wobble]);
-  }
-  return points;
-}
 
 /** Deterministic scatter that still reads as measured data, not a pattern. */
 export function scatterPoints(count = 16) {
@@ -86,11 +74,6 @@ export function toSmoothPath(points) {
   return d;
 }
 
-/** Point on the rising ridge at 0..1 along its width, for placing a marker. */
-export function pointAlong(points, t) {
-  const i = Math.min(points.length - 1, Math.max(0, Math.round(t * (points.length - 1))));
-  return { x: points[i][0], y: points[i][1] };
-}
 
 /**
  * The brand mark: three congruent equilateral triangles rotated a few degrees

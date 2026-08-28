@@ -5,9 +5,7 @@ import {
   GRID_STEP,
   markTriangles,
   meshWithHole,
-  pointAlong,
   ridgePath,
-  risingRidgePath,
   scatterPoints,
   toSmoothPath,
 } from "./geometry.js";
@@ -148,7 +146,14 @@ function MarketResearch({ progress }) {
   const cy = 60;
   const rings = [15, 29, 43];
   const ticks = Array.from({ length: 16 }, (_, i) => (i / 16) * 360);
-  const rotate = useTransform(progress, TRAVEL, [-120, 150]);
+  // The sweep is drawn to a computed endpoint rather than rotated. Rotating it
+  // put the pivot at the line's bounding-box centre — framer's default origin
+  // for an SVG element — so the sweep swung about its own middle instead of the
+  // centre of the scan. With x1/y1 pinned to the centre and only the far end
+  // moving, the line cannot come off the centre.
+  const angle = useTransform(progress, TRAVEL, [-125, 145]);
+  const sweepX = useTransform(angle, (deg) => cx + Math.cos((deg * Math.PI) / 180) * 43);
+  const sweepY = useTransform(angle, (deg) => cy + Math.sin((deg * Math.PI) / 180) * 43);
   // The find brightens as the sweep reaches it rather than being lit the whole
   // time, so the scan reads as doing something.
   const findOpacity = useTransform(progress, [0.45, 0.62, 1], [0.25, 1, 1]);
@@ -180,26 +185,8 @@ function MarketResearch({ progress }) {
         })}
       </g>
 
-      {/* Translate to the centre first, then rotate about the group's own
-          origin. Rotating in place and relying on transform-box/transform-origin
-          to name the centre did not pivot there, so the sweep swung around a
-          point that was not the middle of the scan. With the group already at
-          the centre, the origin is 0,0 and there is nothing to resolve — the
-          explicit transformOrigin is only there because SVG and HTML disagree on
-          the default. */}
-      <g transform={`translate(${cx} ${cy})`}>
-        <motion.g style={{ rotate, transformOrigin: "0px 0px" }}>
-          <motion.line
-            className="stroke-sky"
-            style={stroke}
-            strokeWidth="1.25"
-            x1={0}
-            y1={0}
-            x2={43}
-            y2={0}
-            variants={fade(0.5)}
-          />
-        </motion.g>
+      <g className="stroke-sky" style={stroke} strokeWidth="1.25">
+        <motion.line x1={cx} y1={cy} x2={sweepX} y2={sweepY} variants={fade(0.5)} />
       </g>
 
       <motion.g style={{ opacity: findOpacity }}>
@@ -209,18 +196,56 @@ function MarketResearch({ progress }) {
   );
 }
 
-/** 02 — Climbing it: one rising ridge, with the mark ascending it. */
+/**
+ * 02 — Scaling: trajectories fanning from a single starting point.
+ *
+ * This was a noise-derived rising ridge with a marker climbing it, which is both
+ * the most generic growth visual there is and the same squiggle problem as the
+ * first Market Research attempt. A projection fan is exact geometry, carries
+ * real density, and says something the rising line does not: growth is a range
+ * of paths out of one position, not a single predetermined curve.
+ */
 function GrowthStrategy({ progress }) {
-  const pts = risingRidgePath();
-  const d = toSmoothPath(pts);
-  const start = pointAlong(pts, 0.2);
-  const end = pointAlong(pts, 0.88);
-  const x = useTransform(progress, TRAVEL, [start.x, end.x]);
-  const y = useTransform(progress, TRAVEL, [start.y - 6, end.y - 6]);
+  const ox = 22;
+  const oy = 98;
+  const rays = [-10, -20, -30, -40, -50, -60];
+  const horizons = [42, 74, 106];
+  const mid = (-30 * Math.PI) / 180;
+  const reach = useTransform(progress, TRAVEL, [16, 104]);
+  const x = useTransform(reach, (r) => ox + Math.cos(mid) * r);
+  const y = useTransform(reach, (r) => oy + Math.sin(mid) * r);
+
+  const arc = (r) => {
+    const a0 = (-10 * Math.PI) / 180;
+    const a1 = (-60 * Math.PI) / 180;
+    const x0 = ox + Math.cos(a0) * r;
+    const y0 = oy + Math.sin(a0) * r;
+    const x1 = ox + Math.cos(a1) * r;
+    const y1 = oy + Math.sin(a1) * r;
+    return `M ${x0.toFixed(2)} ${y0.toFixed(2)} A ${r} ${r} 0 0 0 ${x1.toFixed(2)} ${y1.toFixed(2)}`;
+  };
+
   return (
     <Frame>
       <g className="stroke-white/25" style={stroke} strokeWidth="1.25">
-        <motion.path d={d} variants={draw()} />
+        {rays.map((deg, i) => {
+          const a = (deg * Math.PI) / 180;
+          return (
+            <motion.line
+              key={deg}
+              x1={ox}
+              y1={oy}
+              x2={ox + Math.cos(a) * 112}
+              y2={oy + Math.sin(a) * 112}
+              variants={draw(i * 0.1)}
+            />
+          );
+        })}
+      </g>
+      <g className="stroke-white/15" style={stroke} strokeWidth="1">
+        {horizons.map((r, i) => (
+          <motion.path key={r} d={arc(r)} variants={draw(0.4 + i * 0.14)} />
+        ))}
       </g>
       <Actor x={x} y={y} size={20} />
     </Frame>
@@ -247,24 +272,45 @@ function DataAnalytics({ progress }) {
   );
 }
 
-/** 04 — Propagating: the mark, echoing outward across the field. */
+/**
+ * 04 — Locking on: three rings of the mark's geometry, each turning at its own
+ * rate until they align.
+ *
+ * The triangles start scattered at different angles and rotate at different
+ * speeds toward zero, so they converge into register at the end of the travel —
+ * the brand resolving into one aligned thing rather than a shape that merely
+ * gets bigger.
+ *
+ * Each triangle is generated about the origin and then translated into place, so
+ * rotation happens about its own centre. Rotating it where it sits and naming a
+ * centre through transform-origin is what put the scan's sweep off-axis: for SVG
+ * elements framer takes the bounding-box centre by default, and a triangle's
+ * bounding box is not centred on its centroid.
+ */
 function BrandStrategy({ progress }) {
-  const rings = [40, 54, 68];
-  const scale = useTransform(progress, TRAVEL, [0.72, 1]);
+  const radii = [26, 40, 54];
+  const rotA = useTransform(progress, TRAVEL, [-52, 0]);
+  const rotB = useTransform(progress, TRAVEL, [78, 0]);
+  const rotC = useTransform(progress, TRAVEL, [-124, 0]);
+  const rots = [rotA, rotB, rotC];
+  const scale = useTransform(progress, TRAVEL, [0.82, 1]);
+
   return (
     <Frame>
-      <g style={stroke} strokeWidth="1.25">
-        {rings.map((r, i) => (
-          <motion.polygon
-            key={r}
-            className="stroke-white/20"
-            points={markTriangles({ r, count: 1 })[0]}
-            variants={fade(0.15 + i * 0.12)}
-            style={{ ...stroke, transformBox: "fill-box", transformOrigin: "center" }}
-          />
+      <g transform="translate(80 60)">
+        {radii.map((r, i) => (
+          <motion.g key={r} style={{ rotate: rots[i], originX: 0, originY: 0 }}>
+            <motion.polygon
+              className="stroke-white/25"
+              points={markTriangles({ cx: 0, cy: 0, r, count: 1 })[0]}
+              style={stroke}
+              strokeWidth="1.25"
+              variants={fade(0.12 + i * 0.14)}
+            />
+          </motion.g>
         ))}
       </g>
-      <Actor x={80} y={60} size={26} scale={scale} />
+      <Actor x={80} y={60} size={24} scale={scale} />
     </Frame>
   );
 }
