@@ -275,18 +275,39 @@ function MarketEntry({ reduced }) {
           hover: reduced ? {} : { scale: 1.12, transition: { duration: 0.6, ease: EASE } },
         }}
       />
-      <motion.polygon
-        className="fill-sky"
-        points="-6,5 6,5 0,-7"
-        style={{ rotate: 90 }}
+      {/* The actor is the brand mark rather than a generic arrow: three congruent
+          triangles fanned about their shared right-hand tip, which already
+          points the way in. On hover it crosses to the opening and then shrinks
+          through it — keyframed so the travel finishes before the vanish starts,
+          otherwise it fades out on the way and never reads as entering. */}
+      <motion.g
+        className="stroke-sky"
+        style={{ ...stroke, transformBox: "fill-box", transformOrigin: "center" }}
+        strokeWidth="1.5"
         variants={{
-          hidden: { opacity: 0, x: 18, y: center.y },
-          show: { opacity: 1, x: 18, y: center.y, transition: { duration: 0.5, delay: 0.45 } },
+          hidden: { opacity: 0, x: 16, y: center.y, scale: 1 },
+          show: {
+            opacity: 1,
+            x: 16,
+            y: center.y,
+            scale: 1,
+            transition: { duration: 0.5, delay: 0.45 },
+          },
           hover: reduced
             ? {}
-            : { x: center.x + 4, y: center.y, transition: { duration: 0.8, ease: EASE } },
+            : {
+                x: [16, center.x, center.x],
+                y: center.y,
+                scale: [1, 1, 0.12],
+                opacity: [1, 1, 0],
+                transition: { duration: 1.05, times: [0, 0.62, 1], ease: EASE },
+              },
         }}
-      />
+      >
+        {markTriangles({ cx: 0, cy: 0, r: 11, spread: 14 }).map((points, i) => (
+          <polygon key={i} points={points} />
+        ))}
+      </motion.g>
     </Frame>
   );
 }
