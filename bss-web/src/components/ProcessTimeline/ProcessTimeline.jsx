@@ -99,7 +99,7 @@ function PhaseRow({ phase, index, isActive, reducedMotion, rowRef }) {
         show: { opacity: 1, y: 0, transition: { duration: 0.6, ease: EASE } },
       }}
       aria-current={isActive ? "step" : undefined}
-      className={`relative border-t border-white/10 py-8 transition-colors sm:py-10 duration-500 first:border-t-0 first:pt-0 ${ROW_GRID}`}
+      className={`relative border-t border-white/10 py-8 transition-colors sm:py-10 duration-500 first:border-t-0 ${ROW_GRID}`}
     >
       {/* Active row gets a faint wash rather than the inactive rows getting a
           fade — same focus read, no contrast cost. */}

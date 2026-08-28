@@ -8,16 +8,23 @@ import SectionDivider from "../../components/SectionDivider";
 export default function Clients() {
   return (
     <>
-      <div className="flex flex-col items-center mt-5 sm:mt-10">
-        <h2 className="font-serif text-4xl sm:text-5xl text-white text-center tracking-wider">
+      {/* Page header on the same measure and alignment as every section below
+          it. Centred inside a full-width block while the rest of the page was
+          left-aligned at w-4/5, it read as a different page grafted on top.
+          Also retires EB Garamond here: display type is Agatho. */}
+      <header className="mx-auto mt-10 w-4/5 max-w-6xl sm:mt-16">
+        <span className="inline-block font-sans text-xs font-semibold uppercase tracking-[0.2em] text-sky">
+          For Clients
+        </span>
+        <h2 className="mt-4 font-display text-5xl leading-[1.05] text-white sm:text-6xl">
           Work With BSS
         </h2>
-        <p className="text-center text-wrap w-5/6 sm:w-1/2 mt-5 font-sans sm:text-base text-sm">
+        <p className="mt-6 max-w-[42rem] font-sans text-base leading-relaxed text-white/70">
           Bruin Studio Strategies provides honed expertise across various
           sectors in the entertainment industry, supplying tailored consulting
           services for creative and business ventures.
         </p>
-      </div>
+      </header>
       <SectionDivider className="my-12" />
       <Services />
       <SectionDivider className="my-12" />

@@ -197,55 +197,50 @@ function MarketResearch({ progress }) {
 }
 
 /**
- * 02 — Scaling: trajectories fanning from a single starting point.
+ * 02 — Compounding: a staircase whose risers double.
  *
- * This was a noise-derived rising ridge with a marker climbing it, which is both
- * the most generic growth visual there is and the same squiggle problem as the
- * first Market Research attempt. A projection fan is exact geometry, carries
- * real density, and says something the rising line does not: growth is a range
- * of paths out of one position, not a single predetermined curve.
+ * Earlier versions were a noise ridge and then a projection fan. Neither said
+ * the thing that matters: growth here is compounding, so each step gains more
+ * than the one before it. The riser heights follow 2^i, and a faint continuous
+ * curve behind them traces the same function — the steps are what a client
+ * actually experiences, the curve is what it adds up to.
  */
 function GrowthStrategy({ progress }) {
-  const ox = 22;
-  const oy = 98;
-  const rays = [-10, -20, -30, -40, -50, -60];
-  const horizons = [42, 74, 106];
-  const mid = (-30 * Math.PI) / 180;
-  const reach = useTransform(progress, TRAVEL, [16, 104]);
-  const x = useTransform(reach, (r) => ox + Math.cos(mid) * r);
-  const y = useTransform(reach, (r) => oy + Math.sin(mid) * r);
+  const x0 = 14;
+  const x1 = 148;
+  const base = 104;
+  const top = 18;
+  const steps = 6;
+  const span = base - top;
+  const denom = 2 ** steps - 1;
 
-  const arc = (r) => {
-    const a0 = (-10 * Math.PI) / 180;
-    const a1 = (-60 * Math.PI) / 180;
-    const x0 = ox + Math.cos(a0) * r;
-    const y0 = oy + Math.sin(a0) * r;
-    const x1 = ox + Math.cos(a1) * r;
-    const y1 = oy + Math.sin(a1) * r;
-    return `M ${x0.toFixed(2)} ${y0.toFixed(2)} A ${r} ${r} 0 0 0 ${x1.toFixed(2)} ${y1.toFixed(2)}`;
-  };
+  const level = (i) => base - ((2 ** i - 1) / denom) * span;
+  const xAt = (i) => x0 + (i / steps) * (x1 - x0);
+
+  // Stepped path: run out along the current level, then rise to the next.
+  let stair = `M ${x0} ${base}`;
+  for (let i = 1; i <= steps; i += 1) {
+    stair += ` H ${xAt(i).toFixed(2)} V ${level(i).toFixed(2)}`;
+  }
+
+  // The same function sampled smoothly, drawn faintly behind the steps.
+  const curve = [];
+  for (let i = 0; i <= 48; i += 1) {
+    const t = i / 48;
+    curve.push([x0 + t * (x1 - x0), base - ((2 ** (t * steps) - 1) / denom) * span]);
+  }
+
+  const stops = Array.from({ length: steps + 1 }, (_, i) => i / steps);
+  const x = useTransform(progress, stops, stops.map((_, i) => xAt(i)));
+  const y = useTransform(progress, stops, stops.map((_, i) => level(i)));
 
   return (
     <Frame>
-      <g className="stroke-white/25" style={stroke} strokeWidth="1.25">
-        {rays.map((deg, i) => {
-          const a = (deg * Math.PI) / 180;
-          return (
-            <motion.line
-              key={deg}
-              x1={ox}
-              y1={oy}
-              x2={ox + Math.cos(a) * 112}
-              y2={oy + Math.sin(a) * 112}
-              variants={draw(i * 0.1)}
-            />
-          );
-        })}
-      </g>
       <g className="stroke-white/15" style={stroke} strokeWidth="1">
-        {horizons.map((r, i) => (
-          <motion.path key={r} d={arc(r)} variants={draw(0.4 + i * 0.14)} />
-        ))}
+        <motion.path d={toSmoothPath(curve)} variants={draw(0.5)} />
+      </g>
+      <g className="stroke-white/30" style={stroke} strokeWidth="1.25">
+        <motion.path d={stair} variants={draw()} />
       </g>
       <Actor x={x} y={y} size={20} />
     </Frame>
@@ -298,26 +293,34 @@ function BrandStrategy({ progress }) {
   // framer reads originX/originY as fractions on HTML but pixels on SVG, and
   // that mismatch had the triangles swinging around a bounding-box edge — they
   // orbited the centre instead of turning in place.
-  const tA = useMotionTemplate`translate(80 60) rotate(${rotA})`;
-  const tB = useMotionTemplate`translate(80 60) rotate(${rotB})`;
-  const tC = useMotionTemplate`translate(80 60) rotate(${rotC})`;
+  // Rotation only — the shared translate lives on the wrapper below. Positioning
+  // the rings and the locator separately and trusting two different transform
+  // systems to agree is what pulled them off each other; inside one translated
+  // group they cannot drift apart, because they are drawn in the same space.
+  // SVG rotate() with no centre given pivots on the local origin, which the
+  // wrapper's translate has already put at the middle.
+  const tA = useMotionTemplate`rotate(${rotA})`;
+  const tB = useMotionTemplate`rotate(${rotB})`;
+  const tC = useMotionTemplate`rotate(${rotC})`;
   const transforms = [tA, tB, tC];
   const scale = useTransform(progress, TRAVEL, [0.82, 1]);
 
   return (
     <Frame>
-      {radii.map((r, i) => (
-        <motion.g key={r} transform={transforms[i]}>
-          <motion.polygon
-            className="stroke-white/25"
-            points={markTriangles({ cx: 0, cy: 0, r, count: 1 })[0]}
-            style={stroke}
-            strokeWidth="1.25"
-            variants={fade(0.12 + i * 0.14)}
-          />
-        </motion.g>
-      ))}
-      <Actor x={80} y={60} size={24} scale={scale} />
+      <g transform="translate(80 60)">
+        {radii.map((r, i) => (
+          <motion.g key={r} transform={transforms[i]}>
+            <motion.polygon
+              className="stroke-white/25"
+              points={markTriangles({ cx: 0, cy: 0, r, count: 1 })[0]}
+              style={stroke}
+              strokeWidth="1.25"
+              variants={fade(0.12 + i * 0.14)}
+            />
+          </motion.g>
+        ))}
+        <Actor x={0} y={0} size={24} scale={scale} />
+      </g>
     </Frame>
   );
 }
