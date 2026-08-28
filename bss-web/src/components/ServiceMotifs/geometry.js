@@ -117,3 +117,54 @@ export function markTriangles({ cx = 80, cy = 60, r = 26, spread = 7, count = 3 
     return pts.map(([x, y]) => `${x.toFixed(2)},${y.toFixed(2)}`).join(" ");
   });
 }
+
+/**
+ * A dense wireframe mesh with a hole torn through it.
+ *
+ * Every sample point inside `influence` of the centre is pushed radially
+ * outward, remapping the disc [0, influence] onto the annulus [holeR,
+ * influence] — so the lines bend around a clean void rather than being clipped
+ * at it. Clipping would leave cut ends pointing at nothing; displacing keeps
+ * every line continuous and makes the hole read as something the mesh is
+ * stretched around, which is the whole idea.
+ */
+export function meshWithHole({
+  center = { x: 96, y: 60 },
+  holeR = 20,
+  influence = 46,
+  step = 10,
+  samples = 44,
+} = {}) {
+  const displace = (x, y) => {
+    const dx = x - center.x;
+    const dy = y - center.y;
+    const d = Math.hypot(dx, dy);
+    if (d >= influence) return [x, y];
+    if (d < 0.0001) return [center.x + holeR, center.y];
+    // Ease the remap so lines crowd near the rim and relax toward the edge of
+    // the influence disc, instead of shifting by a constant amount.
+    const t = d / influence;
+    const eased = t * t * (3 - 2 * t);
+    const nd = holeR + (influence - holeR) * eased;
+    return [center.x + (dx / d) * nd, center.y + (dy / d) * nd];
+  };
+
+  const paths = [];
+  for (let x = step; x < BOX.w; x += step) {
+    const pts = [];
+    for (let i = 0; i <= samples; i += 1) {
+      const y = (i / samples) * BOX.h;
+      pts.push(displace(x, y));
+    }
+    paths.push(toSmoothPath(pts));
+  }
+  for (let y = step; y < BOX.h; y += step) {
+    const pts = [];
+    for (let i = 0; i <= samples; i += 1) {
+      const x = (i / samples) * BOX.w;
+      pts.push(displace(x, y));
+    }
+    paths.push(toSmoothPath(pts));
+  }
+  return { paths, center, holeR };
+}

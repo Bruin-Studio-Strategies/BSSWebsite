@@ -4,6 +4,7 @@ import {
   BOX,
   GRID_STEP,
   markTriangles,
+  meshWithHole,
   pointAlong,
   ridgePath,
   risingRidgePath,
@@ -68,14 +69,14 @@ function Grid() {
   );
 }
 
-function Frame({ children }) {
+function Frame({ children, grid = true }) {
   return (
     <svg
       viewBox={`0 0 ${BOX.w} ${BOX.h}`}
       className="h-auto w-full overflow-visible"
       aria-hidden="true"
     >
-      <Grid />
+      {grid && <Grid />}
       {children}
     </svg>
   );
@@ -242,29 +243,45 @@ function CompetitiveAnalysis({ reduced }) {
   );
 }
 
-/** 06 — Getting through: a wall of grid, and the one way in. */
+/**
+ * 06 — Getting through: a void torn in the mesh, and the way through it.
+ *
+ * The previous version was a picket of vertical bars with a gap, which read as a
+ * barcode with a video play button beside it. A hole is the stronger idea: the
+ * mesh is one continuous surface that has been opened, so the drawing says
+ * "there is a way in" rather than "here are some bars".
+ */
 function MarketEntry({ reduced }) {
-  const bars = Array.from({ length: 9 }, (_, i) => 16 + i * 16);
-  const gapTop = 46;
-  const gapBottom = 74;
+  const { paths, center, holeR } = meshWithHole();
   return (
-    <Frame>
-      <g className="stroke-white/25" style={stroke} strokeWidth="1.25">
-        {bars.map((x, i) => (
-          <g key={x}>
-            <motion.line x1={x} y1="14" x2={x} y2={gapTop} variants={draw(i * 0.04)} />
-            <motion.line x1={x} y1={gapBottom} x2={x} y2="106" variants={draw(i * 0.04)} />
-          </g>
+    <Frame grid={false}>
+      <g className="stroke-white/20" style={stroke} strokeWidth="1">
+        {paths.map((d, i) => (
+          <motion.path key={i} d={d} variants={fade(i * 0.012)} />
         ))}
       </g>
+      <motion.circle
+        className="stroke-sky/40"
+        style={stroke}
+        strokeWidth="1"
+        cx={center.x}
+        cy={center.y}
+        r={holeR}
+        variants={{
+          ...fade(0.35),
+          hover: reduced ? {} : { scale: 1.12, transition: { duration: 0.6, ease: EASE } },
+        }}
+      />
       <motion.polygon
         className="fill-sky"
         points="-6,5 6,5 0,-7"
         style={{ rotate: 90 }}
         variants={{
-          hidden: { opacity: 0, x: 26, y: 60 },
-          show: { opacity: 1, x: 26, y: 60, transition: { duration: 0.5, delay: 0.5 } },
-          hover: reduced ? {} : { x: 138, y: 60, transition: { duration: 0.8, ease: EASE } },
+          hidden: { opacity: 0, x: 18, y: center.y },
+          show: { opacity: 1, x: 18, y: center.y, transition: { duration: 0.5, delay: 0.45 } },
+          hover: reduced
+            ? {}
+            : { x: center.x + 4, y: center.y, transition: { duration: 0.8, ease: EASE } },
         }}
       />
     </Frame>
