@@ -1,8 +1,7 @@
 import { useState } from "react";
-import { animate, motion, useMotionValue, useReducedMotion, useTransform } from "framer-motion";
+import { animate, motion, useMotionValue, useReducedMotion } from "framer-motion";
 
 import ServiceMotif from "../../../components/ServiceMotifs/Motifs.jsx";
-import useCardProgress from "../../../components/ServiceMotifs/useCardProgress.js";
 
 const EASE = [0.16, 1, 0.3, 1];
 
@@ -54,28 +53,24 @@ const SERVICES = [
 ];
 
 function ServiceCell({ service, index, reduced }) {
-  // Two drivers, combined by whichever is further along.
-  //
-  // Scroll is the base so the motifs are alive on touch, where hover does not
-  // exist and every visitor would otherwise see six static drawings. Hover then
-  // completes the actor's journey on demand, which is the interaction that makes
-  // the cards feel worth pointing at.
-  const { ref, progress } = useCardProgress(!reduced);
-  const hoverProgress = useMotionValue(0);
-  const combined = useTransform([progress, hoverProgress], ([scrolled, hovered]) =>
-    Math.max(scrolled, hovered)
-  );
+  // Hover alone drives the motif's actor. Reduced motion parks it at the far end
+  // of its travel, so the drawing still reads as finished without moving.
+  const progress = useMotionValue(reduced ? 1 : 0);
   const [hovered, setHovered] = useState(false);
 
   const onHover = (isOver) => {
     setHovered(isOver);
     if (reduced) return;
-    animate(hoverProgress, isOver ? 1 : 0, { duration: isOver ? 0.7 : 0.45, ease: EASE });
+    // Slow on the way in so the move is watchable rather than a flick, and a
+    // little quicker on the way out so the card settles without dragging.
+    animate(progress, isOver ? 1 : 0, {
+      duration: isOver ? 1.5 : 0.9,
+      ease: EASE,
+    });
   };
 
   return (
     <motion.li
-      ref={ref}
       onHoverStart={() => onHover(true)}
       onHoverEnd={() => onHover(false)}
       initial="hidden"
@@ -110,7 +105,7 @@ function ServiceCell({ service, index, reduced }) {
       </div>
 
       <div className="mt-5">
-        <ServiceMotif name={service.motif} progress={combined} />
+        <ServiceMotif name={service.motif} progress={progress} />
       </div>
 
       <p className="mt-5 font-sans text-sm leading-relaxed text-white/60">

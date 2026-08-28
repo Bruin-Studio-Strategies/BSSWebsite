@@ -3,6 +3,7 @@ import { motion, useTransform } from "framer-motion";
 import {
   BOX,
   GRID_STEP,
+  contourRings,
   markTriangles,
   meshWithHole,
   pointAlong,
@@ -25,7 +26,7 @@ const ROWS_GRID = Math.floor(BOX.h / GRID_STEP);
 //
 // The family holds because they share: the same 160x120 box, the same hairline
 // grid, 1px non-scaling strokes at white/25, and the club's own logo as the
-// single actor in every one of them, moved by scroll position.
+// single actor in every one of them, moved on hover.
 
 const stroke = {
   vectorEffect: "non-scaling-stroke",
@@ -34,10 +35,9 @@ const stroke = {
   strokeLinejoin: "round",
 };
 
-// Strokes draw themselves in when the card first scrolls into view; the actor is
-// driven continuously by scroll (see useCardProgress). No idle animation — six
-// perpetually moving diagrams on one screen would be noise, and the page already
-// carries a 3D hero.
+// Strokes draw themselves in when the card first scrolls into view; the actor
+// then answers hover. No idle animation — six perpetually moving diagrams on one
+// screen would be noise, and the page already carries a 3D hero.
 //
 // IMPORTANT: an element animating `pathLength` must not carry `style={stroke}`
 // itself. framer implements pathLength by writing stroke-dasharray/-dashoffset
@@ -50,15 +50,15 @@ const draw = (delay = 0) => ({
     pathLength: 1,
     opacity: 1,
     transition: {
-      pathLength: { duration: 0.9, ease: EASE, delay },
-      opacity: { duration: 0.3, delay },
+      pathLength: { duration: 1.5, ease: EASE, delay },
+      opacity: { duration: 0.5, delay },
     },
   },
 });
 
 const fade = (delay = 0) => ({
   hidden: { opacity: 0 },
-  show: { opacity: 1, transition: { duration: 0.5, ease: EASE, delay } },
+  show: { opacity: 1, transition: { duration: 0.8, ease: EASE, delay } },
 });
 
 /**
@@ -94,7 +94,7 @@ function MarkActor({ size = 22 }) {
   );
 }
 
-/** Positioned by MotionValues rather than variants, so scroll drives it. */
+/** Positioned by a MotionValue rather than variants, so hover can scrub it. */
 function Actor({ x, y, size, opacity, scale }) {
   return (
     <motion.g className="text-sky" style={{ x, y, opacity, scale }}>
@@ -129,30 +129,22 @@ function Frame({ children, grid = true }) {
   );
 }
 
-// The slice of scroll progress the actors travel across. Room at both ends means
-// the move happens while the card is being read, not as it enters or leaves.
-const TRAVEL = [0.15, 0.85];
+// Hover progress runs the full 0..1, so the actors use the whole range.
+const TRAVEL = [0, 1];
 
-/** 01 — Reading the landscape: contours, and a sounding taken through them. */
+/** 01 — Surveying unfamiliar ground: a contour map, and the mark crossing it. */
 function MarketResearch({ progress }) {
-  const contours = [
-    ridgePath(0.0, { amplitude: 13, baseline: 46 }),
-    ridgePath(1.7, { amplitude: 11, baseline: 68 }),
-    ridgePath(3.4, { amplitude: 9, baseline: 88 }),
-  ];
-  const y = useTransform(progress, TRAVEL, [18, 64]);
-  const lineY2 = useTransform(progress, TRAVEL, [14, 60]);
+  const rings = contourRings();
+  const x = useTransform(progress, TRAVEL, [26, 134]);
+  const y = useTransform(progress, TRAVEL, [82, 38]);
   return (
     <Frame>
       <g className="stroke-white/25" style={stroke} strokeWidth="1.25">
-        {contours.map((d, i) => (
-          <motion.path key={i} d={d} variants={draw(i * 0.12)} />
+        {rings.map((d, i) => (
+          <motion.path key={i} d={d} variants={draw(i * 0.18)} />
         ))}
       </g>
-      <g className="stroke-sky/70" style={stroke} strokeWidth="1.25">
-        <motion.line x1="104" y1="4" x2="104" style={{ y2: lineY2 }} variants={fade(0.4)} />
-      </g>
-      <Actor x={104} y={y} size={20} />
+      <Actor x={x} y={y} size={20} />
     </Frame>
   );
 }
@@ -184,7 +176,7 @@ function DataAnalytics({ progress }) {
     <Frame>
       <g className="fill-white/30">
         {pts.map(([px, py], i) => (
-          <motion.circle key={i} cx={px} cy={py} r="2.1" variants={fade(i * 0.035)} />
+          <motion.circle key={i} cx={px} cy={py} r="2.1" variants={fade(i * 0.055)} />
         ))}
       </g>
       <g className="stroke-sky/70" style={stroke} strokeWidth="1.25">
@@ -257,7 +249,7 @@ function CompetitiveAnalysis({ progress }) {
  */
 function MarketEntry({ progress }) {
   const { paths, center, holeR } = meshWithHole();
-  const stops = [0.15, 0.62, 0.85];
+  const stops = [0, 0.62, 1];
   const x = useTransform(progress, stops, [14, center.x, center.x]);
   const scale = useTransform(progress, stops, [1, 1, 0.12]);
   const opacity = useTransform(progress, stops, [1, 1, 0]);
@@ -265,7 +257,7 @@ function MarketEntry({ progress }) {
     <Frame grid={false}>
       <g className="stroke-white/20" style={stroke} strokeWidth="1">
         {paths.map((d, i) => (
-          <motion.path key={i} d={d} variants={fade(i * 0.012)} />
+          <motion.path key={i} d={d} variants={fade(i * 0.02)} />
         ))}
       </g>
       <motion.circle

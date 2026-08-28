@@ -170,3 +170,33 @@ export function meshWithHole({
   }
   return { paths, center, holeR };
 }
+
+/**
+ * Nested closed contour rings — a survey map of the same noise field.
+ *
+ * Open wavy lines with a probe dropped through them never read as "market
+ * research"; they read as three squiggles. Closed elevation rings are the one
+ * drawing everybody recognises as surveying unfamiliar ground, which is what
+ * the service actually is. Radius is modulated by the noise field, so these
+ * rings are contours of the same terrain the hero raises.
+ */
+export function contourRings({
+  cx = 80,
+  cy = 60,
+  radii = [14, 24, 34, 44],
+  amplitude = 7,
+  samples = 64,
+} = {}) {
+  return radii.map((base, ring) => {
+    const pts = [];
+    for (let i = 0; i <= samples; i += 1) {
+      const a = (i / samples) * Math.PI * 2;
+      // Sample the field on a circle so each ring is a slice of the same
+      // landscape rather than an independently wobbled ellipse.
+      const n = noise2D(Math.cos(a) * 1.4 + ring * 0.6, Math.sin(a) * 1.4 + ring * 0.6);
+      const r = base + n * amplitude * (1 - ring * 0.12);
+      pts.push([cx + Math.cos(a) * r, cy + Math.sin(a) * r * 0.78]);
+    }
+    return toSmoothPath(pts);
+  });
+}
