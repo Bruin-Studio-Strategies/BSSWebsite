@@ -338,6 +338,11 @@
     ],
     "rules": [
       {
+        "name": "The Two-Accent Rule",
+        "body": "Sky and magenta are the only accents that touch content: sky labels structure, magenta marks the one action. Purple never joins them — it works exclusively behind, as ground and glow. A surface that feels flat is missing atmosphere, not another accent color.",
+        "section": "colors"
+      },
+      {
         "name": "The One Action Rule",
         "body": "Magenta marks the single most important action on a screen and nothing else - under about 5% of any viewport. If two things on a page are magenta, one of them is wrong. Sky blue takes every accent job that isn't a call to action.",
         "section": "colors"

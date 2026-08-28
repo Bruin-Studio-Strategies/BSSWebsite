@@ -77,6 +77,7 @@ function Locator({ size = 20 }) {
       {/* Bloom, then ring, then node. The bloom is a real filled circle rather
           than only a blur filter, so the glow still reads on displays and
           browsers that render filters conservatively. */}
+      <circle className="fill-purple" r={size * 0.62} opacity="0.35" />
       <circle r={size * 0.5} fill="currentColor" opacity="0.1" />
       <circle
         r={size * 0.32}
@@ -131,9 +132,14 @@ function SpinGroup({ angle, children }) {
   return <g ref={ref}>{children}</g>;
 }
 
+// The substrate is Deep Iris rather than white-at-6%. Purple is documented as
+// atmosphere rather than paint, and this is exactly that job: it puts the
+// drawings in a field instead of on flat navy, and gives each motif three
+// layers in two hues — purple ground, white subject, sky actor — where before
+// everything was white and one blue.
 function Grid() {
   return (
-    <g className="stroke-white/[0.06]" style={stroke} strokeWidth="1">
+    <g className="stroke-purple/50" style={stroke} strokeWidth="1">
       {Array.from({ length: COLS_GRID - 1 }, (_, i) => (
         <line key={`v${i}`} x1={(i + 1) * GRID_STEP} y1="0" x2={(i + 1) * GRID_STEP} y2={BOX.h} />
       ))}
@@ -356,50 +362,49 @@ function BrandStrategy({ progress }) {
 }
 
 /**
- * 05 — Measuring the field: reach on a shared axis, and ours going past it.
+ * 05 — Measuring the field: reach on a shared baseline, and ours going past it.
  *
- * Earlier versions drew territories as circles. Tinting one of them as ours made
- * the drawing say "us" twice — as the washed circle and again as the dot inside
- * it — and leaving them all neutral made the dot's destination arbitrary. Bars
- * on one axis put the comparison in the drawing itself rather than in a caption,
- * and give the dot a job it does everywhere else in the set: it is the client,
- * leading our reach out past the longest of them. The bar is reach, the dot is
- * where we are.
+ * Earlier versions drew territories as circles. Tinting one as ours made the
+ * drawing say "us" twice — as the washed circle and again as the dot inside it —
+ * and leaving them neutral made the dot's destination arbitrary. Bars on one
+ * baseline put the comparison in the drawing rather than in a caption, and give
+ * the dot the job it has everywhere else: it is the client, leading our reach
+ * past the tallest rival. The bar is reach, the dot is where we are.
  */
 function CompetitiveAnalysis({ progress }) {
-  const axis = 18;
+  const baseline = 100;
   const rivals = [
-    { y: 22, len: 58 },
-    { y: 40, len: 86 },
-    { y: 76, len: 44 },
-    { y: 94, len: 71 },
+    { x: 34, h: 40 },
+    { x: 58, h: 62 },
+    { x: 106, h: 30 },
+    { x: 130, h: 51 },
   ];
-  const ourY = 58;
-  const x = useTransform(progress, TRAVEL, [axis + 34, axis + 122]);
+  const ourX = 82;
+  const y = useTransform(progress, TRAVEL, [baseline - 24, baseline - 84]);
 
   return (
     <Frame>
       <g className="stroke-white/20" style={stroke} strokeWidth="1.25">
-        <motion.line x1={axis} y1="12" x2={axis} y2="108" variants={draw()} />
+        <motion.line x1="14" y1={baseline} x2="148" y2={baseline} variants={draw()} />
       </g>
       <g className="stroke-white/25" style={stroke} strokeWidth="5">
         {rivals.map((r, i) => (
           <motion.line
-            key={r.y}
-            x1={axis}
-            y1={r.y}
-            x2={axis + r.len}
-            y2={r.y}
+            key={r.x}
+            x1={r.x}
+            y1={baseline}
+            x2={r.x}
+            y2={baseline - r.h}
             variants={draw(0.18 + i * 0.12)}
           />
         ))}
       </g>
-      {/* Drawn to a moving endpoint rather than scaled, so the bar grows from
-          the axis and the dot stays welded to its tip. */}
+      {/* Drawn to a moving endpoint rather than scaled, so the bar grows up out
+          of the baseline with the dot welded to its top. */}
       <g className="stroke-sky" style={stroke} strokeWidth="5">
-        <motion.line x1={axis} y1={ourY} x2={x} y2={ourY} variants={fade(0.5)} />
+        <motion.line x1={ourX} y1={baseline} x2={ourX} y2={y} variants={fade(0.5)} />
       </g>
-      <Actor x={x} y={ourY} size={20} />
+      <Actor x={ourX} y={y} size={20} />
     </Frame>
   );
 }

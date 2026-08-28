@@ -119,7 +119,15 @@ export default function Services() {
   const reduced = !!useReducedMotion();
 
   return (
-    <section className="mx-auto w-4/5 max-w-6xl">
+    <section className="relative mx-auto w-4/5 max-w-6xl">
+      {/* Atmosphere, not paint: the same gradient bloom the landing page puts
+          behind its framed photographs, scaled up to sit under the whole grid.
+          It gives the section a ground to sit on so six line drawings on flat
+          navy stop reading as a spreadsheet. */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute -inset-x-16 -top-10 bottom-0 -z-10 bg-[radial-gradient(60%_50%_at_50%_40%,rgba(82,55,148,0.32),transparent_70%)] blur-2xl"
+      />
       <span className="inline-block font-sans text-xs font-semibold uppercase tracking-[0.2em] text-sky">
         What We Do
       </span>

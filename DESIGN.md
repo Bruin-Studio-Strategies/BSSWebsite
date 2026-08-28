@@ -174,7 +174,7 @@ accents that each have exactly one job.
 
 ### Secondary
 
-- **Deep Iris** (`#523794`): the brand purple. Rarely a flat UI color; it lives in gradients, in the terrain's mid-elevation ramp, and in the ambient glows behind framed imagery. Treat it as atmosphere, not paint.
+- **Deep Iris** (`#523794`): the brand purple. Rarely a flat UI color; it lives in gradients, in the terrain's mid-elevation ramp, in the ambient glows behind framed imagery, and in the substrate grids and section blooms behind the service motifs. Treat it as atmosphere, not paint — it is the layer things sit *on*, never the layer things are *made of*.
 
 ### Neutral
 
@@ -186,6 +186,11 @@ accents that each have exactly one job.
 - **White at opacity** — 100% for headings, 70% for body, 50% for supporting detail, 30% for the quietest metadata, 20% for strong hairlines, 10% for ordinary hairlines, 3% for glass fill. This ladder replaces a gray scale entirely.
 
 ### Named Rules
+
+**The Two-Accent Rule.** Sky and magenta are the only accents that touch content:
+sky labels structure, magenta marks the one action. Purple never joins them — it
+works exclusively behind, as ground and glow. A surface that feels flat is
+missing atmosphere, not another accent color.
 
 **The One Action Rule.** Magenta marks the single most important action on a
 screen and nothing else — under about 5% of any viewport. If two things on a page
