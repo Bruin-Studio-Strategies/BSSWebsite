@@ -41,13 +41,15 @@ export default function Clients() {
         </p>
       </div>
       <Process />
-      {/* Closing CTA as a ruled band, on the same two-column template as the
-          schedule above it: headline over the text column, the ask over the
-          ruler column. Carrying that grid down here is what keeps the bottom of
-          the page speaking the same language as its middle. The photo that used
-          to sit here was decorative — a group shot doing no persuading at the
-          moment of the ask, while outweighing the button that is the actual
-          point. The magenta button is the only magenta on this page.
+      {/* Closing CTA as a ruled band on the schedule's own two-column template,
+          so the bottom of the page speaks the same language as its middle.
+          The ask is one complete left-aligned block — eyebrow through button —
+          rather than a headline on one side and its own sentence stranded on the
+          other, which left ~500px of dead space between them. The photo takes
+          the ruler column: present, but sized to support the ask instead of
+          outweighing it the way a full-measure strip did. Squared corners and a
+          hairline rather than the old soft rounded card, to match the rules
+          above. The magenta button is the only magenta on this page.
 
           Bottom margin clears the footer, which is position:absolute at a fixed
           height (h-60 below sm, h-24 from sm) rather than sitting in flow. */}
@@ -60,10 +62,7 @@ export default function Clients() {
             <h3 className="mt-4 font-display text-4xl leading-[1.1] text-white sm:text-5xl">
               Get Started
             </h3>
-          </div>
-
-          <div className="mt-8 md:mt-2">
-            <p className="font-sans text-base leading-relaxed text-white/70">
+            <p className="mt-6 max-w-[34rem] font-sans text-base leading-relaxed text-white/70">
               Ready to receive our services? Email us at{" "}
               <a
                 href="mailto:bruinstudiostrategies@gmail.com"
@@ -80,19 +79,13 @@ export default function Clients() {
               Contact Us
             </Link>
           </div>
-        </div>
 
-        {/* The photo stays, but after the ask rather than beside it — a wide
-            letterbox strip across the full measure, so it closes the page
-            without outweighing the button. Squared corners and a hairline
-            instead of the old soft rounded card: at this width it reads as a
-            frame, which is the right register for an entertainment client and
-            matches the ruled language above it. */}
-        <img
-          src={board}
-          alt="Bruin Studio Strategies consultants on campus"
-          className="mt-14 w-full rounded-sm object-cover ring-1 ring-white/10 aspect-[3/2] md:aspect-[21/9]"
-        />
+          <img
+            src={board}
+            alt="Bruin Studio Strategies consultants on campus"
+            className="mt-10 aspect-[3/2] w-full rounded-sm object-cover ring-1 ring-white/10 md:mt-0"
+          />
+        </div>
       </section>
       <Footer />
     </>
