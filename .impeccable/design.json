@@ -386,6 +386,11 @@
         "name": "The Square-Button Rule",
         "body": "Interactive controls stay at 2px radius. Pill buttons and heavily rounded cards read as a startup landing page and break the institutional half of the identity.",
         "section": "shapes"
+      },
+      {
+        "name": "The Verb Rule",
+        "body": "A service motif animates the thing the service does, not a picture of its subject. If a new one would only sit there looking like its noun, it is an icon, and icons are not this system.",
+        "section": "components"
       }
     ],
     "dos": [
@@ -408,7 +413,8 @@
       "Don't wrap decorative icons in colored circles to create hierarchy - structure and type do that job.",
       "Don't design a layout that structurally needs statistics, a client logo wall, or case studies; the club has one testimonial and no metrics (see PRODUCT.md).",
       "Don't redraw the logo mark with a different number of triangles, unequal sizes, or a pivot other than the shared right-hand tip.",
-      "Don't hand-roll a divider with <hr>, a solid fill, or a stock gray-* background; there is one divider component."
+      "Don't hand-roll a divider with <hr>, a solid fill, or a stock gray-* background; there is one divider component.",
+      "Don't add an icon set to stand in for the service motifs; motifs are drawn from the hero's own noise field and each one animates its service's verb."
     ]
   }
 }

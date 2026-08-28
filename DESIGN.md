@@ -349,6 +349,33 @@ that breathes between 55% and 80% opacity on a 6-second loop, and a 1.02 scale o
 hover. Under `prefers-reduced-motion` the bloom holds at a fixed 70% and the hover
 scale is dropped. This is how every real photograph in the system is presented.
 
+### Service Motifs
+
+Six small diagrams, one system — the visual material the services never had.
+Each is the service's *verb* drawn rather than a picture of its noun: reading the
+landscape, climbing it, finding the line through the noise, propagating,
+positioning, getting through. That is what keeps them from reading as an icon
+set, and it is the rule to follow if a seventh is ever added.
+
+The family holds because every motif shares: a `160x120` box; the same hairline
+grid behind it at `white/[0.06]`, the same value the schedule's gridlines use;
+1px non-scaling strokes at `white/25`; and **exactly one** sky-blue actor that
+carries the interaction. Geometry comes from the same `simplex-noise` field that
+raises the hero terrain, seeded deterministically so the drawings stay themselves
+between loads — the ridges are literally the landscape's mathematics, not a
+hand-drawn imitation of it.
+
+Two beats of motion and no more: strokes draw themselves in on first scroll into
+view, then the actor answers hover on the parent card — the probe descends, the
+marker climbs, the fitted line thickens, the mark radiates, the position shifts,
+the triangle passes through the aperture. There is no idle animation; six
+perpetually moving diagrams on one screen would be noise, and the page already
+carries a 3D hero.
+
+**The Verb Rule.** A motif animates the thing the service *does*. If a new one
+would only sit there looking like its subject, it is an icon, and icons are not
+this system.
+
 ### Section Divider
 
 The only rule allowed between sections. A 1px line, `w-11/12` capped at
