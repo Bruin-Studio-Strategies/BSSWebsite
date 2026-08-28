@@ -183,12 +183,24 @@ function DataAnalytics({ reduced }) {
           y1="88"
           x2="150"
           y2="40"
-          variants={{
-            ...draw(0.55),
-            hover: reduced ? {} : { strokeWidth: 2.4, transition: { duration: 0.3, ease: EASE } },
-          }}
+          variants={draw(0.55)}
         />
       </g>
+      {/* The mark rides the fitted line. A stroke thickening from 1.5px to
+          2.4px was the hover here before, which is not a perceptible change —
+          every motif now moves the same actor by a comparable distance. */}
+      <motion.g
+        style={{ transformBox: "fill-box", transformOrigin: "center" }}
+        variants={{
+          hidden: { opacity: 0, x: 10, y: 88 },
+          show: { opacity: 1, x: 10, y: 88, transition: { duration: 0.5, delay: 0.7 } },
+          hover: reduced
+            ? {}
+            : { x: 150, y: 40, transition: { duration: 0.85, ease: EASE } },
+        }}
+      >
+        <MarkActor r={9} />
+      </motion.g>
     </Frame>
   );
 }
@@ -209,9 +221,11 @@ function BrandStrategy({ reduced }) {
               hover: reduced
                 ? {}
                 : {
-                    scale: 1 + (i + 1) * 0.07,
-                    opacity: 0.15,
-                    transition: { duration: 0.7, ease: EASE, delay: i * 0.05 },
+                    // Large enough to read as propagation. A 7% nudge was
+                    // imperceptible next to the travelling actors elsewhere.
+                    scale: 1 + (i + 1) * 0.45,
+                    opacity: 0,
+                    transition: { duration: 0.9, ease: EASE, delay: i * 0.12 },
                   },
             }}
             // transformBox is required: without it an SVG scale is measured
