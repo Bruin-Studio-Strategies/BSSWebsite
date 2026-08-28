@@ -1,4 +1,4 @@
-import { motion, useTransform } from "framer-motion";
+import { motion, useMotionTemplate, useTransform } from "framer-motion";
 
 import {
   BOX,
@@ -292,24 +292,31 @@ function BrandStrategy({ progress }) {
   const rotA = useTransform(progress, TRAVEL, [-52, 0]);
   const rotB = useTransform(progress, TRAVEL, [78, 0]);
   const rotC = useTransform(progress, TRAVEL, [-124, 0]);
-  const rots = [rotA, rotB, rotC];
+  // SVG's own rotate() with no centre given pivots on the element's local
+  // origin, which after this translate is the middle of the composition. Driving
+  // the transform attribute directly sidesteps CSS transform-origin altogether:
+  // framer reads originX/originY as fractions on HTML but pixels on SVG, and
+  // that mismatch had the triangles swinging around a bounding-box edge — they
+  // orbited the centre instead of turning in place.
+  const tA = useMotionTemplate`translate(80 60) rotate(${rotA})`;
+  const tB = useMotionTemplate`translate(80 60) rotate(${rotB})`;
+  const tC = useMotionTemplate`translate(80 60) rotate(${rotC})`;
+  const transforms = [tA, tB, tC];
   const scale = useTransform(progress, TRAVEL, [0.82, 1]);
 
   return (
     <Frame>
-      <g transform="translate(80 60)">
-        {radii.map((r, i) => (
-          <motion.g key={r} style={{ rotate: rots[i], originX: 0, originY: 0 }}>
-            <motion.polygon
-              className="stroke-white/25"
-              points={markTriangles({ cx: 0, cy: 0, r, count: 1 })[0]}
-              style={stroke}
-              strokeWidth="1.25"
-              variants={fade(0.12 + i * 0.14)}
-            />
-          </motion.g>
-        ))}
-      </g>
+      {radii.map((r, i) => (
+        <motion.g key={r} transform={transforms[i]}>
+          <motion.polygon
+            className="stroke-white/25"
+            points={markTriangles({ cx: 0, cy: 0, r, count: 1 })[0]}
+            style={stroke}
+            strokeWidth="1.25"
+            variants={fade(0.12 + i * 0.14)}
+          />
+        </motion.g>
+      ))}
       <Actor x={80} y={60} size={24} scale={scale} />
     </Frame>
   );
