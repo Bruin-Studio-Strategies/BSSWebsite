@@ -326,7 +326,7 @@ institutional half of the identity.
 ### Cards / Panels
 
 - **Corner style:** `rounded-xl` (12px).
-- **Background:** transparent over the page gradient with a white/10 hairline border; `bg-white/[0.03]` with `backdrop-blur-sm` only when over the live scene (see The Two-Ground Rule).
+- **Background:** a white veil — `bg-white/[0.055]` at rest, `bg-white/[0.09]` on hover — with a `white/15` hairline border. Panels need a surface tone, not only a border: transparent panels on a dark gradient sit on the same plane as the page and the whole section reads as blended together. The veil is white-alpha rather than a navy fill because navy separates near the top of the page gradient but drops to 1.02:1 against it lower down, where most content lives; a white veil holds roughly even separation at every height. Over the live 3D scene use `bg-white/[0.03]` with `backdrop-blur-sm` instead (see The Two-Ground Rule).
 - **Internal padding:** `p-5 sm:p-6`.
 - **Anatomy:** sky-blue uppercase eyebrow (phase, number, or category) → Agatho title → Inter body at white/60.
 - **Hover:** border warms to `magenta/40`, fill lifts to white/[0.05], and the whole card nudges 4px right. Entry is a 20px fade-up on scroll, once, at 40% visibility.

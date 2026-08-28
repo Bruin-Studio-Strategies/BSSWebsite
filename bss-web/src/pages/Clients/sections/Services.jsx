@@ -84,11 +84,18 @@ function ServiceCell({ service, index, reduced }) {
           transition: { duration: 0.6, ease: EASE, delay: (index % 3) * 0.08 },
         },
       }}
-      // A real card, so it is obvious there is something to point at. The hover
-      // border is sky rather than magenta: magenta belongs to the one action on
-      // the page, and six cards warming to it would break that.
+      // Cards carry an actual surface tone, not just a hairline. Transparent
+      // panels on a dark gradient read as the same plane as the page, which is
+      // why the section felt blended together.
+      //
+      // The fill is white-alpha rather than navy: navy separates near the top of
+      // the page gradient but is indistinguishable from it lower down, at 1.02:1
+      // — which is exactly where this section sits. A white veil holds roughly
+      // the same separation at every height instead.
       className={`group relative rounded-xl border p-5 transition-colors duration-300 sm:p-6 ${
-        hovered ? "border-sky/40 bg-white/[0.04]" : "border-white/10 bg-transparent"
+        hovered
+          ? "border-sky/50 bg-white/[0.09]"
+          : "border-white/15 bg-white/[0.055]"
       }`}
     >
       <div className="flex items-baseline gap-3">
@@ -108,7 +115,7 @@ function ServiceCell({ service, index, reduced }) {
         <ServiceMotif name={service.motif} progress={progress} />
       </div>
 
-      <p className="mt-5 font-sans text-sm leading-relaxed text-white/60">
+      <p className="mt-5 font-sans text-sm leading-relaxed text-white/70">
         {service.description}
       </p>
     </motion.li>
