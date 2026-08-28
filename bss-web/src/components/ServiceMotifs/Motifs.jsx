@@ -325,31 +325,44 @@ function BrandStrategy({ progress }) {
   );
 }
 
-/** 05 — Positioning: marks on a field, one of them ours. */
+/**
+ * 05 — Contested ground: overlapping territories, and where ours is clear.
+ *
+ * A 2x2 with markers scattered in it was legible but said nothing a hundred
+ * other consulting pages do not. Overlap is the actual subject of competitive
+ * analysis: who holds what, where those claims collide, and which ground is
+ * yours alone. The locator starts in the contested middle and settles into the
+ * part of our territory nobody else reaches.
+ */
 function CompetitiveAnalysis({ progress }) {
-  const others = [
-    { x: 44, y: 78 },
-    { x: 68, y: 44 },
-    { x: 112, y: 82 },
+  const rivals = [
+    { cx: 58, cy: 46, r: 30 },
+    { cx: 102, cy: 44, r: 26 },
   ];
-  const x = useTransform(progress, TRAVEL, [54, 118]);
-  const y = useTransform(progress, TRAVEL, [88, 34]);
+  const ours = { cx: 76, cy: 76, r: 33 };
+  const x = useTransform(progress, TRAVEL, [82, 62]);
+  const y = useTransform(progress, TRAVEL, [54, 95]);
+
   return (
     <Frame>
-      <g className="stroke-white/20" style={stroke} strokeWidth="1.25">
-        <motion.line x1="80" y1="10" x2="80" y2="110" variants={draw()} />
-        <motion.line x1="10" y1="60" x2="150" y2="60" variants={draw(0.1)} />
-      </g>
-      <g className="fill-white/30">
-        {others.map((p, i) => (
-          <motion.polygon
-            key={i}
-            points={`${p.x - 4},${p.y + 3} ${p.x + 4},${p.y + 3} ${p.x},${p.y - 5}`}
-            variants={fade(0.3 + i * 0.1)}
-          />
+      <g className="stroke-white/25" style={stroke} strokeWidth="1.25">
+        {rivals.map((c, i) => (
+          <motion.circle key={i} cx={c.cx} cy={c.cy} r={c.r} variants={draw(i * 0.16)} />
         ))}
       </g>
-      <Actor x={x} y={y} size={22} />
+      {/* Ours carries a wash as well as a stroke, so which territory is being
+          talked about is settled before any motion happens. */}
+      <motion.circle
+        className="fill-sky/[0.07]"
+        cx={ours.cx}
+        cy={ours.cy}
+        r={ours.r}
+        variants={fade(0.4)}
+      />
+      <g className="stroke-sky/70" style={stroke} strokeWidth="1.25">
+        <motion.circle cx={ours.cx} cy={ours.cy} r={ours.r} variants={draw(0.32)} />
+      </g>
+      <Actor x={x} y={y} size={20} />
     </Frame>
   );
 }
