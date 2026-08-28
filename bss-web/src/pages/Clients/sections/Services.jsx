@@ -1,6 +1,7 @@
 import { motion, useReducedMotion } from "framer-motion";
 
 import ServiceMotif from "../../../components/ServiceMotifs/Motifs.jsx";
+import useCardProgress from "../../../components/ServiceMotifs/useCardProgress.js";
 
 const EASE = [0.16, 1, 0.3, 1];
 
@@ -52,14 +53,16 @@ const SERVICES = [
 ];
 
 function ServiceCell({ service, index, reduced }) {
+  // Scroll position drives the motif's actor, not hover. Hover never fired on
+  // touch at all, which meant most visitors saw six static drawings; now the
+  // motion plays for everyone as the card crosses the viewport.
+  const { ref, progress } = useCardProgress(!reduced);
+
   return (
     <motion.li
-      // `whileHover` here is what drives each motif's actor: the SVG elements
-      // declare a "hover" variant and inherit the state from this card, so
-      // pointing anywhere in the cell moves the drawing, not just the artwork.
+      ref={ref}
       initial="hidden"
       whileInView="show"
-      whileHover={reduced ? undefined : "hover"}
       viewport={{ once: true, amount: 0.35 }}
       variants={{
         hidden: { opacity: 0, y: reduced ? 0 : 18 },
@@ -81,7 +84,7 @@ function ServiceCell({ service, index, reduced }) {
       </div>
 
       <div className="mt-5">
-        <ServiceMotif name={service.motif} reduced={reduced} />
+        <ServiceMotif name={service.motif} progress={progress} />
       </div>
 
       <p className="mt-5 font-sans text-sm leading-relaxed text-white/60">
