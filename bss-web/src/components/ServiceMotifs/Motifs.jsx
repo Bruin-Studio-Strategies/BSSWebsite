@@ -12,7 +12,6 @@ import {
   scatterPoints,
   toSmoothPath,
 } from "./geometry.js";
-import { LOGO_FILL_PATH, LOGO_STROKE_PATH, LOGO_VIEWBOX } from "./logoPath.js";
 
 const EASE = [0.16, 1, 0.3, 1];
 
@@ -25,8 +24,8 @@ const ROWS_GRID = Math.floor(BOX.h / GRID_STEP);
 // them can be mistaken for stock iconography.
 //
 // The family holds because they share: the same 160x120 box, the same hairline
-// grid, 1px non-scaling strokes at white/25, and the club's own logo as the
-// single actor in every one of them, moved on hover.
+// grid, 1px non-scaling strokes at white/25, and a locator as the single actor
+// in every one of them, moved on hover.
 
 const stroke = {
   vectorEffect: "non-scaling-stroke",
@@ -62,43 +61,47 @@ const fade = (delay = 0) => ({
 });
 
 /**
- * The actor: the club's actual logo, not an approximation of it.
+ * The actor: a locator — a filled node inside a halo ring.
  *
- * Earlier versions redrew the mark from `markTriangles` — correct geometry, but
- * at actor size three fanned outlines collapse into a scribble, and reducing it
- * to a solid triangle with an echo just read as a generic arrow. This is the
- * brand kit's own vector, lifted verbatim from public/logo.svg.
+ * Previous versions used the brand mark, first redrawn and then lifted verbatim
+ * from the brand kit's vector. Neither worked, and the reason was not the
+ * drawing: a logo is meant to be seen once, at size, as an identity. Repeated
+ * six times at twenty pixels and crawling around inside diagrams it stops
+ * reading as the mark and starts reading as a stray graphic, which cheapens it.
  *
- * A nested <svg> carrying the logo's own viewBox does the scaling, so the mark
- * drops in at any size without anyone having to work out its bounding box.
+ * A locator says exactly one thing — "the position under examination" — at any
+ * size, in two shapes. It is drawn centred on the origin so a translate alone
+ * places it, and it takes its colour from the wrapper.
  */
-function MarkActor({ size = 22 }) {
+function Locator({ size = 20 }) {
   return (
-    <svg
-      x={-size / 2}
-      y={-size / 2}
-      width={size}
-      height={size}
-      viewBox={`0 0 ${LOGO_VIEWBOX} ${LOGO_VIEWBOX}`}
-      overflow="visible"
-    >
-      <path d={LOGO_FILL_PATH} fill="currentColor" fillRule="evenodd" />
-      <path
-        d={LOGO_STROKE_PATH}
+    <>
+      {/* Bloom, then ring, then node. The bloom is a real filled circle rather
+          than only a blur filter, so the glow still reads on displays and
+          browsers that render filters conservatively. */}
+      <circle r={size * 0.5} fill="currentColor" opacity="0.1" />
+      <circle
+        r={size * 0.32}
         fill="none"
         stroke="currentColor"
-        strokeWidth="10"
-        strokeMiterlimit="10"
+        strokeOpacity="0.45"
+        strokeWidth="1"
+        vectorEffect="non-scaling-stroke"
       />
-    </svg>
+      <circle r={size * 0.13} fill="currentColor" />
+    </>
   );
 }
+
+// Two stops: a tight core and a wider falloff. A single large blur reads as a
+// smudge, while a tight one alone barely registers against the dark field.
+const GLOW = "drop-shadow(0 0 2px rgba(82,136,199,0.85)) drop-shadow(0 0 7px rgba(82,136,199,0.5))";
 
 /** Positioned by a MotionValue rather than variants, so hover can scrub it. */
 function Actor({ x, y, size, opacity, scale }) {
   return (
-    <motion.g className="text-sky" style={{ x, y, opacity, scale }}>
-      <MarkActor size={size} />
+    <motion.g className="text-sky" style={{ x, y, opacity, scale, filter: GLOW }}>
+      <Locator size={size} />
     </motion.g>
   );
 }
@@ -204,7 +207,7 @@ function BrandStrategy({ progress }) {
           />
         ))}
       </g>
-      <Actor x={80} y={60} size={44} scale={scale} />
+      <Actor x={80} y={60} size={26} scale={scale} />
     </Frame>
   );
 }
