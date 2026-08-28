@@ -180,23 +180,27 @@ function MarketResearch({ progress }) {
         })}
       </g>
 
-      {/* transform-box: view-box makes transform-origin resolve against the
-          viewBox, which is what lets this pivot on the scan's centre instead of
-          the element's own bounding box. */}
-      <motion.g
-        style={{ rotate, transformBox: "view-box", transformOrigin: `${cx}px ${cy}px` }}
-      >
-        <motion.line
-          className="stroke-sky"
-          style={stroke}
-          strokeWidth="1.25"
-          x1={cx}
-          y1={cy}
-          x2={cx + 43}
-          y2={cy}
-          variants={fade(0.5)}
-        />
-      </motion.g>
+      {/* Translate to the centre first, then rotate about the group's own
+          origin. Rotating in place and relying on transform-box/transform-origin
+          to name the centre did not pivot there, so the sweep swung around a
+          point that was not the middle of the scan. With the group already at
+          the centre, the origin is 0,0 and there is nothing to resolve — the
+          explicit transformOrigin is only there because SVG and HTML disagree on
+          the default. */}
+      <g transform={`translate(${cx} ${cy})`}>
+        <motion.g style={{ rotate, transformOrigin: "0px 0px" }}>
+          <motion.line
+            className="stroke-sky"
+            style={stroke}
+            strokeWidth="1.25"
+            x1={0}
+            y1={0}
+            x2={43}
+            y2={0}
+            variants={fade(0.5)}
+          />
+        </motion.g>
+      </g>
 
       <motion.g style={{ opacity: findOpacity }}>
         <Actor x={cx + 26} y={cy - 19} size={18} />
