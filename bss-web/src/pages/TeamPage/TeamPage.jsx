@@ -3,6 +3,7 @@ import { EXECUTIVES, CONSULTANTS, PRODUCT_MANAGERS, ADVISORYBOARD } from "./peop
 import Footer from "../../components/Footer.jsx";
 import TeamCard from "../../components/TeamCard";
 import TeamContainer from "../../components/TeamContainer.jsx";
+import SectionDivider from "../../components/SectionDivider.jsx";
 
 export default function TeamPage() {
   return (
@@ -15,7 +16,7 @@ export default function TeamPage() {
         Diverse, passionate, and innovative.
         </p>
       </div>
-      <hr className="fill-white w-1/2 sm:w-1/4 mx-auto my-12 opacity-45" />
+      <SectionDivider className="my-12" />
       <div className="mb-80 sm:mb-48">
         <TeamContainer title="Executives">
           {EXECUTIVES.map((person) => (

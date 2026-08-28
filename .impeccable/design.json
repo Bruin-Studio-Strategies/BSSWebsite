@@ -8,67 +8,166 @@
         "role": "primary",
         "displayName": "Signal Magenta",
         "canonical": "#B73593",
-        "tonalRamp": ["#3B1130", "#691E54", "#962B78", "#C3389D", "#D264B3", "#DF91C9", "#ECBEDF", "#F9EBF5"]
+        "tonalRamp": [
+          "#3B1130",
+          "#691E54",
+          "#962B78",
+          "#C3389D",
+          "#D264B3",
+          "#DF91C9",
+          "#ECBEDF",
+          "#F9EBF5"
+        ]
       },
       "sky": {
         "role": "primary",
         "displayName": "Instrument Sky",
         "canonical": "#5288C7",
-        "tonalRamp": ["#13253A", "#214166", "#2F5D92", "#3D79BE", "#6897CE", "#94B5DC", "#C0D3EB", "#ECF2F9"]
+        "tonalRamp": [
+          "#13253A",
+          "#214166",
+          "#2F5D92",
+          "#3D79BE",
+          "#6897CE",
+          "#94B5DC",
+          "#C0D3EB",
+          "#ECF2F9"
+        ]
       },
       "purple": {
         "role": "secondary",
         "displayName": "Deep Iris",
         "canonical": "#523794",
-        "tonalRamp": ["#1F1538", "#362562", "#4E348D", "#6644B7", "#886DC9", "#AA97D9", "#CDC2E8", "#F0ECF8"]
+        "tonalRamp": [
+          "#1F1538",
+          "#362562",
+          "#4E348D",
+          "#6644B7",
+          "#886DC9",
+          "#AA97D9",
+          "#CDC2E8",
+          "#F0ECF8"
+        ]
       },
       "navy": {
         "role": "neutral",
         "displayName": "Studio Navy",
         "canonical": "#0F172E",
-        "tonalRamp": ["#131D3A", "#213366", "#2F4992", "#3E5FBE", "#6882CE", "#94A6DC", "#C0CBEA", "#ECEFF9"]
+        "tonalRamp": [
+          "#131D3A",
+          "#213366",
+          "#2F4992",
+          "#3E5FBE",
+          "#6882CE",
+          "#94A6DC",
+          "#C0CBEA",
+          "#ECEFF9"
+        ]
       },
       "horizon-indigo": {
         "role": "neutral",
         "displayName": "Horizon Indigo",
         "canonical": "#3D3C95",
-        "tonalRamp": ["#161637", "#272760", "#38378A", "#4948B3", "#7170C5", "#9A9AD6", "#C4C3E7", "#EDEDF8"]
+        "tonalRamp": [
+          "#161637",
+          "#272760",
+          "#38378A",
+          "#4948B3",
+          "#7170C5",
+          "#9A9AD6",
+          "#C4C3E7",
+          "#EDEDF8"
+        ]
       },
       "deep-night": {
         "role": "neutral",
         "displayName": "Deep Night",
         "canonical": "#0A0D3D",
-        "tonalRamp": ["#0B0E42", "#131974", "#1B23A6", "#232ED8", "#535BE3", "#858BEB", "#B7BBF3", "#E9EAFB"]
+        "tonalRamp": [
+          "#0B0E42",
+          "#131974",
+          "#1B23A6",
+          "#232ED8",
+          "#535BE3",
+          "#858BEB",
+          "#B7BBF3",
+          "#E9EAFB"
+        ]
       },
       "night-sky": {
         "role": "neutral",
         "displayName": "Night Sky",
         "canonical": "#141338",
-        "tonalRamp": ["#161536", "#272460", "#38348A", "#4944B3", "#716DC5", "#9A97D6", "#C4C2E7", "#EDECF8"]
+        "tonalRamp": [
+          "#161536",
+          "#272460",
+          "#38348A",
+          "#4944B3",
+          "#716DC5",
+          "#9A97D6",
+          "#C4C2E7",
+          "#EDECF8"
+        ]
       },
       "ridge-shadow": {
         "role": "neutral",
         "displayName": "Ridge Shadow",
         "canonical": "#211D4E",
-        "tonalRamp": ["#181538", "#2A2562", "#3C348D", "#4E44B7", "#746DC9", "#9D97D8", "#C5C2E8", "#EDECF8"]
+        "tonalRamp": [
+          "#181538",
+          "#2A2562",
+          "#3C348D",
+          "#4E44B7",
+          "#746DC9",
+          "#9D97D8",
+          "#C5C2E8",
+          "#EDECF8"
+        ]
       },
       "starlight": {
         "role": "neutral",
         "displayName": "Starlight",
         "canonical": "#E8E6FF",
-        "tonalRamp": ["#06004C", "#0B0087", "#0F00C1", "#1400FB", "#4737FF", "#7C71FF", "#B2ABFF", "#E8E5FF"]
+        "tonalRamp": [
+          "#06004C",
+          "#0B0087",
+          "#0F00C1",
+          "#1400FB",
+          "#4737FF",
+          "#7C71FF",
+          "#B2ABFF",
+          "#E8E5FF"
+        ]
       },
       "lilac-ambient": {
         "role": "neutral",
         "displayName": "Lilac Ambient",
         "canonical": "#C9BEFF",
-        "tonalRamp": ["#1D004C", "#330087", "#4900C1", "#5F00FB", "#8137FF", "#A371FF", "#C6ABFF", "#E8E5FF"]
+        "tonalRamp": [
+          "#1D004C",
+          "#330087",
+          "#4900C1",
+          "#5F00FB",
+          "#8137FF",
+          "#A371FF",
+          "#C6ABFF",
+          "#E8E5FF"
+        ]
       },
       "orchid-key": {
         "role": "neutral",
         "displayName": "Orchid Key",
         "canonical": "#B98CE0",
-        "tonalRamp": ["#2C0F4C", "#4E1B87", "#6F26C1", "#9132FB", "#AB5FFF", "#C48CFF", "#DDB8FF", "#F6E5FF"]
+        "tonalRamp": [
+          "#2C0F4C",
+          "#4E1B87",
+          "#6F26C1",
+          "#9132FB",
+          "#AB5FFF",
+          "#C48CFF",
+          "#DDB8FF",
+          "#F6E5FF"
+        ]
       }
     },
     "typographyMeta": {
@@ -147,9 +246,18 @@
       }
     ],
     "breakpoints": [
-      { "name": "sm", "value": "576px" },
-      { "name": "md", "value": "960px" },
-      { "name": "lg", "value": "1440px" }
+      {
+        "name": "sm",
+        "value": "576px"
+      },
+      {
+        "name": "md",
+        "value": "960px"
+      },
+      {
+        "name": "lg",
+        "value": "1440px"
+      }
     ]
   },
   "components": [
@@ -213,9 +321,9 @@
       "name": "Section Divider",
       "kind": "custom",
       "refersTo": null,
-      "description": "The hairline gradient rule that separates major sections. Replaces the legacy solid hr entirely.",
-      "html": "<hr class=\"ds-divider\">",
-      "css": ".ds-divider { border: 0; height: 1px; width: 100%; max-width: 48rem; margin: 16px auto; background: linear-gradient(to right, transparent, rgba(255,255,255,0.20), transparent); }"
+      "description": "The site's only rule between sections: a hairline fading out at both ends, scaling in from its centre on first view. Callers vary spacing only.",
+      "html": "<div class=\"ds-divider\"></div>",
+      "css": ".ds-divider { height: 1px; width: 91.666%; max-width: 48rem; margin: 48px auto; background: linear-gradient(to right, transparent, rgba(255,255,255,0.20), transparent); transform: scaleX(1); animation: ds-divider-in 900ms cubic-bezier(0.16, 1, 0.3, 1) both; } @keyframes ds-divider-in { from { transform: scaleX(0); } to { transform: scaleX(1); } } @media (prefers-reduced-motion: reduce) { .ds-divider { animation: none; } }"
     }
   ],
   "narrative": {
@@ -287,7 +395,8 @@
       "Do use cubic-bezier(0.16, 1, 0.3, 1) for every transition and reveal, and guard every one of them with prefers-reduced-motion.",
       "Do present photographs in the framed-figure pattern - 16px radius, white/10 ring, gradient bloom behind.",
       "Do design against the project's real breakpoints (576 / 960 / 1440), mobile-first.",
-      "Do reserve bottom clearance for the absolutely-positioned footer on any new page."
+      "Do reserve bottom clearance for the absolutely-positioned footer on any new page.",
+      "Do separate sections with the SectionDivider component, varying only its margin."
     ],
     "donts": [
       "Don't use Tailwind's stock blue-*, gray-*, or slate-* classes. Every color comes from a brand token or a white alpha.",
@@ -298,7 +407,8 @@
       "Don't set headings in EB Garamond, or set running text in Agatho.",
       "Don't wrap decorative icons in colored circles to create hierarchy - structure and type do that job.",
       "Don't design a layout that structurally needs statistics, a client logo wall, or case studies; the club has one testimonial and no metrics (see PRODUCT.md).",
-      "Don't redraw the logo mark with a different number of triangles, unequal sizes, or a pivot other than the shared right-hand tip."
+      "Don't redraw the logo mark with a different number of triangles, unequal sizes, or a pivot other than the shared right-hand tip.",
+      "Don't hand-roll a divider with <hr>, a solid fill, or a stock gray-* background; there is one divider component."
     ]
   }
 }

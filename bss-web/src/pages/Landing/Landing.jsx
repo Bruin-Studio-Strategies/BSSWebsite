@@ -1,9 +1,9 @@
-import { motion } from "framer-motion";
 import Title from "./sections/Title";
 import Footer from "../../components/Footer";
 import Info from "./sections/Info";
 import Team from "./sections/Team";
 import HeroBackdrop from "../../components/HeroScene/HeroBackdrop";
+import SectionDivider from "../../components/SectionDivider";
 
 
 
@@ -32,13 +32,7 @@ export default function Landing() {
         </div>
       </div>
       <Info />
-      <motion.div
-        initial={{ scaleX: 0 }}
-        whileInView={{ scaleX: 1 }}
-        viewport={{ once: true, amount: 1 }}
-        transition={{ duration: 0.9, ease: [0.16, 1, 0.3, 1] }}
-        className="mx-auto my-4 h-px w-11/12 max-w-3xl bg-gradient-to-r from-transparent via-white/20 to-transparent"
-      />
+      <SectionDivider className="my-4" />
       <Team />
       <Footer />
     </>

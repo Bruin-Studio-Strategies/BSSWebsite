@@ -243,7 +243,7 @@ A centered measure on a dark field, with air as the primary luxury signal.
 - **Section rhythm:** `py-20 sm:py-28` between major sections. Content blocks inside a section step down to `gap-10 sm:gap-14 lg:gap-20`.
 - **The two-column figure/text block** is the system's workhorse: a framed image on one side, eyebrow + headline + body + CTA on the other, `grid-cols-1 md:grid-cols-2`, order swapped between adjacent sections so the page alternates. On mobile it stacks with text first (`order-1`).
 - **Breakpoints are non-standard and deliberate:** `sm: 576px`, `md: 960px`, `lg: 1440px`. This is not Tailwind's default scale — `sm` behaves like a phone-to-tablet break and `md` is where two-column layouts actually engage. Design mobile-first against these numbers, not against the defaults.
-- **Section dividers:** a hairline gradient rule (`h-px`, transparent → white/20 → transparent, `max-w-3xl`) that animates its width in on scroll. It replaces the legacy solid `<hr>` entirely.
+- **Section dividers:** one component, `SectionDivider`, used on every page. A hairline (`h-px`, `w-11/12`, `max-w-3xl`) that fades to transparent at both ends and scales in from its centre when first scrolled into view (0.9s, project easing, `once`, `amount: 1`). Spacing is the only thing a caller varies, passed as `className` — `my-12` between major sections, `my-4` where two sections are deliberately tight. It replaces the legacy `<hr>` elements entirely.
 - **Scroll-pinned sections:** the hero uses a track taller than the viewport (`160vh`) with a `sticky` child, so the scene stays pinned while its animation plays. The track height and the hook's constant must be changed together.
 
 ### Named Rules
@@ -349,6 +349,16 @@ that breathes between 55% and 80% opacity on a 6-second loop, and a 1.02 scale o
 hover. Under `prefers-reduced-motion` the bloom holds at a fixed 70% and the hover
 scale is dropped. This is how every real photograph in the system is presented.
 
+### Section Divider
+
+The only rule allowed between sections. A 1px line, `w-11/12` capped at
+`max-w-3xl`, centred, its gradient running transparent → white/20 → transparent
+so it has no hard ends. On first entering the viewport it scales in from the
+centre (0.9s on the project curve, once only); under `prefers-reduced-motion` it
+is simply present. Callers pass spacing and nothing else. Never introduce a
+second divider treatment — a solid rule, a full-bleed rule, or a shorter
+centred rule are all previous versions of this component, not alternatives to it.
+
 ### Section Opener
 
 Eyebrow (sky, uppercase, `0.2em`) → Agatho headline → Inter body at white/70,
@@ -376,6 +386,7 @@ loaded behind `Suspense`, DPR-capped, and quality-tiered by viewport.
 - **Do** present photographs in the framed-figure pattern — 16px radius, white/10 ring, gradient bloom behind.
 - **Do** design against the project's real breakpoints (576 / 960 / 1440), mobile-first.
 - **Do** reserve bottom clearance for the absolutely-positioned footer on any new page.
+- **Do** separate sections with the `SectionDivider` component, varying only its margin.
 
 ### Don't:
 
@@ -385,6 +396,7 @@ loaded behind `Suspense`, DPR-capped, and quality-tiered by viewport.
 - **Don't** give a surface a shadow at rest; shadows respond to hover only, and they are colored glows rather than black drops.
 - **Don't** build white cards with saturated color header blocks (the legacy `ServiceCard` pattern). Panels are dark, bounded by hairlines.
 - **Don't** set headings in EB Garamond, or set running text in Agatho.
+- **Don't** hand-roll a divider with `<hr>`, a solid fill, or a stock `gray-*` background; there is one divider component.
 - **Don't** wrap decorative icons in colored circles to create hierarchy — structure and type do that job.
 - **Don't** design a layout that structurally needs statistics, a client logo wall, or case studies; the club has one testimonial and no metrics (see PRODUCT.md).
 - **Don't** redraw the logo mark with a different number of triangles, unequal sizes, or a pivot other than the shared right-hand tip.

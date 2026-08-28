@@ -1,6 +1,7 @@
 import Timeline from "./sections/Timeline";
 import FAQ from "./sections/FAQ";
 import Footer from "../../components/Footer";
+import SectionDivider from "../../components/SectionDivider";
 
 export default function Recruitment() {
   // structure:
@@ -18,7 +19,7 @@ export default function Recruitment() {
           Interested in joining our team? Our next recruitment cycle will be in Fall 2025!
         </p>
       </div>
-      <hr className="h-px my-12 bg-gray-100 border-0 w-11/12 m-auto opacity-50"></hr>
+      <SectionDivider className="my-12" />
       <div className="w-full sm:w-4/5 mx-auto sm:px-0 px-3 mb-32">  { /* get rid of mb when banner is up */}
         <h3 className="font-serif text-2xl sm:text-3xl font-medium mb-6 sm:mb-10 sm:text-left text-center">
           Recruiment Timeline

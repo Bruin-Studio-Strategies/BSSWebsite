@@ -4,6 +4,7 @@ import Services from "./sections/Services";
 import Process from "./sections/Process";
 import { Link } from "react-router-dom";
 import board from "../../assets/board.jpg";
+import SectionDivider from "../../components/SectionDivider";
 export default function Clients() {
   return (
     <>
@@ -17,9 +18,9 @@ export default function Clients() {
           services for creative and business ventures.
         </p>
       </div>
-      <hr className="h-px my-12 bg-gray-100 border-0 w-11/12 m-auto opacity-50"></hr>
+      <SectionDivider className="my-12" />
       <Services />
-      <hr className="h-px my-12 bg-gray-100 border-0 w-11/12 m-auto opacity-50"></hr>
+      <SectionDivider className="my-12" />
       {/* Section opener, then the engagement's two fixed facts — duration and
           team shape — set beside it as a spec rather than stacked as loose
           sentences. With no metrics or case studies to point at, this concrete
