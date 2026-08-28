@@ -3,6 +3,7 @@ import Footer from "../../components/Footer";
 import Services from "./sections/Services";
 import Process from "./sections/Process";
 import { Link } from "react-router-dom";
+import board from "../../assets/board.jpg";
 export default function Clients() {
   return (
     <>
@@ -80,6 +81,18 @@ export default function Clients() {
             </Link>
           </div>
         </div>
+
+        {/* The photo stays, but after the ask rather than beside it — a wide
+            letterbox strip across the full measure, so it closes the page
+            without outweighing the button. Squared corners and a hairline
+            instead of the old soft rounded card: at this width it reads as a
+            frame, which is the right register for an entertainment client and
+            matches the ruled language above it. */}
+        <img
+          src={board}
+          alt="Bruin Studio Strategies consultants on campus"
+          className="mt-14 w-full rounded-sm object-cover ring-1 ring-white/10 aspect-[3/2] md:aspect-[21/9]"
+        />
       </section>
       <Footer />
     </>
