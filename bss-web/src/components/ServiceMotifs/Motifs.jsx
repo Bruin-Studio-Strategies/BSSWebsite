@@ -1,4 +1,5 @@
-import { motion, useMotionTemplate, useTransform } from "framer-motion";
+import { useEffect, useRef } from "react";
+import { motion, useTransform } from "framer-motion";
 
 import {
   BOX,
@@ -101,6 +102,33 @@ function Actor({ x, y, size, opacity, scale }) {
       <Locator size={size} />
     </motion.g>
   );
+}
+
+/**
+ * Spins its children about its own origin.
+ *
+ * Rotation is written straight to the SVG `transform` attribute from the motion
+ * value, because every CSS route to this was ambiguous: framer reads
+ * originX/originY as fractions on HTML but pixels on SVG, transform-box changes
+ * what transform-origin resolves against, and framer's default origin for an SVG
+ * element is its bounding-box centre — which for these triangles sits a quarter
+ * of the radius off the centroid, so they orbited instead of turning in place.
+ * `rotate(deg)` with no centre given is plain SVG and pivots on the local
+ * origin, which the parent translate has already put on the dot. Set through a
+ * ref so it updates per frame without re-rendering.
+ */
+function SpinGroup({ angle, children }) {
+  const ref = useRef(null);
+
+  useEffect(() => {
+    const apply = (value) => {
+      if (ref.current) ref.current.setAttribute("transform", `rotate(${value})`);
+    };
+    apply(angle.get());
+    return angle.on("change", apply);
+  }, [angle]);
+
+  return <g ref={ref}>{children}</g>;
 }
 
 function Grid() {
@@ -299,17 +327,17 @@ function BrandStrategy({ progress }) {
   // group they cannot drift apart, because they are drawn in the same space.
   // SVG rotate() with no centre given pivots on the local origin, which the
   // wrapper's translate has already put at the middle.
-  const tA = useMotionTemplate`rotate(${rotA})`;
-  const tB = useMotionTemplate`rotate(${rotB})`;
-  const tC = useMotionTemplate`rotate(${rotC})`;
-  const transforms = [tA, tB, tC];
+  const angles = [rotA, rotB, rotC];
   const scale = useTransform(progress, TRAVEL, [0.82, 1]);
 
   return (
     <Frame>
+      {/* One translate for the whole composition: the rings and the dot are
+          drawn in the same space, so they cannot drift off each other, and the
+          dot is exactly the axis every triangle turns about. */}
       <g transform="translate(80 60)">
         {radii.map((r, i) => (
-          <motion.g key={r} transform={transforms[i]}>
+          <SpinGroup key={r} angle={angles[i]}>
             <motion.polygon
               className="stroke-white/25"
               points={markTriangles({ cx: 0, cy: 0, r, count: 1 })[0]}
@@ -317,7 +345,7 @@ function BrandStrategy({ progress }) {
               strokeWidth="1.25"
               variants={fade(0.12 + i * 0.14)}
             />
-          </motion.g>
+          </SpinGroup>
         ))}
         <Actor x={0} y={0} size={24} scale={scale} />
       </g>
