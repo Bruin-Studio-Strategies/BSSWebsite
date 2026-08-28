@@ -3,7 +3,6 @@ import { motion, useTransform } from "framer-motion";
 import {
   BOX,
   GRID_STEP,
-  contourRings,
   markTriangles,
   meshWithHole,
   pointAlong,
@@ -135,19 +134,73 @@ function Frame({ children, grid = true }) {
 // Hover progress runs the full 0..1, so the actors use the whole range.
 const TRAVEL = [0, 1];
 
-/** 01 — Surveying unfamiliar ground: a contour map, and the mark crossing it. */
+/**
+ * 01 — Searching a market: a scan sweeping a field, and what it finds.
+ *
+ * Two earlier attempts built this out of the noise field — open ridges, then
+ * closed contour rings — and both read as squiggles, because noise-derived
+ * shapes are squiggles. Nothing here is random: exact concentric circles, a
+ * bezel of evenly spaced ticks, and a sweep line at a computed angle. A scan is
+ * also the only one of these drawings whose meaning nobody has to be told.
+ */
 function MarketResearch({ progress }) {
-  const rings = contourRings();
-  const x = useTransform(progress, TRAVEL, [26, 134]);
-  const y = useTransform(progress, TRAVEL, [82, 38]);
+  const cx = 80;
+  const cy = 60;
+  const rings = [15, 29, 43];
+  const ticks = Array.from({ length: 16 }, (_, i) => (i / 16) * 360);
+  const rotate = useTransform(progress, TRAVEL, [-120, 150]);
+  // The find brightens as the sweep reaches it rather than being lit the whole
+  // time, so the scan reads as doing something.
+  const findOpacity = useTransform(progress, [0.45, 0.62, 1], [0.25, 1, 1]);
+
   return (
-    <Frame>
-      <g className="stroke-white/25" style={stroke} strokeWidth="1.25">
-        {rings.map((d, i) => (
-          <motion.path key={i} d={d} variants={draw(i * 0.18)} />
+    <Frame grid={false}>
+      <g className="stroke-white/20" style={stroke} strokeWidth="1.25">
+        {rings.map((r, i) => (
+          <motion.circle key={r} cx={cx} cy={cy} r={r} variants={fade(0.1 + i * 0.14)} />
         ))}
+        <motion.line x1={cx - 50} y1={cy} x2={cx + 50} y2={cy} variants={draw(0.3)} />
+        <motion.line x1={cx} y1={cy - 50} x2={cx} y2={cy + 50} variants={draw(0.36)} />
       </g>
-      <Actor x={x} y={y} size={20} />
+
+      <g className="stroke-white/25" style={stroke} strokeWidth="1.25">
+        {ticks.map((deg) => {
+          const a = (deg * Math.PI) / 180;
+          const inner = deg % 90 === 0 ? 46 : 49;
+          return (
+            <motion.line
+              key={deg}
+              x1={cx + Math.cos(a) * inner}
+              y1={cy + Math.sin(a) * inner}
+              x2={cx + Math.cos(a) * 53}
+              y2={cy + Math.sin(a) * 53}
+              variants={fade(0.4 + (deg / 360) * 0.3)}
+            />
+          );
+        })}
+      </g>
+
+      {/* transform-box: view-box makes transform-origin resolve against the
+          viewBox, which is what lets this pivot on the scan's centre instead of
+          the element's own bounding box. */}
+      <motion.g
+        style={{ rotate, transformBox: "view-box", transformOrigin: `${cx}px ${cy}px` }}
+      >
+        <motion.line
+          className="stroke-sky"
+          style={stroke}
+          strokeWidth="1.25"
+          x1={cx}
+          y1={cy}
+          x2={cx + 43}
+          y2={cy}
+          variants={fade(0.5)}
+        />
+      </motion.g>
+
+      <motion.g style={{ opacity: findOpacity }}>
+        <Actor x={cx + 26} y={cy - 19} size={18} />
+      </motion.g>
     </Frame>
   );
 }
