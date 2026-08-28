@@ -179,12 +179,14 @@ function MarketResearch({ progress }) {
   // for an SVG element — so the sweep swung about its own middle instead of the
   // centre of the scan. With x1/y1 pinned to the centre and only the far end
   // moving, the line cannot come off the centre.
-  const angle = useTransform(progress, TRAVEL, [-125, 145]);
+  const angle = useTransform(progress, TRAVEL, [-90, 270]);
   const sweepX = useTransform(angle, (deg) => cx + Math.cos((deg * Math.PI) / 180) * 43);
   const sweepY = useTransform(angle, (deg) => cy + Math.sin((deg * Math.PI) / 180) * 43);
-  // The find brightens as the sweep reaches it rather than being lit the whole
-  // time, so the scan reads as doing something.
-  const findOpacity = useTransform(progress, [0.45, 0.62, 1], [0.25, 1, 1]);
+  // The find sits at roughly 35 degrees, which the sweep passes about a third of
+  // the way through a full revolution; it brightens as the beam arrives and
+  // stays lit, so the scan reads as having found something rather than merely
+  // spinning.
+  const findOpacity = useTransform(progress, [0.3, 0.38, 1], [0.2, 1, 1]);
 
   return (
     <Frame grid={false}>
@@ -354,43 +356,50 @@ function BrandStrategy({ progress }) {
 }
 
 /**
- * 05 — Contested ground: overlapping territories, and where ours is clear.
+ * 05 — Measuring the field: reach on a shared axis, and ours going past it.
  *
- * A 2x2 with markers scattered in it was legible but said nothing a hundred
- * other consulting pages do not. Overlap is the actual subject of competitive
- * analysis: who holds what, where those claims collide, and which ground is
- * yours alone. The locator starts in the contested middle and settles into the
- * part of our territory nobody else reaches.
+ * Earlier versions drew territories as circles. Tinting one of them as ours made
+ * the drawing say "us" twice — as the washed circle and again as the dot inside
+ * it — and leaving them all neutral made the dot's destination arbitrary. Bars
+ * on one axis put the comparison in the drawing itself rather than in a caption,
+ * and give the dot a job it does everywhere else in the set: it is the client,
+ * leading our reach out past the longest of them. The bar is reach, the dot is
+ * where we are.
  */
 function CompetitiveAnalysis({ progress }) {
+  const axis = 18;
   const rivals = [
-    { cx: 58, cy: 46, r: 30 },
-    { cx: 102, cy: 44, r: 26 },
+    { y: 22, len: 58 },
+    { y: 40, len: 86 },
+    { y: 76, len: 44 },
+    { y: 94, len: 71 },
   ];
-  const ours = { cx: 76, cy: 76, r: 33 };
-  const x = useTransform(progress, TRAVEL, [82, 62]);
-  const y = useTransform(progress, TRAVEL, [54, 95]);
+  const ourY = 58;
+  const x = useTransform(progress, TRAVEL, [axis + 34, axis + 122]);
 
   return (
     <Frame>
-      <g className="stroke-white/25" style={stroke} strokeWidth="1.25">
-        {rivals.map((c, i) => (
-          <motion.circle key={i} cx={c.cx} cy={c.cy} r={c.r} variants={draw(i * 0.16)} />
+      <g className="stroke-white/20" style={stroke} strokeWidth="1.25">
+        <motion.line x1={axis} y1="12" x2={axis} y2="108" variants={draw()} />
+      </g>
+      <g className="stroke-white/25" style={stroke} strokeWidth="5">
+        {rivals.map((r, i) => (
+          <motion.line
+            key={r.y}
+            x1={axis}
+            y1={r.y}
+            x2={axis + r.len}
+            y2={r.y}
+            variants={draw(0.18 + i * 0.12)}
+          />
         ))}
       </g>
-      {/* Ours carries a wash as well as a stroke, so which territory is being
-          talked about is settled before any motion happens. */}
-      <motion.circle
-        className="fill-sky/[0.07]"
-        cx={ours.cx}
-        cy={ours.cy}
-        r={ours.r}
-        variants={fade(0.4)}
-      />
-      <g className="stroke-sky/70" style={stroke} strokeWidth="1.25">
-        <motion.circle cx={ours.cx} cy={ours.cy} r={ours.r} variants={draw(0.32)} />
+      {/* Drawn to a moving endpoint rather than scaled, so the bar grows from
+          the axis and the dot stays welded to its tip. */}
+      <g className="stroke-sky" style={stroke} strokeWidth="5">
+        <motion.line x1={axis} y1={ourY} x2={x} y2={ourY} variants={fade(0.5)} />
       </g>
-      <Actor x={x} y={y} size={20} />
+      <Actor x={x} y={ourY} size={20} />
     </Frame>
   );
 }
