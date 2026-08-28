@@ -62,6 +62,18 @@ html, body {
   min-height: 100vh;
 }
 
+/* The gradient lives on <body>, and a body background normally propagates to the
+   canvas — but the absolutely-positioned footer is laid out against <html>, so
+   the document ends up taller than <body> (by the footer's own height). Regions
+   outside body's box then repaint as the browser default white, which shows up
+   as large white bands flashing in and out while scrolling. This floor colour is
+   the gradient's own end colour, so it is invisible where the gradient paints
+   and correct everywhere the gradient does not reach. Remove it only once the
+   footer sits in normal flow. */
+html {
+  background-color: #0a0d3d;
+}
+
 body {
   margin: 0;
   background: linear-gradient(#3D3C95, 20%, #0a0d3d);

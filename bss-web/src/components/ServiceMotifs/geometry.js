@@ -141,10 +141,12 @@ export function meshWithHole({
     const d = Math.hypot(dx, dy);
     if (d >= influence) return [x, y];
     if (d < 0.0001) return [center.x + holeR, center.y];
-    // Ease the remap so lines crowd near the rim and relax toward the edge of
-    // the influence disc, instead of shifting by a constant amount.
+    // Ease-in rather than smoothstep: the remapped radius stays near the rim for
+    // longer, so lines dive toward the opening and the mesh reads as funnelling
+    // inward. A symmetric smoothstep made the surface swell outward around the
+    // hole instead, which is the opposite gesture — a bulge, not a way in.
     const t = d / influence;
-    const eased = t * t * (3 - 2 * t);
+    const eased = Math.pow(t, 2.6);
     const nd = holeR + (influence - holeR) * eased;
     return [center.x + (dx / d) * nd, center.y + (dy / d) * nd];
   };

@@ -195,7 +195,10 @@ function BrandStrategy({ reduced }) {
                     transition: { duration: 0.7, ease: EASE, delay: i * 0.05 },
                   },
             }}
-            style={{ ...stroke, transformOrigin: "80px 60px" }}
+            // transformBox is required: without it an SVG scale is measured
+            // from the viewBox origin, so these fly off toward the corner
+            // instead of expanding about the mark.
+            style={{ ...stroke, transformBox: "fill-box", transformOrigin: "center" }}
           />
         ))}
         <g className="stroke-sky" style={stroke}>
@@ -262,7 +265,7 @@ function MarketEntry({ reduced }) {
       </g>
       <motion.circle
         className="stroke-sky/40"
-        style={stroke}
+        style={{ ...stroke, transformBox: "fill-box", transformOrigin: "center" }}
         strokeWidth="1"
         cx={center.x}
         cy={center.y}
