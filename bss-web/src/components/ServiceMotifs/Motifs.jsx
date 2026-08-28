@@ -54,6 +54,22 @@ const fade = (delay = 0) => ({
   show: { opacity: 1, transition: { duration: 0.5, ease: EASE, delay } },
 });
 
+// The actor that appears in every motif: the brand mark, reduced to what
+// survives at this size. The full construction is three congruent triangles
+// fanned about their shared right-hand tip; three outlines at ~12px collapse
+// into a scribble, so the actor keeps the geometry and drops one shape — a
+// solid mark with a single offset echo behind it. The full three-triangle
+// version appears only in 04, where the mark is the subject and drawn large.
+function MarkActor({ r = 11, spread = 16 }) {
+  const [solid, echo] = markTriangles({ cx: 0, cy: 0, r, spread, count: 2 });
+  return (
+    <>
+      <polygon points={echo} className="stroke-sky/50" fill="none" strokeWidth="1" />
+      <polygon points={solid} className="fill-sky" />
+    </>
+  );
+}
+
 function Grid() {
   const cols = Math.floor(BOX.w / GRID_STEP);
   const rows = Math.floor(BOX.h / GRID_STEP);
@@ -106,8 +122,10 @@ function MarketResearch({ reduced }) {
           hover: reduced ? {} : { y: 26, transition: { duration: 0.6, ease: EASE } },
         }}
       >
-        <line x1="104" y1="8" x2="104" y2="42" />
-        <rect x="100" y="41" width="8" height="8" transform="rotate(45 104 45)" className="fill-sky stroke-none" />
+        <line x1="104" y1="8" x2="104" y2="40" />
+        <g transform="translate(104 47)">
+          <MarkActor r={8} />
+        </g>
       </motion.g>
     </Frame>
   );
@@ -124,9 +142,8 @@ function GrowthStrategy({ reduced }) {
       <g className="stroke-white/25" style={stroke} strokeWidth="1.25">
         <motion.path d={d} variants={draw()} />
       </g>
-      <motion.polygon
-        className="fill-sky"
-        points="-5,4 5,4 0,-6"
+      <motion.g
+        style={{ transformBox: "fill-box", transformOrigin: "center" }}
         // x/y appear in `hidden` as well as `show`. A variant that introduces a
         // transform value the initial variant never declared leaves framer with
         // nothing to animate from, and the actor renders parked at the SVG
@@ -143,7 +160,9 @@ function GrowthStrategy({ reduced }) {
             ? {}
             : { x: end.x, y: end.y - 4, transition: { duration: 0.75, ease: EASE } },
         }}
-      />
+      >
+        <MarkActor r={9} />
+      </motion.g>
     </Frame>
   );
 }
@@ -233,15 +252,16 @@ function CompetitiveAnalysis({ reduced }) {
           />
         ))}
       </g>
-      <motion.polygon
-        className="fill-sky"
-        points="-6,5 6,5 0,-7"
+      <motion.g
+        style={{ transformBox: "fill-box", transformOrigin: "center" }}
         variants={{
           hidden: { opacity: 0, x: 58, y: 88 },
           show: { opacity: 1, x: 58, y: 88, transition: { duration: 0.5, delay: 0.55 } },
           hover: reduced ? {} : { x: 120, y: 32, transition: { duration: 0.8, ease: EASE } },
         }}
-      />
+      >
+        <MarkActor r={10} />
+      </motion.g>
     </Frame>
   );
 }
@@ -281,9 +301,7 @@ function MarketEntry({ reduced }) {
           through it — keyframed so the travel finishes before the vanish starts,
           otherwise it fades out on the way and never reads as entering. */}
       <motion.g
-        className="stroke-sky"
-        style={{ ...stroke, transformBox: "fill-box", transformOrigin: "center" }}
-        strokeWidth="1.5"
+        style={{ transformBox: "fill-box", transformOrigin: "center" }}
         variants={{
           hidden: { opacity: 0, x: 16, y: center.y, scale: 1 },
           show: {
@@ -304,9 +322,7 @@ function MarketEntry({ reduced }) {
               },
         }}
       >
-        {markTriangles({ cx: 0, cy: 0, r: 11, spread: 14 }).map((points, i) => (
-          <polygon key={i} points={points} />
-        ))}
+        <MarkActor />
       </motion.g>
     </Frame>
   );
