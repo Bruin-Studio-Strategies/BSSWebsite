@@ -183,19 +183,27 @@ export function meshWithHole({
 export function contourRings({
   cx = 80,
   cy = 60,
-  radii = [14, 24, 34, 44],
-  amplitude = 7,
-  samples = 64,
+  radii = [13, 25, 37, 49],
+  amplitude = 4,
+  samples = 72,
 } = {}) {
-  return radii.map((base, ring) => {
+  // One noise sample per angle, shared by every ring. Real contour lines are
+  // parallel — the same shape at different sizes — and they never touch. Giving
+  // each ring its own sample made them wobble independently, so neighbours
+  // closed to a hundredth of a unit in places and merged into a scribble at
+  // render size. Sharing the sample makes the gap exactly the ring spacing.
+  const wobble = [];
+  for (let i = 0; i <= samples; i += 1) {
+    const a = (i / samples) * Math.PI * 2;
+    wobble.push(noise2D(Math.cos(a) * 1.25, Math.sin(a) * 1.25));
+  }
+
+  return radii.map((base) => {
     const pts = [];
     for (let i = 0; i <= samples; i += 1) {
       const a = (i / samples) * Math.PI * 2;
-      // Sample the field on a circle so each ring is a slice of the same
-      // landscape rather than an independently wobbled ellipse.
-      const n = noise2D(Math.cos(a) * 1.4 + ring * 0.6, Math.sin(a) * 1.4 + ring * 0.6);
-      const r = base + n * amplitude * (1 - ring * 0.12);
-      pts.push([cx + Math.cos(a) * r, cy + Math.sin(a) * r * 0.78]);
+      const r = base + wobble[i] * amplitude;
+      pts.push([cx + Math.cos(a) * r, cy + Math.sin(a) * r * 0.74]);
     }
     return toSmoothPath(pts);
   });
