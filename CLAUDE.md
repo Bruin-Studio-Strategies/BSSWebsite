@@ -62,4 +62,23 @@ feature-detected with a fallback to the original flat assets, `prefers-reduced-m
 respected, capped device pixel ratio, viewport-scaled terrain resolution.
 
 Not yet touched in this pass: navbar styling, the "What is BSS?"/testimonial section,
-Team/Clients/Recruitment/Contact pages, any copy.
+Recruitment/Contact pages, any copy.
+
+## Team page (branch `worktree-team-redesign`)
+`/team` rebuilt into the redesign's visual world: one uniform cell per member (no
+ranking by size — see The Equal Cell Rule in DESIGN.md), name/role/major always
+visible instead of hidden behind the old black hover overlay, ruled band headings
+with counts, responsive 2→3→4→5 columns, and an Apply Now CTA.
+
+**Headshots are never imported directly.** The 37 originals in
+`src/pages/TeamPage/Headshots/` total ~55 MB and are archive only. Everything the
+browser sees is derived by `bss-web/scripts/optimize-headshots.mjs` (sharp,
+devDependency) into `HeadshotsOptimized/` — 320/640px WebP, a 640px JPEG fallback,
+and a 20px inline blur-up placeholder — all committed so Vercel never runs the
+conversion. `people.js` stores a `slug`; `headshots.js` resolves it via
+`import.meta.glob`. **After adding or replacing a headshot, re-run the script and
+commit its output**, or that member renders as initials.
+
+Executives load eagerly at high fetch priority; everyone below the fold stays
+lazy. Full detail, including why the roster deviates from the Eyebrow, Framed
+Figure, and SectionDivider rules, is in DESIGN.md under Roster Grid.
