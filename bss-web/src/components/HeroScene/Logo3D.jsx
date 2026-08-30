@@ -3,10 +3,14 @@ import { useFrame, useThree } from "@react-three/fiber";
 import { Billboard, useTexture } from "@react-three/drei";
 import * as THREE from "three";
 import { SUN_X_START, SUN_Y_TOP, SUN_Z, getSunPosition } from "./sunPath.js";
+import { follow } from "./smoothing.js";
 import logoSrc from "../../assets/logo-plain.png";
 
 const GLOW_COLOR = "#E24FB0";
-const SUN_SCALE = 1.7;
+// Scaled with SUN_Z: the sun moved from 28 units out to 40 to clear the distant
+// ridge, and sizeAttenuation is not in play here, so the mark has to grow by the
+// same 1.43x to keep its apparent size.
+const SUN_SCALE = 2.45;
 // logo-plain.png is a 1:1 square (the mark itself doesn't fill the frame edge to
 // edge), so a plain square plane matches it without distortion.
 const LOGO_SIZE = 3.2;
@@ -33,7 +37,7 @@ function makeGlowTexture() {
 export default function Logo3D({ scrollYProgress, reducedMotion }) {
   const groupRef = useRef();
   const logoRef = useRef();
-  const descend = useRef(0);
+  const descend = useRef(null);
   const glowTexture = useMemo(() => makeGlowTexture(), []);
   const logoMap = useTexture(logoSrc);
   const { gl } = useThree();
@@ -47,22 +51,26 @@ export default function Logo3D({ scrollYProgress, reducedMotion }) {
     logoMap.needsUpdate = true;
   }, [logoMap, gl]);
 
-  useFrame(() => {
+  useFrame((_, delta) => {
     if (!groupRef.current) return;
-    const target = reducedMotion ? 0 : scrollYProgress.get();
-    descend.current += (target - descend.current) * 0.06;
-    getSunPosition(descend.current, groupRef.current.position);
+    const t = follow(descend, reducedMotion ? 0 : scrollYProgress.get(), delta);
+    getSunPosition(t, groupRef.current.position);
     // Spins in-plane (Z axis) tied directly to scroll progress — a slow scroll
     // turns it slowly, not a spin of its own. Applied to the logo mesh itself
     // (inside the Billboard) rather than the group, so it keeps facing the
     // camera dead-on as the sun's own position/depth changes — an oblique plane
     // is the other big source of texture aliasing on strokes this thin.
-    if (logoRef.current) logoRef.current.rotation.z = descend.current * Math.PI * 0.6;
+    if (logoRef.current) logoRef.current.rotation.z = t * Math.PI * 0.6;
   });
 
   return (
     <group ref={groupRef} position={[SUN_X_START, SUN_Y_TOP, SUN_Z]} scale={SUN_SCALE}>
-      <pointLight color={GLOW_COLOR} intensity={0.8} distance={7} />
+      {/* The local point light that used to sit here is gone. Its 7-unit radius
+          reached the terrain's back edge when the sun was at z -14; from behind the
+          ridge it reaches nothing but the ridge itself, which draws with an unlit
+          material and cannot receive it. The scene's key light already tracks the
+          sun's position (see SunsetLighting), so the sunset still comes from the
+          right direction. */}
       <Billboard>
         <mesh scale={5}>
           <planeGeometry args={[1, 1]} />

@@ -61,5 +61,66 @@ scroll-linked camera dolly. Guardrails: lazy-loaded behind `Suspense`, WebGL
 feature-detected with a fallback to the original flat assets, `prefers-reduced-motion`
 respected, capped device pixel ratio, viewport-scaled terrain resolution.
 
+The dune field's shape lives in `terrainField.js`, not in `Terrain.jsx`, because the
+mesh and the camera dolly both have to agree on where the ground is — the camera
+clamps itself to a minimum clearance above `surfaceHeightAt()` every frame. Its noise
+is seeded from a fixed constant, and that constant was chosen by scoring seeds for
+clearance under the flight path; re-tune `CAMERA_START` / `CAMERA_TARGET` and the seed
+has to be re-scored with them. `DistantRidge` and `Starfield` are seeded from the same
+module. Everything unlit in the scene (the ridge, the fog) has to be lerped toward
+night explicitly — only the lights respond to the sunset on their own.
+
+**The hero ends by sinking into a dune, not by fading out.** `terrainField.js`
+authors two shapes on top of the noise, and they do different jobs:
+
+- a **near dune shaped like a U** — shoulders at the flanks, open across the middle.
+  It is what the viewer looks at from the top of the scroll, and the gap is what
+  they see the rest of the landscape through. Solid across, it walls the view off
+  and the hero reads as a blob of sand rather than a place.
+- a **far ridge**, low and close to where the camera lands, which fills the frame at
+  the bottom of the sink. It fills it by being *near*, not tall: a tall one fills the
+  frame just as well and then blocks the whole landscape from the top of the scroll.
+  That trap was walked into twice. It is also uniform across its width — sagging its
+  flanks cost nothing at frame centre and left a sliver of sky in the corner of wide
+  screens (169 failures in 400 landscapes when it saddled).
+
+Three numbers are measured, not chosen, and any change to the shapes or the camera
+means re-measuring them: the camera starts at **4.6** because that is the lowest start
+that can still see past the ridge; the crossfade starts at **0.7** because that is where
+the linear descent first covers the frame; and the descent end holds **100% ground
+coverage across 400 random landscapes at aspect ratios 1.2 through 2.8**, with the
+camera clamp applied as it ships. A gap there is invisible until it is on someone's
+monitor.
+
+**The dunes are random per load; the shapes are not.** `SHAPE_SEED` fixes the ridge
+meander and the U; `reseedDunes()` reseeds the dune field on every visit, and stars
+vary too. Where the authored shapes live the random field is damped to 15% strength,
+so a load whose noise notches the crest cannot open a hole in the frame and cannot
+fill in the hollow the camera drops through. Unseeded *everything* — the original
+state — put the camera through the terrain on 4.5% of loads.
+
+**The descent is linear and tracks scroll tightly, and must stay that way.** The
+section below scrolls 1:1 with the wheel; easing the camera or letting it lag makes
+the two layers move at visibly different speeds through the hand-off. That is why the
+sink uses `TRACKING_TAU` rather than the scene's default follower constant.
+
+**The scene is the background for the hero *and* for `Info`, not just the hero.** In
+`Landing.jsx` both live inside one `relative` stage whose first child is the pinned
+canvas; the content is pulled back over it with `-mt-[100vh]`. That stage must never
+get `overflow-hidden` — a clipped ancestor becomes the scroll container and silently
+breaks `position: sticky` for everything inside it. The hero no longer hands off to
+the next section at a boundary; "What is BSS?" scrolls up over the live scene and the
+canvas fades out underneath it, driven by `useSceneExitProgress` (a second scroll
+phase, in viewport heights from the top of the document, separate from the hero's own
+`useHeroScrollProgress`). The night sky the scene ends on is the body gradient's own
+end colour, so fading the canvas reads as the landscape leaving rather than the
+picture going transparent. Once the fade completes the frameloop is parked entirely.
+
+Every scroll-driven value in the scene goes through `follow()` in `smoothing.js`
+rather than reading the motion value directly, because scroll arrives in ~100px jumps.
+It is time-based, and it snaps instead of easing across a gap longer than a frame —
+without that, landing on an already-scrolled page replays the whole sunset from
+daylight, and scrolling back up from below the hero runs it backwards.
+
 Not yet touched in this pass: navbar styling, the "What is BSS?"/testimonial section,
 Team/Clients/Recruitment/Contact pages, any copy.

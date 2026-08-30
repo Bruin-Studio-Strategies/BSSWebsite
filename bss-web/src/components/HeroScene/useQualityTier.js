@@ -1,11 +1,14 @@
 import { useEffect, useState } from "react";
 
-// Segment counts are the ceiling from the plan (~60x40) on desktop,
-// scaled down on smaller viewports since mobile GPUs are the tightest constraint.
+// Segment counts are scaled down on smaller viewports since mobile GPUs are the
+// tightest constraint. The width counts are tied to TERRAIN_WIDTH: the field is 44
+// units across and these keep cells at roughly 0.45 units square, matching the
+// depth resolution. Widen the terrain again and these have to move with it, or the
+// mesh stretches and the wireframe stops reading as a square grid.
 const TIERS = {
-  low: [22, 14],
-  mid: [40, 26],
-  high: [58, 38],
+  low: [37, 20],
+  mid: [68, 38],
+  high: [98, 55],
 };
 
 function getTier() {

@@ -4,13 +4,20 @@ import Wave from "../../assets/waves.png";
 import RotatingLogo from "../RotatingLogo.jsx";
 import LoadingSplash from "../LoadingSplash.jsx";
 import { isWebGLAvailable } from "../../utils/webgl.js";
-import useHeroScrollProgress from "../../hooks/useHeroScrollProgress.js";
+import useHeroScrollProgress, { useSceneExitProgress } from "../../hooks/useHeroScrollProgress.js";
 
 const HeroScene = lazy(() => import("./HeroScene.jsx"));
 
-// Fades the scene into the page background near the bottom of the viewport instead
-// of letting overflow-hidden hard-clip it right at the section boundary.
-const FADE_MASK = "linear-gradient(to bottom, black 0%, black 62%, transparent 97%)";
+// Softens the canvas's bottom edge instead of hard-clipping it at the section
+// boundary. Deliberately shallow: it used to run black 62% -> transparent 97%,
+// dissolving the bottom 38% of the canvas, which is a third of a screen of dune
+// turning into flat page before the next section's copy arrives at 71% down. That
+// band was the "empty space" between the hero and the section — not a layout gap
+// but the mask eating the surface the copy was supposed to be printed on.
+//
+// At 88% the dune stays solid nearly to its edge and the fade is a vignette rather
+// than a dissolve.
+const FADE_MASK = "linear-gradient(to bottom, black 0%, black 88%, transparent 100%)";
 const fadeStyle = {
   maskImage: FADE_MASK,
   WebkitMaskImage: FADE_MASK,
@@ -37,6 +44,8 @@ export default function HeroBackdrop() {
   const [sceneReady, setSceneReady] = useState(false);
   const prefersReducedMotion = useReducedMotion();
   const scrollYProgress = useHeroScrollProgress();
+  const exitProgress = useSceneExitProgress();
+
 
   if (!webglOk) {
     return (
@@ -55,6 +64,7 @@ export default function HeroBackdrop() {
         <Suspense fallback={<FlatFallback />}>
           <HeroScene
             scrollYProgress={scrollYProgress}
+            exitProgress={exitProgress}
             reducedMotion={!!prefersReducedMotion}
             onReady={() => setSceneReady(true)}
           />

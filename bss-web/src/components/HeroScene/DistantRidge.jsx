@@ -1,6 +1,9 @@
-import { useMemo } from "react";
+import { useEffect, useMemo, useRef } from "react";
+import { useFrame } from "@react-three/fiber";
 import * as THREE from "three";
 import { createNoise2D } from "simplex-noise";
+import { ridgeRandom } from "./terrainField.js";
+import { follow } from "./smoothing.js";
 
 // A flatter, more-faded ridge sitting well behind the main terrain — gives the
 // horizon a sense of depth instead of dunes cutting straight to empty sky.
@@ -9,11 +12,22 @@ import { createNoise2D } from "simplex-noise";
 // color that fog blending still visibly fades it — matching fog exactly reads
 // as a hard-edged solid wall, but too close to the (lighter) sky tone reads as
 // glowing rather than a dim, receding silhouette.
-const COLOR = new THREE.Color("#211D4E");
+const COLOR_DAY = new THREE.Color("#211D4E");
+// It is drawn with an unlit material, so it was the one element in the scene
+// that ignored the sunset entirely: every light dimmed around it and the ridge
+// held its daytime value, leaving a pale band across the horizon at the end of
+// the scroll. It now settles just above the night fog, the same way it sits just
+// above the day fog.
+const COLOR_NIGHT = new THREE.Color("#151340");
 
-export default function DistantRidge() {
+export default function DistantRidge({ scrollYProgress, reducedMotion }) {
+  const materialRef = useRef();
+  const smooth = useRef(null);
+
   const geometry = useMemo(() => {
-    const noise2D = createNoise2D();
+    // Seeded like the main terrain: the silhouette on the horizon should be the
+    // same one on every visit, not a fresh draw each load.
+    const noise2D = createNoise2D(ridgeRandom());
     const width = 55;
     const depth = 8;
     const wSeg = 48;
@@ -37,9 +51,20 @@ export default function DistantRidge() {
     return geo;
   }, []);
 
+  useEffect(() => () => geometry.dispose(), [geometry]);
+
+  useFrame((_, delta) => {
+    const smoothed = follow(smooth, reducedMotion ? 0 : scrollYProgress.get(), delta);
+    const eased = 1 - (1 - smoothed) ** 2;
+    if (materialRef.current) materialRef.current.color.copy(COLOR_DAY).lerp(COLOR_NIGHT, eased);
+  });
+
   return (
     <mesh geometry={geometry}>
-      <meshBasicMaterial color={COLOR} />
+      {/* getHex() rather than the Color instance: the frame loop mutates this
+          material's color, and handing it the shared constant risks mutating
+          the constant along with it. */}
+      <meshBasicMaterial ref={materialRef} color={COLOR_DAY.getHex()} />
     </mesh>
   );
 }

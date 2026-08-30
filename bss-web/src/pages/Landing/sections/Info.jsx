@@ -15,42 +15,33 @@ const stagger = {
   show: { transition: { staggerChildren: 0.12, delayChildren: 0.05 } },
 };
 
-const scaleIn = {
-  hidden: { opacity: 0, scale: 0.94 },
-  show: { opacity: 1, scale: 1, transition: { duration: 0.8, ease: EASE } },
-};
-
 const viewport = { once: true, amount: 0.3 };
 
 export default function Info() {
   const reducedMotion = useReducedMotion();
 
+  // The first block has no entrance of its own — no fade, no reveal, no gate. It
+  // is printed on the dune: by the time it is on screen the hero's descent has
+  // landed and cleared the wireframe off the surface behind it, and that bare
+  // surface is this section's background. Anything that animated this copy read as
+  // it arriving from somewhere else, which is exactly wrong. The testimonial below
+  // is past the scene and keeps the house scroll reveal.
   return (
     <>
-      {/* What is BSS */}
       <section className="mx-auto max-w-6xl px-6 sm:px-10 md:px-14 lg:px-20 py-20 sm:py-28">
         <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-10 sm:gap-14 lg:gap-20">
-          <motion.div
-            initial="hidden"
-            whileInView="show"
-            viewport={viewport}
-            variants={stagger}
-            className="text-center md:text-left"
-          >
+          <motion.div className="text-center md:text-left">
             <motion.span
-              variants={fadeUp}
               className="inline-block font-sans text-xs sm:text-sm font-semibold uppercase tracking-[0.2em] text-sky"
             >
               Who We Are
             </motion.span>
             <motion.h3
-              variants={fadeUp}
               className="font-display text-4xl sm:text-5xl lg:text-6xl text-white mt-4 mb-6 leading-[1.1]"
             >
               What is BSS?
             </motion.h3>
             <motion.p
-              variants={fadeUp}
               className="font-sans text-base sm:text-lg lg:text-xl text-white/70 leading-relaxed max-w-xl mx-auto md:mx-0"
             >
               Bruin Studio Strategies, UCLA's first and premier entertainment consulting group,
@@ -59,14 +50,7 @@ export default function Info() {
             </motion.p>
           </motion.div>
 
-          <motion.div
-            initial="hidden"
-            whileInView="show"
-            viewport={viewport}
-            variants={scaleIn}
-            transition={{ delay: 0.1 }}
-            className="relative"
-          >
+          <motion.div className="relative">
             <motion.div
               className="absolute -inset-3 rounded-2xl bg-gradient-to-br from-purple/40 via-magenta/20 to-sky/30 blur-2xl"
               animate={
@@ -87,7 +71,6 @@ export default function Info() {
         </div>
       </section>
 
-      {/* Testimonial */}
       <section className="mx-auto max-w-5xl px-6 sm:px-10 pb-20 sm:pb-28">
         <motion.div
           initial="hidden"
