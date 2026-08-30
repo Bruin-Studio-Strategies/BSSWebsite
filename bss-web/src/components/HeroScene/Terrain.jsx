@@ -87,12 +87,32 @@ function fovForAspect(aspect) {
 // it is 11% of the frame. 4 leaves margin at every aspect and FOV combination.
 // Applied only to the two hero keys — the descent's end position is verified for
 // frame coverage and does not move.
-const MAX_PULLBACK = 4;
+// Back AND up. Height is what opens the field out — from higher, the ridge stops
+// filling the lower frame and the landscape behind it reads — while distance is
+// what stops it being a close-up of one dune. Doing only one of them barely moves
+// the picture.
+//
+// Pull-back is capped at 4: the camera already sits past the terrain's front edge
+// (the mesh ends at z 13) and pulling back tips the bottom of the frame toward it.
+// Measured, the first rays look underneath the sheet at +6, and it is 11% of the
+// frame by +7. Lift works against that — raising the camera with the look target
+// fixed steepens the pitch, dragging the bottom of the frame back toward the near
+// edge — so the pair is verified together, never separately.
+// Searched, not guessed: of every combination of pull-back, lift and look-target
+// raise, this is the most zoomed-out one where no ray in the frame looks under
+// the mesh's near edge. Raising the look target is what unlocks the other two —
+// it flattens the pitch, which is the thing that was driving the bottom of the
+// frame into the front edge and capping the pull-back at 4.
+const MAX_PULLBACK = 8;
+const MAX_LIFT = 5.5;
+// 1.4, not 1: at 1 the very narrowest phones (aspect 0.38-0.42, a tall handset in
+// portrait) still put 1-3% of the frame under the mesh's near edge. 1.4 clears it
+// down to 0.38 with no measurable cost to how much landscape is on screen.
+const MAX_LOOK_LIFT = 1.4;
 const PULLBACK_ASPECT = 0.95;
 
-function pullbackFor(aspect) {
-  const t = THREE.MathUtils.clamp((PULLBACK_ASPECT - aspect) / (PULLBACK_ASPECT - 0.45), 0, 1);
-  return t * MAX_PULLBACK;
+function narrowness(aspect) {
+  return THREE.MathUtils.clamp((PULLBACK_ASPECT - aspect) / (PULLBACK_ASPECT - 0.45), 0, 1);
 }
 
 export default function Terrain({ scrollYProgress, exitProgress, reducedMotion, segments }) {
@@ -103,8 +123,13 @@ export default function Terrain({ scrollYProgress, exitProgress, reducedMotion, 
   const { camera, size } = useThree();
 
   const pullback = useRef(0);
+  const lift = useRef(0);
+  const lookLift = useRef(0);
   useEffect(() => {
-    pullback.current = pullbackFor(size.width / size.height);
+    const narrow = narrowness(size.width / size.height);
+    pullback.current = narrow * MAX_PULLBACK;
+    lift.current = narrow * MAX_LIFT;
+    lookLift.current = narrow * MAX_LOOK_LIFT;
     const next = fovForAspect(size.width / size.height);
     if (camera.fov === next) return;
     camera.fov = next;
@@ -157,14 +182,17 @@ export default function Terrain({ scrollYProgress, exitProgress, reducedMotion, 
     const sunk = sink;
 
     camera.position.lerpVectors(CAMERA_START, CAMERA_HERO_END, hero);
-    // The pull-back fades out as the descent takes over, so the sink still lands
-    // exactly where it was verified to land.
-    camera.position.z += pullback.current * (1 - sunk);
+    // Both fade out as the descent takes over, so the sink still lands exactly
+    // where its frame coverage was verified.
+    const wide = 1 - sunk;
+    camera.position.z += pullback.current * wide;
+    camera.position.y += lift.current * wide;
     camera.position.lerp(CAMERA_DESCENT_END, sunk);
     const ground = surfaceHeightAt(camera.position.x, camera.position.z);
     camera.position.y = Math.max(camera.position.y, ground + CAMERA_CLEARANCE);
 
     look.current.lerpVectors(LOOK_HERO, LOOK_DESCENT_END, sunk);
+    look.current.y += lookLift.current * wide;
     camera.lookAt(look.current);
 
     // The gridlines carry the descent — the surface is smooth and in shadow, so

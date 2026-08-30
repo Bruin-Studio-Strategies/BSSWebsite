@@ -6,8 +6,8 @@ import { useEffect, useState } from "react";
 // depth resolution. Widen the terrain again and these have to move with it, or the
 // mesh stretches and the wireframe stops reading as a square grid.
 const TIERS = {
-  low: [37, 20],
-  mid: [68, 38],
+  low: [56, 32],
+  mid: [84, 46],
   high: [98, 55],
 };
 
