@@ -1,135 +1,94 @@
-import { useCallback, useEffect, useRef, useState, useTransition } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { motion, useReducedMotion } from "framer-motion";
+import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 import { useLocation } from "react-router-dom";
 
 import logo from "../assets/logo-plain.png";
 import { GateContext } from "./sceneGate.js";
 
-// A short fade, and nothing else. What made the old one feel wrong was never the
-// fade itself:
+// A fade between pages, and separately a loading screen for the hero. Two plain
+// things that do not know about each other.
 //
-//   - it ran in `AnimatePresence mode="wait"` at 0.5s each way, so a navigation
-//     spent most of a second on an empty gradient;
-//   - `scrollToTop` used `behavior: "smooth"` and ran *during* the fade, so the
-//     outgoing page visibly slid upward as it dissolved;
-//   - on the landing page the 3D scene's own splash then arrived on top at z-999
-//     after the fade had already started, and left on its own separate timing.
-//
-// So the fade stays and the three faults go. The swap happens against a deferred
-// location while nothing is on screen, the scroll reset is instant because there
-// is nothing to watch it, and a page that needs time holds the fade rather than
-// running a second transition after it.
-//
-// There is one moving part, not two. The thing that fades is a full-bleed panel
-// painted in the body's own gradient, so fading it up is indistinguishable from
-// fading the content out — and because it is already up at the moment the new
-// route mounts, a page that needs to load simply keeps it there. Fading the
-// content separately would mean the overlay had to fade in *after* the incoming
-// hero was already on screen, which is the wrong way round and is what made the
-// loading screen disappear.
+// The one non-obvious bit is the scroll reset: it has to be instant, and it has
+// to happen on exit-complete. It used to run with `behavior: "smooth"` on every
+// pathname change, which animated *during* the fade, so the outgoing page visibly
+// slid upward as it dissolved. That, not the fade, was what looked broken.
 
 const EASE = [0.16, 1, 0.3, 1];
+const FADE = 0.22;
 
-// Covering is quicker than revealing: covering answers a click and wants to keep
-// up with it, revealing is an arrival and can be watched.
-const OUT = 0.2;
-const IN = 0.42;
-
-// Until the terrain has painted there is nothing to show, so the landing page is
-// covered by its own gradient rather than by a blank white flash.
 const GRADIENT_BG = "linear-gradient(#3D3C95, 20%, #0a0d3d)";
 
-// How long the wait has to run before it admits to being a wait. Under this, a
-// spinner is a flash of anxiety on a machine that was fine.
+// How long a load has to run before it admits to being one. Under this, a spinner
+// is a flash of anxiety on a machine that was fine.
 const PATIENCE_MS = 450;
 
-// A gate that never opens must not trap the page — a WebGL context that dies
-// mid-compile would otherwise leave the gradient up forever.
-const GATE_TIMEOUT_MS = 9000;
-
-// A floor on *loading* only, never on navigation. Without it a hero that reports
-// itself ready a few milliseconds after mounting makes the veil blink — up and
-// straight back down — and what shows through the blink is the stand-in
-// underneath, which on the landing page is the old flat hero the redesign
-// replaced. Applying the same floor to a route change is what made every
-// navigation dwell on blank gradient for a second before the page turned up.
+// Once the loading screen is up it stays up this long, so a hero that reports
+// itself ready almost immediately cannot make it blink — what shows through a
+// blink is the flat stand-in underneath, which is the old 2024 hero.
 const MIN_COVER_MS = 700;
 
-function Veil({ visible, held, reduced, onCovered }) {
-  return createPortal(
-    <motion.div
-      // Portaled to <body> because the hero's container carries a CSS mask-image,
-      // and Chromium mis-composites a position:fixed sibling beneath a masked
-      // element in the same subtree whatever the z-index says.
-      className="pointer-events-none fixed inset-0 z-[999] flex flex-col items-center justify-center gap-6"
-      style={{ background: GRADIENT_BG }}
-      // Mounts covered: the first paint of any visit is the gradient, and the
-      // page is revealed from under it once there is something worth revealing.
-      initial={{ opacity: 1 }}
-      animate={{ opacity: visible ? 1 : 0 }}
-      transition={{ duration: reduced ? 0.12 : visible ? OUT : IN, ease: EASE }}
-      onAnimationComplete={() => {
-        if (visible) onCovered();
-      }}
-      aria-hidden={!visible}
-    >
-      <motion.div
-        className="flex flex-col items-center gap-6"
-        initial={false}
-        animate={{ opacity: held ? 1 : 0 }}
-        transition={{ duration: 0.3, ease: EASE }}
-      >
-        <motion.img
-          src={logo}
-          alt=""
-          className="h-16 w-16 sm:h-20 sm:w-20"
-          animate={reduced ? { rotate: 0 } : { rotate: 360 }}
-          transition={reduced ? undefined : { duration: 1.4, repeat: Infinity, ease: "linear" }}
-        />
-        <div className="h-1 w-40 overflow-hidden rounded-full bg-white/15 sm:w-48">
-          <motion.div
-            className="h-full w-1/3 rounded-full bg-white/80"
-            animate={reduced ? { x: "0%" } : { x: ["-100%", "300%"] }}
-            transition={reduced ? undefined : { duration: 1.2, repeat: Infinity, ease: "easeInOut" }}
-          />
-        </div>
-      </motion.div>
+// A gate that never opens must not trap the page: a WebGL context that dies
+// mid-compile would otherwise leave the loading screen up forever.
+const GATE_TIMEOUT_MS = 9000;
 
-      <span className="sr-only" role="status">
-        {held ? "Loading" : ""}
-      </span>
-    </motion.div>,
+function LoadingScreen({ visible, held, reduced }) {
+  return createPortal(
+    <AnimatePresence>
+      {visible && (
+        <motion.div
+          // Portaled to <body> because the hero's container carries a CSS
+          // mask-image, and Chromium mis-composites a position:fixed sibling
+          // beneath a masked element in the same subtree whatever the z-index says.
+          className="pointer-events-none fixed inset-0 z-[999] flex flex-col items-center justify-center gap-6"
+          style={{ background: GRADIENT_BG }}
+          initial={{ opacity: 1 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: reduced ? 0.15 : 0.45, ease: EASE }}
+        >
+          <motion.div
+            className="flex flex-col items-center gap-6"
+            initial={false}
+            animate={{ opacity: held ? 1 : 0 }}
+            transition={{ duration: 0.3, ease: EASE }}
+          >
+            <motion.img
+              src={logo}
+              alt=""
+              className="h-16 w-16 sm:h-20 sm:w-20"
+              animate={reduced ? { rotate: 0 } : { rotate: 360 }}
+              transition={reduced ? undefined : { duration: 1.4, repeat: Infinity, ease: "linear" }}
+            />
+            <div className="h-1 w-40 overflow-hidden rounded-full bg-white/15 sm:w-48">
+              <motion.div
+                className="h-full w-1/3 rounded-full bg-white/80"
+                animate={reduced ? { x: "0%" } : { x: ["-100%", "300%"] }}
+                transition={
+                  reduced ? undefined : { duration: 1.2, repeat: Infinity, ease: "easeInOut" }
+                }
+              />
+            </div>
+          </motion.div>
+
+          <span className="sr-only" role="status">
+            {held ? "Loading" : ""}
+          </span>
+        </motion.div>
+      )}
+    </AnimatePresence>,
     document.body
   );
 }
 
-/**
- * Wraps the routes. `children` is called with a deferred location, so the swap
- * happens while the page is faded out rather than in front of the visitor.
- */
 export default function PageTransition({ children }) {
   const location = useLocation();
   const reduced = !!useReducedMotion();
 
-  const [displayLocation, setDisplayLocation] = useState(location);
-  const [pending, startTransition] = useTransition();
-  const [leaving, setLeaving] = useState(false);
-  const [held, setHeld] = useState(false);
-
   const [gateCount, setGateCount] = useState(0);
+  const [floorHeld, setFloorHeld] = useState(true);
+  const [held, setHeld] = useState(false);
   const gatesTimedOut = useRef(false);
-
-  // The overlay is up from the first paint and stays up for one frame, which is
-  // the window a page has to register a gate in. Without that hold there is no
-  // commit in which the overlay is both mounted and covering, so a hero that
-  // needs three seconds to compile would show three seconds of empty gradient
-  // with no loading screen over it.
-  const [openingHold, setOpeningHold] = useState(true);
-  useEffect(() => {
-    const id = requestAnimationFrame(() => setOpeningHold(false));
-    return () => cancelAnimationFrame(id);
-  }, []);
 
   const registerGate = useCallback(() => {
     setGateCount((n) => n + 1);
@@ -137,50 +96,15 @@ export default function PageTransition({ children }) {
   }, []);
 
   const gated = gateCount > 0 && !gatesTimedOut.current;
+  const loading = gated || floorHeld;
 
-  // Held from the moment the veil goes up. Cleared by its own timer rather than
-  // by the gate, so a fast release cannot shorten it.
-  const [floorHeld, setFloorHeld] = useState(true);
-  // Covered while leaving as well, so the veil is already up at the moment the
-  // incoming route mounts. That is what lets a page with a gate simply keep it
-  // there instead of fading a loading screen in over its own half-drawn hero.
-  //
-  // Only a load arms the floor. A navigation uncovers the instant the swap is
-  // done, so the veil turns around at the top of its travel rather than sitting
-  // there — which is the difference between a fade and a blank screen with a page
-  // on either side of it.
-  const loading = openingHold || gated;
-  const covering = loading || leaving || pending || floorHeld;
-
-  // A new pathname starts the cover *and* the incoming page's render at the same
-  // moment. Waiting for the cover to finish before swapping is what made the veil
-  // sit on blank gradient: the swap was the expensive part — mounting a whole page
-  // — and none of it began until the fade had already run. Now the render happens
-  // during the fade, and `startTransition` keeps the outgoing page on screen while
-  // it does, so nothing flickers underneath a half-opaque veil.
+  // Arming and expiring the floor are separate effects on purpose. Doing both in
+  // one, keyed on the gate, meant that the moment the gate opened its cleanup
+  // cancelled the pending timer and the branch that would have started a new one
+  // was skipped — so the flag stuck on and the loading screen never left.
   useEffect(() => {
-    if (location.pathname === displayLocation.pathname) return;
-    setLeaving(true);
-    startTransition(() => setDisplayLocation(location));
-  }, [location, displayLocation, startTransition]);
-
-  const handleCovered = useCallback(() => {
-    if (!leaving) return;
-    // Instant. Smooth scrolling used to run while the pages were cross-fading, so
-    // the outgoing page slid upward as it dissolved. There is nothing to watch it
-    // now, and nothing to animate for.
-    window.scrollTo(0, 0);
-    setLeaving(false);
-  }, [leaving]);
-
-  // Two effects, not one. Arming and expiring the floor in a single effect keyed
-  // on the cover state meant the moment the cover ended, the cleanup cancelled the
-  // pending timer and the branch that would have started a new one was skipped —
-  // so `floorHeld` stayed true forever and no page ever revealed. The timer's
-  // effect depends only on the flag it clears, so nothing else can cancel it.
-  useEffect(() => {
-    if (loading) setFloorHeld(true);
-  }, [loading]);
+    if (gated) setFloorHeld(true);
+  }, [gated]);
 
   useEffect(() => {
     if (!floorHeld) return undefined;
@@ -188,7 +112,6 @@ export default function PageTransition({ children }) {
     return () => clearTimeout(id);
   }, [floorHeld]);
 
-  // The spinner earns its way in only once the wait has run long enough.
   useEffect(() => {
     if (!gated) {
       setHeld(false);
@@ -209,8 +132,18 @@ export default function PageTransition({ children }) {
 
   return (
     <GateContext.Provider value={registerGate}>
-      <Veil visible={covering} held={held} reduced={reduced} onCovered={handleCovered} />
-      {children(displayLocation)}
+      <LoadingScreen visible={loading} held={held} reduced={reduced} />
+      <AnimatePresence mode="wait" onExitComplete={() => window.scrollTo(0, 0)}>
+        <motion.div
+          key={location.pathname}
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          transition={{ duration: reduced ? 0 : FADE, ease: EASE }}
+        >
+          {children(location)}
+        </motion.div>
+      </AnimatePresence>
     </GateContext.Provider>
   );
 }

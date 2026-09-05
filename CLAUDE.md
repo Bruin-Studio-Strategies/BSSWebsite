@@ -133,60 +133,31 @@ daylight, and scrolling back up from below the hero runs it backwards.
 
 ## Page transitions (`src/transition/`)
 
-**A short fade, and nothing else.** A sliding curtain was built here first and
-rejected on sight — it was doing far too much for a route change. The fade was
-never the problem; three things around it were:
+**A plain fade, 0.22s each way, and a separate loading screen for the hero.** Two
+things that do not know about each other. Several cleverer versions were built and
+every one of them was worse: a sliding gradient curtain, then one veil doing both
+jobs, then deferring the route swap until the cover finished, then `startTransition`
+to render the incoming page under it. The last two put a visible dwell on blank
+gradient between pages. If this needs changing again, change the duration.
 
-- it ran in `AnimatePresence mode="wait"` at 0.5s each way, so a navigation spent
-  most of a second sitting on an empty gradient;
-- `scrollToTop` used `behavior: "smooth"` and ran *during* the fade, so the
-  outgoing page visibly slid upward as it dissolved — this is the part that read
-  as broken rather than merely slow;
-- on `/`, the 3D scene's own splash then arrived on top at z-999 *after* the fade
-  had already started, and left on its own separate timing. Two transitions back
-  to back, the second interrupting the first.
-
-`PageTransition` renders the routes against a **deferred location**: a veil fades
-up (0.16s), the swap and an instant `scrollTo(0, 0)` happen while nothing is on
-screen, then it fades back out (0.28s). Under half a second door to door.
-
-**The incoming page starts rendering at the click, not after the cover.** The
-swap is the expensive part — mounting a whole page, and `/team` mounts 37 cards —
-so deferring it until the fade finished meant the veil reached full opacity and
-then sat on blank gradient for however long that render took. It runs inside
-`startTransition` now, which keeps the outgoing page on screen while React works,
-so the render happens *during* the fade and nothing flickers under a half-opaque
-veil. `isPending` also holds the cover, so a slow page keeps it up rather than
-revealing onto a half-built one.
-
-**There is one moving part, not two.** The veil is a full-bleed panel painted in
-the body's own gradient, so fading it up is indistinguishable from fading the
-content out — and because it is already up at the moment the incoming route
-mounts, a page that needs to load simply keeps it there. Fading the content
-separately, with the loading overlay as its own element, is what broke the hero's
-loading screen: the overlay had to fade in *after* the incoming hero was already
-on screen. It also mounts covered, so the first paint of any visit is the gradient
-rather than an unpainted page.
-
-Timings are 0.26s up and 0.46s down — about three quarters of a second door to
-door — and the veil turns around at the top of its travel rather than dwelling
-there. **The 700ms floor applies to loading only, never to a route change.**
-Applying it to navigation too made every page change sit on blank gradient for a
-second before the page turned up, which reads as a broken load rather than a
-transition. Without the floor on a load, a hero
-that reports itself ready almost immediately makes the veil blink, and what shows
-through the blink is the stand-in underneath: on the landing page that is the old
-flat hero the redesign replaced, so the site appeared to load, flash the 2024
-design, and then correct itself.
+**The scroll reset has to be instant, and on exit-complete.** It used to run with
+`behavior: "smooth"` on every pathname change, so it animated *during* the fade
+and the outgoing page visibly slid upward as it dissolved. That was the thing that
+looked broken; the fade itself was always fine.
 
 `useSceneGate` (in `sceneGate.js`, its own module so `PageTransition.jsx` stays
-components-only and keeps fast refresh) lets a page hold the veil up while it gets
-ready, instead of running a second transition after the first one finishes. `HeroBackdrop` is the only caller, and only on the WebGL path — the flat
-fallback has nothing to compile, so gating it would stall the page waiting on work
-that never starts. It registers in a *layout* effect, because a passive one runs
-after the overlay has already decided there is nothing to wait for. A 9s timeout
-releases it regardless, and the spinner only fades up after 450ms, so a fast
-machine never sees one.
+components-only and keeps fast refresh) holds the loading screen up while a page
+gets ready. `HeroBackdrop` is the only caller, and only on the WebGL path — the
+flat fallback has nothing to compile, so gating it would stall on work that never
+starts. It registers in a *layout* effect, because a passive one runs a frame too
+late. A 700ms floor stops the screen blinking (what shows through a blink is the
+flat 2024 hero underneath), a 9s timeout releases it regardless, and the spinner
+only fades up after 450ms so a fast machine never sees one.
+
+The floor and its expiry are deliberately two effects. In one effect keyed on the
+gate, the moment the gate opened its cleanup cancelled the pending timer and the
+branch that would have restarted it was skipped — the flag stuck on and no page
+ever appeared.
 
 Every route used to carry its own copy of the same `motion.div` wrapper — six of
 them, so a new route could ship with no transition at all. `App.jsx` is now plain

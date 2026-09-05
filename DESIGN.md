@@ -504,18 +504,17 @@ left, the service cell rules in from the left, the recruitment spine fills from
 the top, the buttons sweep a veil across their own face. A cross-fade is what this
 system does when it has nothing to say about direction.
 
-**Page transitions are a short fade and nothing else**
-(`transition/PageTransition.jsx`): 0.16s out, an instant scroll reset and route
-swap while nothing is on screen, 0.28s back in. A sliding curtain was built and
-rejected — a route change is not an event that deserves choreography, and the
-gesture language above belongs to elements, not to whole pages.
+**Page transitions are a plain 0.22s cross-fade and nothing else**
+(`transition/PageTransition.jsx`). A sliding curtain, a single veil doing double
+duty, and a deferred route swap were all built and all rejected — a route change
+is not an event that deserves choreography, and every added mechanism put a
+visible pause on blank gradient between pages. The gesture language above belongs
+to elements, not to whole pages.
 
-The thing that fades is a full-bleed veil in the body's own gradient, not the
-content — identical on screen, and it means a page that needs time before it can
-be shown just holds the veil up (`useSceneGate`, in `transition/sceneGate.js`)
-rather than running its own splash afterwards. The landing page's 3D scene is the
-only caller.
-The spinner inside it only appears after 450ms, so a fast machine never sees one.
+A page that needs time before it can be shown puts up its own loading screen
+(`useSceneGate`, in `transition/sceneGate.js`), separate from the fade; the
+landing page's 3D scene is the only caller. The spinner inside it only appears
+after 450ms, so a fast machine never sees one.
 
 ## Do's and Don'ts
 
