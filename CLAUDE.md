@@ -160,7 +160,11 @@ on screen. It also mounts covered, so the first paint of any visit is the gradie
 rather than an unpainted page.
 
 Timings are 0.26s up and 0.46s down — about three quarters of a second door to
-door, and a **700ms floor** holds the veil once it is up. Without the floor a hero
+door — and the veil turns around at the top of its travel rather than dwelling
+there. **The 700ms floor applies to loading only, never to a route change.**
+Applying it to navigation too made every page change sit on blank gradient for a
+second before the page turned up, which reads as a broken load rather than a
+transition. Without the floor on a load, a hero
 that reports itself ready almost immediately makes the veil blink, and what shows
 through the blink is the stand-in underneath: on the landing page that is the old
 flat hero the redesign replaced, so the site appeared to load, flash the 2024

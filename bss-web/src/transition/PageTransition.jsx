@@ -50,11 +50,12 @@ const PATIENCE_MS = 450;
 // mid-compile would otherwise leave the gradient up forever.
 const GATE_TIMEOUT_MS = 9000;
 
-// Once the veil is up it stays up this long at minimum. Without a floor, a hero
-// that reports itself ready a few milliseconds after mounting makes the veil
-// blink — up and straight back down — and what shows through in that blink is
-// whatever stand-in was on screen underneath, which on the landing page is the
-// old flat hero the redesign replaced.
+// A floor on *loading* only, never on navigation. Without it a hero that reports
+// itself ready a few milliseconds after mounting makes the veil blink — up and
+// straight back down — and what shows through the blink is the stand-in
+// underneath, which on the landing page is the old flat hero the redesign
+// replaced. Applying the same floor to a route change is what made every
+// navigation dwell on blank gradient for a second before the page turned up.
 const MIN_COVER_MS = 700;
 
 function Veil({ visible, held, reduced, onCovered }) {
@@ -144,8 +145,13 @@ export default function PageTransition({ children }) {
   // Covered while leaving as well, so the veil is already up at the moment the
   // incoming route mounts. That is what lets a page with a gate simply keep it
   // there instead of fading a loading screen in over its own half-drawn hero.
-  const wantsCover = openingHold || gated || leaving;
-  const covering = wantsCover || floorHeld;
+  //
+  // Only a load arms the floor. A navigation uncovers the instant the swap is
+  // done, so the veil turns around at the top of its travel rather than sitting
+  // there — which is the difference between a fade and a blank screen with a page
+  // on either side of it.
+  const loading = openingHold || gated;
+  const covering = loading || leaving || floorHeld;
 
   // A new pathname fades the page out. Comparing pathnames rather than location
   // objects keeps a query-string or hash change from triggering one.
@@ -169,8 +175,8 @@ export default function PageTransition({ children }) {
   // so `floorHeld` stayed true forever and no page ever revealed. The timer's
   // effect depends only on the flag it clears, so nothing else can cancel it.
   useEffect(() => {
-    if (wantsCover) setFloorHeld(true);
-  }, [wantsCover]);
+    if (loading) setFloorHeld(true);
+  }, [loading]);
 
   useEffect(() => {
     if (!floorHeld) return undefined;
