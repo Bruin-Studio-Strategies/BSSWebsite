@@ -74,10 +74,11 @@ export default function Contact() {
           subhead, and the addresses are the aside beside it, opening with a line
           of body copy rather than a competing heading.
 
-          Primary content left, aside right, which is the arrangement /clients and
-          /recruitment already use. 34rem and 23rem: the general address is 31
-          characters and sets about 350px at text-xl, so a narrower aside would
-          break it mid-address. */}
+          The addresses stay on the left, where they read first; the form is the
+          wider column and carries the Agatho subhead, which is what keeps it
+          leading without needing to come first. 23rem and 34rem: the general
+          address is 31 characters and sets about 350px at text-xl, so a narrower
+          left column would break it mid-address. */}
       <section className="relative mx-auto mb-72 mt-14 w-4/5 max-w-6xl sm:mb-44 sm:mt-20">
         {/* Atmosphere, not paint. Deep Iris only ever works as the layer things
             sit on — the same radial bloom that grounds the services grid and sits
@@ -85,22 +86,13 @@ export default function Contact() {
             surface where the reader is actually working. */}
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute -bottom-16 -top-24 left-[-10%] right-1/3 -z-10 bg-[radial-gradient(55%_50%_at_45%_45%,rgba(82,55,148,0.38),transparent_70%)] blur-2xl"
+          className="pointer-events-none absolute -bottom-16 -top-24 left-1/3 right-[-10%] -z-10 bg-[radial-gradient(55%_50%_at_55%_45%,rgba(82,55,148,0.38),transparent_70%)] blur-2xl"
         />
 
-        <div className="grid gap-x-16 gap-y-16 border-t border-white/15 pt-10 md:grid-cols-[minmax(0,34rem)_minmax(0,23rem)] md:justify-between">
-          <div>
-            <h3 className="font-display text-2xl leading-tight text-white sm:text-3xl">
-              Send us a message
-            </h3>
-            <div className="mt-8">
-              <Form />
-            </div>
-          </div>
-
+        <div className="grid gap-x-16 gap-y-16 border-t border-white/15 pt-10 md:grid-cols-[minmax(0,23rem)_minmax(0,34rem)] md:justify-between">
           <div>
             <p className="font-sans text-base leading-relaxed text-white/70">
-              Or email us directly at
+              Email us directly at
             </p>
             <MailLink
               address={EMAIL}
@@ -120,6 +112,15 @@ export default function Contact() {
                 </div>
               ))}
             </dl>
+          </div>
+
+          <div>
+            <h3 className="font-display text-2xl leading-tight text-white sm:text-3xl">
+              Or send a message
+            </h3>
+            <div className="mt-8">
+              <Form />
+            </div>
           </div>
         </div>
       </section>

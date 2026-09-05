@@ -266,9 +266,9 @@ form is the page's function and carries an Agatho subhead; the address column
 opens with a line of body copy instead of a competing heading, and keeps one sky
 label ("By role") for the list underneath.
 
-Primary content left, aside right, matching `/clients` and `/recruitment`. Both
-columns hang off one rule and both are bounded — 34rem and 23rem, pushed apart
-with `md:justify-between`. Unbounded, they smeared small text across the full
+The addresses stay on the left, where they read first; the form leads on weight
+rather than on order. Both columns hang off one rule and both are bounded — 23rem
+and 34rem, pushed apart with `md:justify-between`. Unbounded, they smeared small text across the full
 72rem. 23rem on the aside is measured: the general address is 31 characters and
 sets about 350px at `text-xl`, so a narrower column breaks it mid-address.
 
