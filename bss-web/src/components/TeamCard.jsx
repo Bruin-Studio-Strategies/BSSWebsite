@@ -142,7 +142,12 @@ export default function TeamCard({
             href={profile}
             target="_blank"
             rel="noopener noreferrer"
-            className="relative inline rounded-sm outline-none before:absolute before:inset-0 before:content-['']"
+            // No `relative` here on purpose. The ::before overlay is what makes
+            // the whole card the LinkedIn target, and it sizes itself to the
+            // nearest positioned ancestor — the `group relative` <li>. Making the
+            // anchor itself positioned shrinks that overlay to the width of the
+            // name and the rest of the card stops being clickable.
+            className="rounded-sm outline-none before:absolute before:inset-0 before:content-['']"
           >
             <span className="relative inline-block">
               {name}
