@@ -144,7 +144,8 @@ export default function PageTransition({ children }) {
   // Covered while leaving as well, so the veil is already up at the moment the
   // incoming route mounts. That is what lets a page with a gate simply keep it
   // there instead of fading a loading screen in over its own half-drawn hero.
-  const covering = openingHold || gated || leaving || floorHeld;
+  const wantsCover = openingHold || gated || leaving;
+  const covering = wantsCover || floorHeld;
 
   // A new pathname fades the page out. Comparing pathnames rather than location
   // objects keeps a query-string or hash change from triggering one.
@@ -162,12 +163,20 @@ export default function PageTransition({ children }) {
     setLeaving(false);
   }, [leaving, location]);
 
+  // Two effects, not one. Arming and expiring the floor in a single effect keyed
+  // on the cover state meant the moment the cover ended, the cleanup cancelled the
+  // pending timer and the branch that would have started a new one was skipped —
+  // so `floorHeld` stayed true forever and no page ever revealed. The timer's
+  // effect depends only on the flag it clears, so nothing else can cancel it.
   useEffect(() => {
-    if (!(openingHold || gated || leaving)) return undefined;
-    setFloorHeld(true);
+    if (wantsCover) setFloorHeld(true);
+  }, [wantsCover]);
+
+  useEffect(() => {
+    if (!floorHeld) return undefined;
     const id = setTimeout(() => setFloorHeld(false), MIN_COVER_MS);
     return () => clearTimeout(id);
-  }, [openingHold, gated, leaving]);
+  }, [floorHeld]);
 
   // The spinner earns its way in only once the wait has run long enough.
   useEffect(() => {
