@@ -352,7 +352,72 @@ The signature content component. A photograph at `rounded-2xl` with
 `ring-1 ring-white/10`, behind it a brand-gradient bloom (`-inset-3`, `blur-2xl`)
 that breathes between 55% and 80% opacity on a 6-second loop, and a 1.02 scale on
 hover. Under `prefers-reduced-motion` the bloom holds at a fixed 70% and the hover
-scale is dropped. This is how every real photograph in the system is presented.
+scale is dropped. This is how every *feature* photograph in the system is
+presented — one image carrying a section. Roster headshots are the one
+documented exception; see Roster Grid.
+
+### Roster Grid
+
+How the team page presents thirty-seven people without ranking them. Every member
+gets an identical cell — same frame, same three lines of type — because this is a
+student club, not a masthead, and cell size is the crudest available way to say
+who matters.
+
+- **Frame:** `aspect-[4/5]`, `rounded-sm`, `ring-1 ring-white/10` over `bg-navy`. On hover the ring warms to `sky/50` and the photograph scales 1.04 *inside* the fixed frame; focus anywhere in the cell draws a 2px sky ring.
+- **Anatomy:** Agatho name (`text-lg` → `sm:text-xl`) → uppercase Inter 600 role at `0.7rem`/`0.14em` in white/70 → major and abbreviated year in white/50. A LinkedIn glyph sits inline after the name and the whole cell is that link, via a `::before` overlay so the accessibility tree still sees one link per person. An optional Email link sits below at `z-10`.
+- **Grid:** `grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5`, `gap-x-6 gap-y-10`. Past `lg` the container's `max-w-6xl` fixes every cell at exactly 205px.
+- **Band heading:** Agatho `text-3xl` → `sm:text-4xl`, a `flex-1` white/15 hairline, then a zero-padded count in white/40 — heading, rule, and count on one baseline.
+
+**The Equal Cell Rule.** Within a roster, every person is the same size. Roles and
+teams are information and stay on the card; they never become a size, a column
+span, or a position of honour. A ranked variant of this grid is not a variant, it
+is a different component and it does not belong to this club.
+
+**Why the band heading breaks the Eyebrow Rule.** The page opener still follows it
+(`37 MEMBERS` → *Meet Our Team* → body). The per-team bands underneath are
+subordinate groupings, not major sections, and three stacked eyebrows announcing
+"Executives / Advisory Board / Consultants" would label a label. The hairline and
+the count carry that job instead.
+
+**Why there is no divider between teams.** Each band already opens with a rule.
+`SectionDivider` above one would stack two hairlines with nothing between them.
+Separation between teams is carried entirely by the section's top margin
+(`mt-20 sm:mt-28`). This is the only place in the system where consecutive
+sections are not divided by the component.
+
+**Why headshots get no bloom.** The Framed Figure's gradient bloom is for a
+photograph that *is* the section. Thirty-seven blooms on one page is a light show,
+for the same reason six perpetually animating motifs would be noise. A hairline
+ring is the whole treatment.
+
+**Missing headshots draw initials, never a silhouette.** A member with no photo on
+file renders their initials in Agatho at white/30 over a `from-purple/25 to-navy`
+wash. The shared grey stock silhouette reads as a broken image against this
+palette; a deliberate blank does not.
+
+**Stagger is 0.035s here, not the system's 0.08–0.12s.** That range is tuned for
+three or four children. Applied to nineteen consultants it runs for two seconds
+and the last row arrives long after the reader does. Scale the interval to the
+count; keep the total sweep under a second.
+
+#### Headshot Pipeline
+
+Source headshots are camera originals — 37 files, ~55 MB, up to 7 MB each, for a
+cell 205px wide. They live in `Headshots/` as the source of truth and **nothing in
+the app imports them.**
+
+`scripts/optimize-headshots.mjs` (sharp, a devDependency) derives 320px and 640px
+WebP plus a 640px JPEG fallback into `HeadshotsOptimized/`, committed so a clean
+checkout builds without sharp and Vercel never pays the conversion cost. It also
+emits a 20px inline WebP per person, used as a blur-up placeholder so a cell shows
+something rather than a hole.
+
+`people.js` therefore stores a `slug`, not an import; `headshots.js` resolves it
+through `import.meta.glob`. Adding a member is one line plus a re-run of the
+script — skip the re-run and that member falls back to initials.
+
+`sizes` is measured against the real grid, never estimated. An over-generous hint
+silently pulls the 2x file onto 1x displays, which is how 469 KB becomes 1.1 MB.
 
 ### Service Motifs
 
@@ -418,7 +483,9 @@ loaded behind `Suspense`, DPR-capped, and quality-tiered by viewport.
 - **Do** present photographs in the framed-figure pattern — 16px radius, white/10 ring, gradient bloom behind.
 - **Do** design against the project's real breakpoints (576 / 960 / 1440), mobile-first.
 - **Do** reserve bottom clearance for the absolutely-positioned footer on any new page.
-- **Do** separate sections with the `SectionDivider` component, varying only its margin.
+- **Do** separate sections with the `SectionDivider` component, varying only its margin — unless the sections already open with their own rule, as the roster bands do.
+- **Do** give every person in a roster the same cell, and let role and team live as text on the card rather than as size or position.
+- **Do** re-run `scripts/optimize-headshots.mjs` after adding or replacing a headshot, and commit what it writes.
 
 ### Don't:
 
@@ -432,3 +499,5 @@ loaded behind `Suspense`, DPR-capped, and quality-tiered by viewport.
 - **Don't** wrap decorative icons in colored circles to create hierarchy — structure and type do that job.
 - **Don't** design a layout that structurally needs statistics, a client logo wall, or case studies; the club has one testimonial and no metrics (see PRODUCT.md).
 - **Don't** redraw the logo mark with a different number of triangles, unequal sizes, or a pivot other than the shared right-hand tip.
+- **Don't** import a file from `Headshots/` anywhere in the app; the originals are archive, and importing one ships several megabytes for a 205px cell.
+- **Don't** hide a person's name or role behind a hover overlay. Hover does not exist on touch, and the previous team page was thirty-seven unlabelled faces on a phone because of it.

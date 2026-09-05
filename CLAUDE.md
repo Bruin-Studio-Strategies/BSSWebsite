@@ -173,8 +173,9 @@ block into a ruled row; both were used only by this page.
 
 **Every "Apply Now" on the site renders through `components/ApplyButton.jsx`, and
 the link lives in `src/applyLink.js`.** Before that there were four call sites
-(navbar desktop, navbar mobile, the landing team block, the recruitment header)
-carrying three different treatments and, worse, three different Google Form URLs.
+(navbar desktop, navbar mobile, the landing team block, the recruitment header,
+and the team page's closing band) carrying four different treatments and, worse,
+three different Google Form URLs.
 The component's two variants are hierarchy rather than taste: `solid` is the
 page's one call to action, `outline` is the navbar's standing link, which has to
 stay available on every page without competing with whatever solid button is
@@ -183,4 +184,24 @@ because the navbar and the landing page both need it. Its URL is still last
 cycle's and needs confirming.
 
 Not yet touched in this pass: navbar styling, the "What is BSS?"/testimonial section,
-Team/Contact pages, most copy.
+the Contact page, most copy.
+
+## Team page (`/team`)
+`/team` rebuilt into the redesign's visual world: one uniform cell per member (no
+ranking by size — see The Equal Cell Rule in DESIGN.md), name/role/major always
+visible instead of hidden behind the old black hover overlay, ruled band headings
+with counts, responsive 2→3→4→5 columns, and a closing Apply Now CTA (which is
+the shared `ApplyButton`, like every other one on the site).
+
+**Headshots are never imported directly.** The 37 originals in
+`src/pages/TeamPage/Headshots/` total ~55 MB and are archive only. Everything the
+browser sees is derived by `bss-web/scripts/optimize-headshots.mjs` (sharp,
+devDependency) into `HeadshotsOptimized/` — 320/640px WebP, a 640px JPEG fallback,
+and a 20px inline blur-up placeholder — all committed so Vercel never runs the
+conversion. `people.js` stores a `slug`; `headshots.js` resolves it via
+`import.meta.glob`. **After adding or replacing a headshot, re-run the script and
+commit its output**, or that member renders as initials.
+
+Executives load eagerly at high fetch priority; everyone below the fold stays
+lazy. Full detail, including why the roster deviates from the Eyebrow, Framed
+Figure, and SectionDivider rules, is in DESIGN.md under Roster Grid.
