@@ -413,8 +413,10 @@ who matters.
 
 **Hover names the destination.** A roster cell answers a hover by saying where it
 goes, not by moving: a scrim lifts off the bottom of the portrait and a bordered
-plate reading "LinkedIn" rises into it, the ring warms to sky, and the name draws
-the same sky underline the nav items do. The portrait used to scale 4% instead,
+plate reading "LinkedIn" rises into it, the ring warms to sky, and the name's
+underline warms from white/25 to sky. That underline is drawn *at rest* — it is
+the card's only at-rest signal that the name is a link, since hover does not exist
+on a phone. The portrait used to scale 4% instead,
 which announces that something is happening and nothing about what. Only cards
 that actually have a profile get any of it — a card with no LinkedIn must not
 imply it can be clicked.

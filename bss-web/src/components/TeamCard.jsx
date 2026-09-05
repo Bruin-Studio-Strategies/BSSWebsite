@@ -151,17 +151,16 @@ export default function TeamCard({
           >
             <span className="relative inline-block">
               {name}
-              {/* The same underline the nav items draw, so a name that goes
-                  somewhere behaves like every other link on the site. */}
+              {/* Drawn at rest, not only on hover. It is now the card's one
+                  at-rest signal that the name goes somewhere — the LinkedIn glyph
+                  that used to sit beside it is gone, and hover states do not exist
+                  on a phone, which is most of this page's traffic. Quiet at
+                  white/25, sky when you are on it. */}
               <span
                 aria-hidden="true"
-                className="absolute -bottom-0.5 left-0 h-px w-full origin-left scale-x-0 bg-sky transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-x-100 group-focus-within:scale-x-100 motion-reduce:transition-none"
+                className="absolute -bottom-0.5 left-0 h-px w-full origin-left bg-white/25 transition-colors duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:bg-sky group-focus-within:bg-sky motion-reduce:transition-none"
               />
             </span>
-            <FaLinkedin
-              aria-hidden="true"
-              className="ml-2 inline-block -translate-y-px text-[0.7em] text-white/35 transition-colors duration-200 group-hover:text-sky"
-            />
           </a>
         ) : (
           name

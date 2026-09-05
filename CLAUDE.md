@@ -312,10 +312,15 @@ commit its output**, or that member renders as initials.
 **A card's hover names its destination rather than moving.** The portrait scaled
 4% at first, which says something is happening and nothing about what. Now a scrim
 lifts off the bottom of the frame with a bordered "LinkedIn" plate rising into it,
-the ring warms to sky, and the name draws the nav's own sky underline. All of it
-is gated on the person actually having a profile, so a card that goes nowhere does
-not look clickable, and the inline LinkedIn glyph beside the name stays as the
-at-rest signal for touch, where there is no hover at all.
+the ring warms to sky, and the name's underline warms from white/25 to sky. All of
+it is gated on the person actually having a profile, so a card that goes nowhere
+does not look clickable.
+
+**The name's underline is drawn at rest.** A LinkedIn glyph used to sit beside the
+name as the at-rest signal and was cut for being noise on a 37-cell grid, which
+left the card with nothing but hover states — and most of this page's traffic is
+on phones, where hover does not exist. The resting underline replaces it: quiet at
+white/25, sky when you are on it.
 
 Executives load eagerly at high fetch priority; everyone below the fold stays
 lazy. Full detail, including why the roster deviates from the Eyebrow, Framed
