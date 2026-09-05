@@ -54,10 +54,14 @@ export default function Contact() {
         <span className="inline-block font-sans text-xs font-semibold uppercase tracking-[0.2em] text-sky">
           Contact
         </span>
-        {/* Balanced below lg, one line from lg up: at 3.75rem Agatho the whole
-            question sets in about 50rem and the column is 72rem there, so the
-            20ch clamp was breaking a line that had room to stay whole. */}
-        <h2 className="mt-4 max-w-[20ch] text-balance font-display text-5xl leading-[1.05] text-white sm:text-6xl lg:max-w-none">
+        {/* One line from lg up: at 3.75rem Agatho the whole question sets in
+            about 50rem and the column is 72rem there, so a tight clamp was
+            breaking a line that had room to stay whole. Below that the wrap is
+            driven by type size rather than by this measure — on a 390px phone
+            the column is 312px and two words of Agatho at 3rem fill it, so the
+            question sets in three lines. Shrinking the face to force two would
+            make this page's headline quieter than every other page's. */}
+        <h2 className="mt-4 max-w-[26ch] text-balance font-display text-5xl leading-[1.05] text-white sm:text-6xl lg:max-w-none">
           Interested in working with us?
         </h2>
         <p className="mt-6 max-w-[42rem] font-sans text-base leading-relaxed text-white/70">
@@ -90,7 +94,7 @@ export default function Contact() {
             surface where the reader is actually working. */}
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute -bottom-16 -top-24 left-1/3 right-[-10%] -z-10 bg-[radial-gradient(55%_50%_at_55%_45%,rgba(82,55,148,0.38),transparent_70%)] blur-2xl"
+          className="pointer-events-none absolute -bottom-24 -top-32 left-0 right-[-15%] -z-10 bg-[radial-gradient(70%_65%_at_62%_45%,rgba(82,55,148,0.55),transparent_72%)] blur-3xl"
         />
 
         <div className="grid gap-x-20 gap-y-16 border-t border-white/15 pt-10 md:grid-cols-[minmax(0,22rem)_minmax(0,1fr)]">
