@@ -76,9 +76,13 @@ export default function Contact() {
 
           The addresses stay on the left, where they read first; the form is the
           wider column and carries the Agatho subhead, which is what keeps it
-          leading without needing to come first. 23rem and 34rem: the general
-          address is 31 characters and sets about 350px at text-xl, so a narrower
-          left column would break it mid-address. */}
+          leading without needing to come first.
+
+          The aside is a fixed 22rem and the form takes the rest, rather than both
+          being fixed and pushed apart with `justify-between` — that left about
+          200px of dead space in the middle of the page at desktop, which read as
+          two unrelated blocks rather than one spread. 22rem is still wide enough
+          that the 31-character address does not break. */}
       <section className="relative mx-auto mb-72 mt-14 w-4/5 max-w-6xl sm:mb-44 sm:mt-20">
         {/* Atmosphere, not paint. Deep Iris only ever works as the layer things
             sit on — the same radial bloom that grounds the services grid and sits
@@ -89,7 +93,7 @@ export default function Contact() {
           className="pointer-events-none absolute -bottom-16 -top-24 left-1/3 right-[-10%] -z-10 bg-[radial-gradient(55%_50%_at_55%_45%,rgba(82,55,148,0.38),transparent_70%)] blur-2xl"
         />
 
-        <div className="grid gap-x-16 gap-y-16 border-t border-white/15 pt-10 md:grid-cols-[minmax(0,23rem)_minmax(0,34rem)] md:justify-between">
+        <div className="grid gap-x-20 gap-y-16 border-t border-white/15 pt-10 md:grid-cols-[minmax(0,22rem)_minmax(0,1fr)]">
           <div>
             <p className="font-sans text-base leading-relaxed text-white/70">
               Email us directly at
