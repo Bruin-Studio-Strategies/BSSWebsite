@@ -51,7 +51,10 @@ export default function Contact() {
         <span className="inline-block font-sans text-xs font-semibold uppercase tracking-[0.2em] text-sky">
           Contact
         </span>
-        <h2 className="mt-4 max-w-[20ch] text-balance font-display text-5xl leading-[1.05] text-white sm:text-6xl">
+        {/* Balanced below lg, one line from lg up: at 3.75rem Agatho the whole
+            question sets in about 50rem and the column is 72rem there, so the
+            20ch clamp was breaking a line that had room to stay whole. */}
+        <h2 className="mt-4 max-w-[20ch] text-balance font-display text-5xl leading-[1.05] text-white sm:text-6xl lg:max-w-none">
           Interested in working with us?
         </h2>
         <p className="mt-6 max-w-[42rem] font-sans text-base leading-relaxed text-white/70">

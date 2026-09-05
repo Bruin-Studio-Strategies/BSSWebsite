@@ -521,7 +521,7 @@ left, the service cell rules in from the left, the recruitment spine fills from
 the top, the buttons sweep a veil across their own face. A cross-fade is what this
 system does when it has nothing to say about direction.
 
-**Page transitions are a plain 0.22s cross-fade and nothing else**
+**Page transitions are a 0.34s cross-fade and nothing else**
 (`transition/PageTransition.jsx`). A sliding curtain, a single veil doing double
 duty, and a deferred route swap were all built and all rejected — a route change
 is not an event that deserves choreography, and every added mechanism put a

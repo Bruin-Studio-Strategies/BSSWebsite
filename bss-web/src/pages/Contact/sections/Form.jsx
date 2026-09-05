@@ -9,8 +9,15 @@ const EMAIL = "bruinstudiostrategies@gmail.com";
 // does not have anywhere else — the timeline spine, the service cells and the
 // section dividers are all single hairlines, so a field is a line you write on
 // and the line lights up when you are on it.
+//
+// It does still have to look like something you can type in, though, and a bare
+// hairline on a dark gradient did not: there was nothing to say where the field
+// began or how tall it was. So the writing area carries a faint tint that stops
+// at the rule — a well, not a box — the rule itself is white/35 rather than a
+// hairline's usual white/20, and the whole thing is tall enough to read as a
+// target. Focus brightens all three at once and turns the caret sky.
 const FIELD =
-  "w-full border-b border-white/20 bg-transparent pb-2 pt-1 font-sans text-base text-white outline-none transition-colors duration-200 placeholder:text-white/30 focus:border-sky";
+  "w-full rounded-t-sm border-b-2 border-white/35 bg-white/[0.05] px-3 pb-2.5 pt-2.5 font-sans text-base text-white caret-sky outline-none transition-colors duration-200 placeholder:text-white/30 hover:bg-white/[0.07] focus:border-sky focus:bg-white/[0.09]";
 
 const LABEL =
   "block font-sans text-[0.6875rem] font-semibold uppercase tracking-[0.2em] text-white/50";

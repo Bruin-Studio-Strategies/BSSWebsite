@@ -133,17 +133,29 @@ daylight, and scrolling back up from below the hero runs it backwards.
 
 ## Page transitions (`src/transition/`)
 
-**A plain fade, 0.22s each way, and a separate loading screen for the hero.** Two
-things that do not know about each other. Several cleverer versions were built and
-every one of them was worse: a sliding gradient curtain, then one veil doing both
-jobs, then deferring the route swap until the cover finished, then `startTransition`
-to render the incoming page under it. The last two put a visible dwell on blank
-gradient between pages. If this needs changing again, change the duration.
+**A 0.34s cross-fade, and a separate loading screen for the hero.** Two things
+that do not know about each other.
 
-**The scroll reset has to be instant, and on exit-complete.** It used to run with
-`behavior: "smooth"` on every pathname change, so it animated *during* the fade
-and the outgoing page visibly slid upward as it dissolved. That was the thing that
-looked broken; the fade itself was always fine.
+**Both pages are on screen at once, and that is the whole trick.** `mode="wait"`
+is the obvious way to write this and it cannot produce a clean fade: it unmounts
+the old page *before* mounting the new one, so there is necessarily a stretch in
+the middle with nothing on screen — it reads as a fade to blank gradient, a pause,
+and a separate fade back, however short the durations are. The pages are stacked
+in one CSS grid cell (`grid-cols-1 grid-rows-1` + `gridArea: "1 / 1"`) so the
+outgoing one is still fading down while the incoming one fades up. The cell also
+sizes to the taller of the two, so nothing collapses mid-transition.
+
+Four versions were built before this one, all worse, all variations on hiding the
+gap instead of removing it: a sliding gradient curtain; one veil doing both the
+route change and the hero load; deferring the route swap until the cover finished;
+and `startTransition` to render the incoming page underneath. If this needs
+changing again, change the duration — do not reintroduce `mode="wait"`.
+
+**The scroll reset is instant, and fires at navigation.** It used to run with
+`behavior: "smooth"`, so it animated *during* the fade and the outgoing page
+visibly slid upward as it dissolved — that was the original fault, not the fade.
+It cannot wait for exit-complete now that the pages overlap, or the incoming page
+would spend the whole dissolve sitting at the outgoing page's scroll offset.
 
 `useSceneGate` (in `sceneGate.js`, its own module so `PageTransition.jsx` stays
 components-only and keeps fast refresh) holds the loading screen up while a page

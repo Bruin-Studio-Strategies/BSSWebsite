@@ -6,16 +6,23 @@ import { useLocation } from "react-router-dom";
 import logo from "../assets/logo-plain.png";
 import { GateContext } from "./sceneGate.js";
 
-// A fade between pages, and separately a loading screen for the hero. Two plain
-// things that do not know about each other.
+// A cross-fade between pages, and separately a loading screen for the hero. Two
+// plain things that do not know about each other.
 //
-// The one non-obvious bit is the scroll reset: it has to be instant, and it has
-// to happen on exit-complete. It used to run with `behavior: "smooth"` on every
-// pathname change, which animated *during* the fade, so the outgoing page visibly
-// slid upward as it dissolved. That, not the fade, was what looked broken.
+// **Both pages are on screen at once.** `mode="wait"` — the obvious way to write
+// this, and what was here before — is out, *then* in: it unmounts the old page
+// before mounting the new one, so there is necessarily a stretch in the middle
+// with nothing on screen. However short the durations, it reads as a fade to
+// blank gradient, a pause, and a separate fade back. The two pages are stacked in
+// the same CSS grid cell instead, so the outgoing one is still there fading down
+// while the incoming one is fading up. One dissolve, no gap.
+//
+// The scroll reset is instant and happens at the moment of navigation. It used to
+// run with `behavior: "smooth"`, which animated *during* the fade, so the
+// outgoing page visibly slid upward as it dissolved.
 
 const EASE = [0.16, 1, 0.3, 1];
-const FADE = 0.22;
+const FADE = 0.34;
 
 const GRADIENT_BG = "linear-gradient(#3D3C95, 20%, #0a0d3d)";
 
@@ -85,6 +92,13 @@ export default function PageTransition({ children }) {
   const location = useLocation();
   const reduced = !!useReducedMotion();
 
+  // At navigation, not on exit-complete: the outgoing page is still visible
+  // through the dissolve, so waiting would mean the incoming one spends the whole
+  // fade sitting at the old page's scroll offset.
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [location.pathname]);
+
   const [gateCount, setGateCount] = useState(0);
   const [floorHeld, setFloorHeld] = useState(true);
   const [held, setHeld] = useState(false);
@@ -133,17 +147,23 @@ export default function PageTransition({ children }) {
   return (
     <GateContext.Provider value={registerGate}>
       <LoadingScreen visible={loading} held={held} reduced={reduced} />
-      <AnimatePresence mode="wait" onExitComplete={() => window.scrollTo(0, 0)}>
-        <motion.div
-          key={location.pathname}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: reduced ? 0 : FADE, ease: EASE }}
-        >
-          {children(location)}
-        </motion.div>
-      </AnimatePresence>
+      {/* One grid cell, every page in it. Stacking is what allows the old and new
+          pages to overlap during the dissolve; the cell also takes the height of
+          the taller of the two, so nothing collapses mid-transition. */}
+      <div className="grid grid-cols-1 grid-rows-1">
+        <AnimatePresence initial={false}>
+          <motion.div
+            key={location.pathname}
+            style={{ gridArea: "1 / 1" }}
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: reduced ? 0 : FADE, ease: EASE }}
+          >
+            {children(location)}
+          </motion.div>
+        </AnimatePresence>
+      </div>
     </GateContext.Provider>
   );
 }
