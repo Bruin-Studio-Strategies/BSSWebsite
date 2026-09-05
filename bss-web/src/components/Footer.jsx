@@ -29,14 +29,23 @@ export default function Footer() {
       whileInView="show"
       viewport={viewport}
       variants={stagger}
-      className="absolute bottom-0 flex h-60 w-full flex-col justify-center gap-6 border-t border-white/10 bg-navy px-6 pb-8 pt-8 sm:h-24 sm:flex-row sm:items-center sm:gap-0 sm:px-10 sm:py-0"
+      // Below sm this is a centred stack; `items-center` was missing, so the
+      // wordmark row sat hard against the left edge while everything under it
+      // was centred, and the bar read as broken.
+      className="absolute bottom-0 flex h-60 w-full flex-col items-center justify-center gap-5 border-t border-white/10 bg-navy px-6 pb-8 pt-8 sm:h-24 sm:flex-row sm:items-center sm:gap-0 sm:px-10 sm:py-0"
     >
       <motion.div variants={fadeUp} className="flex items-center gap-3 sm:mr-10">
         <img src={logo} alt="" className="h-6 w-6 opacity-80" />
         <span className="font-display text-sm text-white/70">Bruin Studio Strategies</span>
       </motion.div>
 
-      <motion.div variants={fadeUp} className="flex flex-col items-center gap-2 sm:flex-row sm:gap-8">
+      {/* Wrapped rather than stacked on mobile. Five links in a single column
+          needed about 300px and this bar is a fixed 240px, so the social icons
+          were pushed out of the bottom of it. Two wrapped rows fit. */}
+      <motion.div
+        variants={fadeUp}
+        className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 sm:flex-nowrap sm:gap-x-8"
+      >
         <FooterItem path="/">Home</FooterItem>
         <FooterItem path="/clients">For Clients</FooterItem>
         <FooterItem path="/recruitment">For Students</FooterItem>

@@ -1,5 +1,7 @@
-import { useState } from "react";
-import { animate, motion, useMotionValue, useReducedMotion } from "framer-motion";
+import { useEffect, useRef, useState } from "react";
+import { animate, motion, useInView, useMotionValue, useReducedMotion } from "framer-motion";
+
+import useHoverCapable from "../../../hooks/useHoverCapable.js";
 
 import ServiceMotif from "../../../components/ServiceMotifs/Motifs.jsx";
 
@@ -53,24 +55,44 @@ const SERVICES = [
 ];
 
 function ServiceCell({ service, index, reduced }) {
-  // Hover alone drives the motif's actor. Reduced motion parks it at the far end
-  // of its travel, so the drawing still reads as finished without moving.
   const progress = useMotionValue(reduced ? 1 : 0);
   const [hovered, setHovered] = useState(false);
 
-  const onHover = (isOver) => {
-    setHovered(isOver);
+  // A phone cannot hover, so gating the motifs on it meant six drawings that
+  // never moved on the device most of this site is read on. There, the cell's
+  // own position drives them instead: the motif plays when the cell is properly
+  // on screen and rewinds when it leaves, so scrolling the page is what performs
+  // the animation. `amount: 0.6` rather than a sliver, so it fires when you are
+  // actually looking at the cell and not when its top edge appears.
+  const canHover = useHoverCapable();
+  const ref = useRef(null);
+  const inView = useInView(ref, { amount: 0.6 });
+
+  // Slow on the way in so the move is watchable rather than a flick, and a
+  // little quicker on the way out so the cell settles without dragging.
+  const run = (on) => {
     if (reduced) return;
-    // Slow on the way in so the move is watchable rather than a flick, and a
-    // little quicker on the way out so the card settles without dragging.
-    animate(progress, isOver ? 1 : 0, {
-      duration: isOver ? 1.5 : 0.9,
-      ease: EASE,
-    });
+    animate(progress, on ? 1 : 0, { duration: on ? 1.5 : 0.9, ease: EASE });
   };
+
+  const onHover = (isOver) => {
+    if (!canHover) return;
+    setHovered(isOver);
+    run(isOver);
+  };
+
+  useEffect(() => {
+    if (canHover) return;
+    setHovered(inView);
+    run(inView);
+    // `run` closes over stable values only; re-running on identity would restart
+    // the animation on every render.
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [canHover, inView, reduced]);
 
   return (
     <motion.li
+      ref={ref}
       onHoverStart={() => onHover(true)}
       onHoverEnd={() => onHover(false)}
       initial="hidden"
