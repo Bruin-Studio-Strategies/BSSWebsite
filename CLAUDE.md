@@ -137,14 +137,22 @@ never the problem; three things around it were:
   had already started, and left on its own separate timing. Two transitions back
   to back, the second interrupting the first.
 
-`PageTransition` renders the routes against a **deferred location**: the page
-fades out (0.16s), the swap and an instant `scrollTo(0, 0)` happen while nothing
-is on screen, then it fades back in (0.28s). Under half a second door to door.
+`PageTransition` renders the routes against a **deferred location**: a veil fades
+up (0.16s), the swap and an instant `scrollTo(0, 0)` happen while nothing is on
+screen, then it fades back out (0.28s). Under half a second door to door.
+
+**There is one moving part, not two.** The veil is a full-bleed panel painted in
+the body's own gradient, so fading it up is indistinguishable from fading the
+content out — and because it is already up at the moment the incoming route
+mounts, a page that needs to load simply keeps it there. Fading the content
+separately, with the loading overlay as its own element, is what broke the hero's
+loading screen: the overlay had to fade in *after* the incoming hero was already
+on screen. It also mounts covered, so the first paint of any visit is the gradient
+rather than an unpainted page.
 
 `useSceneGate` (in `sceneGate.js`, its own module so `PageTransition.jsx` stays
-components-only and keeps fast refresh) lets a page hold the gradient overlay up
-while it gets ready, instead of running a second transition after the first one
-finishes. `HeroBackdrop` is the only caller, and only on the WebGL path — the flat
+components-only and keeps fast refresh) lets a page hold the veil up while it gets
+ready, instead of running a second transition after the first one finishes. `HeroBackdrop` is the only caller, and only on the WebGL path — the flat
 fallback has nothing to compile, so gating it would stall the page waiting on work
 that never starts. It registers in a *layout* effect, because a passive one runs
 after the overlay has already decided there is nothing to wait for. A 9s timeout

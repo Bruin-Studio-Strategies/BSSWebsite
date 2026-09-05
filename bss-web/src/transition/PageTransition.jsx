@@ -20,6 +20,14 @@ import { GateContext } from "./sceneGate.js";
 // location while nothing is on screen, the scroll reset is instant because there
 // is nothing to watch it, and a page that needs time holds the fade rather than
 // running a second transition after it.
+//
+// There is one moving part, not two. The thing that fades is a full-bleed panel
+// painted in the body's own gradient, so fading it up is indistinguishable from
+// fading the content out — and because it is already up at the moment the new
+// route mounts, a page that needs to load simply keeps it there. Fading the
+// content separately would mean the overlay had to fade in *after* the incoming
+// hero was already on screen, which is the wrong way round and is what made the
+// loading screen disappear.
 
 const EASE = [0.16, 1, 0.3, 1];
 
@@ -40,7 +48,7 @@ const PATIENCE_MS = 450;
 // mid-compile would otherwise leave the gradient up forever.
 const GATE_TIMEOUT_MS = 9000;
 
-function LoadingOverlay({ visible, held, reduced }) {
+function Veil({ visible, held, reduced, onCovered }) {
   return createPortal(
     <motion.div
       // Portaled to <body> because the hero's container carries a CSS mask-image,
@@ -48,9 +56,14 @@ function LoadingOverlay({ visible, held, reduced }) {
       // element in the same subtree whatever the z-index says.
       className="pointer-events-none fixed inset-0 z-[999] flex flex-col items-center justify-center gap-6"
       style={{ background: GRADIENT_BG }}
-      initial={false}
+      // Mounts covered: the first paint of any visit is the gradient, and the
+      // page is revealed from under it once there is something worth revealing.
+      initial={{ opacity: 1 }}
       animate={{ opacity: visible ? 1 : 0 }}
-      transition={{ duration: reduced ? 0.15 : 0.4, ease: EASE }}
+      transition={{ duration: reduced ? 0.12 : visible ? OUT : IN, ease: EASE }}
+      onAnimationComplete={() => {
+        if (visible) onCovered();
+      }}
       aria-hidden={!visible}
     >
       <motion.div
@@ -98,12 +111,27 @@ export default function PageTransition({ children }) {
   const [gateCount, setGateCount] = useState(0);
   const gatesTimedOut = useRef(false);
 
+  // The overlay is up from the first paint and stays up for one frame, which is
+  // the window a page has to register a gate in. Without that hold there is no
+  // commit in which the overlay is both mounted and covering, so a hero that
+  // needs three seconds to compile would show three seconds of empty gradient
+  // with no loading screen over it.
+  const [openingHold, setOpeningHold] = useState(true);
+  useEffect(() => {
+    const id = requestAnimationFrame(() => setOpeningHold(false));
+    return () => cancelAnimationFrame(id);
+  }, []);
+
   const registerGate = useCallback(() => {
     setGateCount((n) => n + 1);
     return () => setGateCount((n) => Math.max(0, n - 1));
   }, []);
 
   const gated = gateCount > 0 && !gatesTimedOut.current;
+  // Covered while leaving as well, so the veil is already up at the moment the
+  // incoming route mounts. That is what lets a page with a gate simply keep it
+  // there instead of fading a loading screen in over its own half-drawn hero.
+  const covering = openingHold || gated || leaving;
 
   // A new pathname fades the page out. Comparing pathnames rather than location
   // objects keeps a query-string or hash change from triggering one.
@@ -111,7 +139,7 @@ export default function PageTransition({ children }) {
     if (location.pathname !== displayLocation.pathname) setLeaving(true);
   }, [location, displayLocation]);
 
-  const handleFadedOut = useCallback(() => {
+  const handleCovered = useCallback(() => {
     if (!leaving) return;
     setDisplayLocation(location);
     // Instant. Smooth scrolling used to run while the pages were cross-fading, so
@@ -142,15 +170,8 @@ export default function PageTransition({ children }) {
 
   return (
     <GateContext.Provider value={registerGate}>
-      <LoadingOverlay visible={gated} held={held} reduced={reduced} />
-      <motion.div
-        initial={false}
-        animate={{ opacity: leaving ? 0 : 1 }}
-        transition={{ duration: leaving ? OUT : IN, ease: EASE }}
-        onAnimationComplete={handleFadedOut}
-      >
-        {children(displayLocation)}
-      </motion.div>
+      <Veil visible={covering} held={held} reduced={reduced} onCovered={handleCovered} />
+      {children(displayLocation)}
     </GateContext.Provider>
   );
 }
