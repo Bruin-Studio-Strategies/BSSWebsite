@@ -124,28 +124,32 @@ daylight, and scrolling back up from below the hero runs it backwards.
 
 ## Page transitions (`src/transition/`)
 
-**One curtain covers every route change, and it is also the landing page's
-loading screen.** Before this they were two things fighting: routes cross-faded
-in `AnimatePresence mode="wait"` (0.5s out, then 0.5s in, so most of a second of
-empty gradient), `scrollToTop` ran with `behavior: "smooth"` *during* that fade so
-the outgoing page visibly slid as it dissolved, and then on `/` the 3D scene's own
-splash slammed in at z-999 after the fade had already started and left separately.
+**A short fade, and nothing else.** A sliding curtain was built here first and
+rejected on sight — it was doing far too much for a route change. The fade was
+never the problem; three things around it were:
 
-`PageTransition` renders the routes against a **deferred location**: the curtain
-slides down (0.34s), the swap and an instant `scrollTo(0, 0)` happen underneath
-it, then it keeps going down and off the bottom (0.52s). The travel is one
-direction throughout — parking it back above the viewport at the end has to be
-instant (`duration: 0`), or the reset sweeps the panel back up across the screen
-and every navigation ends with a second wipe.
+- it ran in `AnimatePresence mode="wait"` at 0.5s each way, so a navigation spent
+  most of a second sitting on an empty gradient;
+- `scrollToTop` used `behavior: "smooth"` and ran *during* the fade, so the
+  outgoing page visibly slid upward as it dissolved — this is the part that read
+  as broken rather than merely slow;
+- on `/`, the 3D scene's own splash then arrived on top at z-999 *after* the fade
+  had already started, and left on its own separate timing. Two transitions back
+  to back, the second interrupting the first.
+
+`PageTransition` renders the routes against a **deferred location**: the page
+fades out (0.16s), the swap and an instant `scrollTo(0, 0)` happen while nothing
+is on screen, then it fades back in (0.28s). Under half a second door to door.
 
 `useSceneGate` (in `sceneGate.js`, its own module so `PageTransition.jsx` stays
-components-only and keeps fast refresh) lets a page hold the curtain down while it
-gets ready. `HeroBackdrop` is the only caller, and only on the WebGL path — the
-flat fallback has nothing to compile, so gating it would stall the page waiting on
-work that never starts. It registers in a *layout* effect, because a passive one
-runs after the curtain has already decided there is nothing to wait for. A 9s
-timeout releases the curtain regardless, and the spinner only fades up after the
-curtain has been held 450ms, so a fast machine never sees one.
+components-only and keeps fast refresh) lets a page hold the gradient overlay up
+while it gets ready, instead of running a second transition after the first one
+finishes. `HeroBackdrop` is the only caller, and only on the WebGL path — the flat
+fallback has nothing to compile, so gating it would stall the page waiting on work
+that never starts. It registers in a *layout* effect, because a passive one runs
+after the overlay has already decided there is nothing to wait for. A 9s timeout
+releases it regardless, and the spinner only fades up after 450ms, so a fast
+machine never sees one.
 
 Every route used to carry its own copy of the same `motion.div` wrapper — six of
 them, so a new route could ship with no transition at all. `App.jsx` is now plain

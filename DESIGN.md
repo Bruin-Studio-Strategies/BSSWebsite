@@ -504,20 +504,16 @@ left, the service cell rules in from the left, the recruitment spine fills from
 the top, the buttons sweep a veil across their own face. A cross-fade is what this
 system does when it has nothing to say about direction.
 
-**One curtain covers every route change, and it is also the hero's loading
-screen** (`transition/PageTransition.jsx`). It slides down over the outgoing page
-in 0.34s, the route swaps underneath it with an instant scroll to top, and it
-keeps travelling down and off the bottom in 0.52s — continuous travel in one
-direction, because a panel that retreats the way it came reads as a door that
-changed its mind. It is painted in the body's own gradient, so it is the page's
-ground with nothing printed on it rather than a foreign surface passing over.
+**Page transitions are a short fade and nothing else**
+(`transition/PageTransition.jsx`): 0.16s out, an instant scroll reset and route
+swap while nothing is on screen, 0.28s back in. A sliding curtain was built and
+rejected — a route change is not an event that deserves choreography, and the
+gesture language above belongs to elements, not to whole pages.
 
-A page that needs time before it can be shown holds the curtain down instead of
-running its own splash afterwards: `useSceneGate` (in `transition/sceneGate.js`)
-is what the landing page's 3D scene uses to do that, and a 9s timeout guarantees
-the curtain lifts even if the gate never opens. The spinner inside it only fades
-up after the curtain has been held 450ms, so a fast machine never sees one. Under
-`prefers-reduced-motion` the curtain cross-fades in 0.2s and still gates.
+A page that needs time before it can be shown holds a gradient overlay up
+(`useSceneGate`, in `transition/sceneGate.js`) rather than running its own splash
+after the transition has finished; the landing page's 3D scene is the only caller.
+The spinner inside it only appears after 450ms, so a fast machine never sees one.
 
 ## Do's and Don'ts
 
