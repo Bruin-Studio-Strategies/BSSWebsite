@@ -150,6 +150,15 @@ never the problem; three things around it were:
 up (0.16s), the swap and an instant `scrollTo(0, 0)` happen while nothing is on
 screen, then it fades back out (0.28s). Under half a second door to door.
 
+**The incoming page starts rendering at the click, not after the cover.** The
+swap is the expensive part — mounting a whole page, and `/team` mounts 37 cards —
+so deferring it until the fade finished meant the veil reached full opacity and
+then sat on blank gradient for however long that render took. It runs inside
+`startTransition` now, which keeps the outgoing page on screen while React works,
+so the render happens *during* the fade and nothing flickers under a half-opaque
+veil. `isPending` also holds the cover, so a slow page keeps it up rather than
+revealing onto a half-built one.
+
 **There is one moving part, not two.** The veil is a full-bleed panel painted in
 the body's own gradient, so fading it up is indistinguishable from fading the
 content out — and because it is already up at the moment the incoming route

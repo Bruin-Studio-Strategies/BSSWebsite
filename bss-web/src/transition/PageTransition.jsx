@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState, useTransition } from "react";
 import { createPortal } from "react-dom";
 import { motion, useReducedMotion } from "framer-motion";
 import { useLocation } from "react-router-dom";
@@ -32,11 +32,9 @@ import { GateContext } from "./sceneGate.js";
 const EASE = [0.16, 1, 0.3, 1];
 
 // Covering is quicker than revealing: covering answers a click and wants to keep
-// up with it, revealing is an arrival and can be watched. Together they are about
-// three quarters of a second — slow enough to read as a transition rather than a
-// repaint, short enough that clicking through the nav never feels held up.
-const OUT = 0.26;
-const IN = 0.46;
+// up with it, revealing is an arrival and can be watched.
+const OUT = 0.2;
+const IN = 0.42;
 
 // Until the terrain has painted there is nothing to show, so the landing page is
 // covered by its own gradient rather than by a blank white flash.
@@ -115,6 +113,7 @@ export default function PageTransition({ children }) {
   const reduced = !!useReducedMotion();
 
   const [displayLocation, setDisplayLocation] = useState(location);
+  const [pending, startTransition] = useTransition();
   const [leaving, setLeaving] = useState(false);
   const [held, setHeld] = useState(false);
 
@@ -151,23 +150,28 @@ export default function PageTransition({ children }) {
   // there — which is the difference between a fade and a blank screen with a page
   // on either side of it.
   const loading = openingHold || gated;
-  const covering = loading || leaving || floorHeld;
+  const covering = loading || leaving || pending || floorHeld;
 
-  // A new pathname fades the page out. Comparing pathnames rather than location
-  // objects keeps a query-string or hash change from triggering one.
+  // A new pathname starts the cover *and* the incoming page's render at the same
+  // moment. Waiting for the cover to finish before swapping is what made the veil
+  // sit on blank gradient: the swap was the expensive part — mounting a whole page
+  // — and none of it began until the fade had already run. Now the render happens
+  // during the fade, and `startTransition` keeps the outgoing page on screen while
+  // it does, so nothing flickers underneath a half-opaque veil.
   useEffect(() => {
-    if (location.pathname !== displayLocation.pathname) setLeaving(true);
-  }, [location, displayLocation]);
+    if (location.pathname === displayLocation.pathname) return;
+    setLeaving(true);
+    startTransition(() => setDisplayLocation(location));
+  }, [location, displayLocation, startTransition]);
 
   const handleCovered = useCallback(() => {
     if (!leaving) return;
-    setDisplayLocation(location);
     // Instant. Smooth scrolling used to run while the pages were cross-fading, so
     // the outgoing page slid upward as it dissolved. There is nothing to watch it
     // now, and nothing to animate for.
     window.scrollTo(0, 0);
     setLeaving(false);
-  }, [leaving, location]);
+  }, [leaving]);
 
   // Two effects, not one. Arming and expiring the floor in a single effect keyed
   // on the cover state meant the moment the cover ended, the cleanup cancelled the
