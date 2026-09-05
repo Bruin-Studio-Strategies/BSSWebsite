@@ -122,5 +122,65 @@ It is time-based, and it snaps instead of easing across a gap longer than a fram
 without that, landing on an already-scrolled page replays the whole sunset from
 daylight, and scrolling back up from below the hero runs it backwards.
 
+## For Students (`/recruitment`)
+
+Rebuilt on the same measure and section-opener language as `/clients`, but with a
+deliberately different character: **the landing owns the 3D landscape and the
+clients page owns the engagement diagram, so this page borrows neither.** Its only
+ornament is Agatho at scale — the stage numerals — and everything else is a
+hairline rule. Trying the landscape here (a terrain-profile rail, elevation as the
+timeline's axis) was explored and rejected: it made the reader decode a metaphor
+before finding a date, and dates plus dress code are the whole reason a student
+opens the page.
+
+The cycle lives in `pages/Recruitment/stages.js`. **The page is deliberately not
+cycle-aware** — it describes how recruitment works, and a date is an attribute of
+a stage rather than the thing the page is organised around. Every field except
+`title` is optional and a missing one drops its row, so a stage with no venue
+booked yet still renders. The dates in there are the Fall 2025 cycle's and are
+stale.
+
+**The timeline is a vertical spine.** One hairline runs down the left edge with a
+dot per stage sitting on it and every entry on the right — same side for all of
+them, because alternating sides makes the reader's eye cross the line five times
+to read five stages. The spine fills sky from the top as you scroll: segments
+behind you are full, the one you are reading fills proportionally, the ones ahead
+are empty, which is what makes the line read as progress through the cycle rather
+than as a border. Rows carry bottom padding only, never vertical margin, so each
+segment runs from its own dot into the top of the next one and the spine is
+continuous instead of five ticks. `DOT_TOP` / `SEGMENT_TOP` in `Timeline.jsx` are
+what keep the dot level with the eyebrow line — they are tuned to that type size
+and have to move with it.
+
+`useStageFocus` measures each row against a focus line at 45% viewport height to
+decide which stage is being read; section-wide scroll progress fails here, because
+a section only a little taller than the viewport gives each of five stages less
+than a mouse-wheel tick of travel. It returns `within` — the fraction of the way
+through the current row — as well as the index, so the fill moves continuously
+rather than jumping a fifth of the spine at a time.
+
+Shapes tried and rejected before this one, in order: plain ruled rows, then ruled
+rows with a hairline connector down the numeral column (both read as a schedule,
+not a timeline), then a horizontal rail pinned to the top of the viewport that
+doubled as jump nav. The pinned rail showed the whole five-stage shape at a glance
+but was rejected on sight — the spine is what the page ships.
+
+The header carries the page's one magenta (the apply button, in the first
+viewport — the old page had no apply control at all, only a commented-out one),
+which is why the closing block asks with a text link instead of a second button.
+`TimelineItem` is gone and `Accordion` was rebuilt off its filled `bg-blue-950`
+block into a ruled row; both were used only by this page.
+
+**Every "Apply Now" on the site renders through `components/ApplyButton.jsx`, and
+the link lives in `src/applyLink.js`.** Before that there were four call sites
+(navbar desktop, navbar mobile, the landing team block, the recruitment header)
+carrying three different treatments and, worse, three different Google Form URLs.
+The component's two variants are hierarchy rather than taste: `solid` is the
+page's one call to action, `outline` is the navbar's standing link, which has to
+stay available on every page without competing with whatever solid button is
+below it. `applyLink.js` sits at the src root, not in `pages/Recruitment/`,
+because the navbar and the landing page both need it. Its URL is still last
+cycle's and needs confirming.
+
 Not yet touched in this pass: navbar styling, the "What is BSS?"/testimonial section,
-Team/Clients/Recruitment/Contact pages, any copy.
+Team/Contact pages, most copy.

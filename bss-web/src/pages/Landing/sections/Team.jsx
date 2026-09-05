@@ -1,5 +1,5 @@
 import { motion, useReducedMotion } from "framer-motion";
-import { FaArrowRight } from "react-icons/fa";
+import ApplyButton from "../../../components/ApplyButton.jsx";
 import group from "../../../assets/group.JPG";
 
 const EASE = [0.16, 1, 0.3, 1];
@@ -95,15 +95,7 @@ export default function Team() {
             variants={fadeUp}
             className="mt-8 flex flex-col items-center gap-4 sm:flex-row sm:justify-center md:justify-start"
           >
-            <a
-              href="https://forms.gle/xVDESkpmkP4MtpHm6?fbclid=PAZXh0bgNhZW0CMTEAAadFbpo77M3Dkz2vW5t2s1JFopI-tHdqMWIHL94-D59BH2cufaXQy7bJv9014w_aem_RXmJvNtWU_Pw87TpkvdRGQ"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="group inline-flex shrink-0 items-center gap-3 rounded-sm bg-magenta px-6 py-3 font-sans text-sm font-semibold uppercase tracking-wide text-white shadow-md shadow-black/0 transition-all duration-150 hover:-translate-y-0.5 hover:bg-magenta/80 hover:shadow-lg hover:shadow-magenta/30 active:translate-y-0 active:bg-magenta active:shadow-none"
-            >
-              Apply Now
-              <FaArrowRight className="text-xs transition-transform duration-200 group-hover:translate-x-1" />
-            </a>
+            <ApplyButton />
             <span className="font-sans text-white/50 text-sm">
               Applications for Fall 2025 are live.
             </span>

@@ -1,8 +1,12 @@
 import Accordion from "../../../components/Accordion";
 
+// Just the stack. The section's opener lives in Recruitment.jsx with every other
+// section opener on the page, so all of them share one measure and one alignment
+// — previously this heading sat in a two-thirds column beside the questions,
+// which gave the introduction twice the width of the content it introduced.
 export default function FAQ() {
   return (
-    <div className="px-4 pb-4 w-[95%] sm:w-[89%] mb-48 flex flex-col gap-y-6 mx-auto sm:mx-0">
+    <div>
       <Accordion title="What does BSS look for in an applicant?">
         We’re looking for students who are passionate about entertainment
         consulting and eager to learn. Whether you’re detail-oriented, a

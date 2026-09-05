@@ -1,13 +1,12 @@
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import NavItem from "./NavItem.jsx";
+import ApplyButton from "./ApplyButton.jsx";
 import logo from "../assets/logo.png";
 import { Link } from "react-router-dom";
 import { MdClose } from "react-icons/md";
 
 const EASE = [0.16, 1, 0.3, 1];
-const APPLY_FORM_URL =
-  "https://docs.google.com/forms/d/e/1FAIpQLScwAxZaKPtgV5V0rwdGm7Op3ucGgAN6Y9lbEVz4jcbEQCZ_aQ/viewform";
 
 const mobileMenu = {
   hidden: { opacity: 0 },
@@ -48,17 +47,7 @@ export default function NavBar() {
           <NavItem path="/recruitment">For Students</NavItem>
           <NavItem path="/team">Our Team</NavItem>
           <NavItem path="/contact">Contact</NavItem>
-          <motion.a
-            href={APPLY_FORM_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            whileHover={{ y: -2 }}
-            whileTap={{ y: 0 }}
-            transition={{ duration: 0.2, ease: EASE }}
-            className="ml-auto inline-flex items-center rounded-sm border border-magenta px-4 py-2 font-sans text-sm text-white transition-colors duration-200 hover:bg-magenta"
-          >
-            Apply Now
-          </motion.a>
+          <ApplyButton variant="outline" className="ml-auto" />
         </div>
       </motion.nav>
 
@@ -99,15 +88,7 @@ export default function NavBar() {
                 <NavItem path="/contact" onClick={toggleMenu}>Contact</NavItem>
               </motion.li>
               <motion.li variants={mobileItem}>
-                <a
-                  href={APPLY_FORM_URL}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  onClick={toggleMenu}
-                  className="inline-flex items-center rounded-sm border border-magenta px-4 py-2 font-sans text-sm font-medium text-white transition-colors duration-200 hover:bg-magenta"
-                >
-                  Apply Now
-                </a>
+                <ApplyButton variant="outline" onClick={toggleMenu} />
               </motion.li>
             </motion.ul>
           </motion.div>
