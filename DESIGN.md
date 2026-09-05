@@ -411,6 +411,14 @@ who matters.
 - **Grid:** `grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5`, `gap-x-6 gap-y-10`. Past `lg` the container's `max-w-6xl` fixes every cell at exactly 205px.
 - **Band heading:** Agatho `text-3xl` → `sm:text-4xl`, a `flex-1` white/15 hairline, then a zero-padded count in white/40 — heading, rule, and count on one baseline.
 
+**Hover names the destination.** A roster cell answers a hover by saying where it
+goes, not by moving: a scrim lifts off the bottom of the portrait and a bordered
+plate reading "LinkedIn" rises into it, the ring warms to sky, and the name draws
+the same sky underline the nav items do. The portrait used to scale 4% instead,
+which announces that something is happening and nothing about what. Only cards
+that actually have a profile get any of it — a card with no LinkedIn must not
+imply it can be clicked.
+
 **The Equal Cell Rule.** Within a roster, every person is the same size. Roles and
 teams are information and stay on the card; they never become a size, a column
 span, or a position of honour. A ranked variant of this grid is not a variant, it

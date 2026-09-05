@@ -63,7 +63,7 @@ export default function TeamCard({
 
   return (
     <motion.li variants={fadeUp} className="group relative">
-      <div className="relative aspect-[4/5] overflow-hidden rounded-sm bg-navy ring-1 ring-white/10 transition-shadow duration-500 group-hover:ring-sky/50 group-focus-within:ring-2 group-focus-within:ring-sky">
+      <div className="relative aspect-[4/5] overflow-hidden rounded-sm bg-navy ring-1 ring-white/10 transition-shadow duration-300 group-hover:ring-sky/60 group-focus-within:ring-2 group-focus-within:ring-sky">
         {isFallback ? (
           // No headshot on file. Initials in the display face read as a
           // deliberate blank rather than as an image that failed to load.
@@ -107,10 +107,29 @@ export default function TeamCard({
               // here would read every person's name twice.
               alt=""
               onLoad={() => setLoaded(true)}
-              className={`relative h-full w-full object-cover transition-[opacity,transform] duration-700 ease-out group-hover:scale-[1.04] ${
+              className={`relative h-full w-full object-cover transition-opacity duration-700 ease-out ${
                 loaded ? "opacity-100" : "opacity-0"
               }`}
             />
+          </>
+        )}
+        {/* The portrait used to answer a hover by scaling 4%, which says
+            "something is happening here" and nothing about what. Only cards that
+            actually go somewhere get this, and it names the destination: a scrim
+            lifts off the bottom of the frame and the plate rises into it. */}
+        {profile && (
+          <>
+            <span
+              aria-hidden="true"
+              className="pointer-events-none absolute inset-x-0 bottom-0 h-2/5 bg-gradient-to-t from-navy/85 to-transparent opacity-0 transition-opacity duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:opacity-100 group-focus-within:opacity-100 motion-reduce:transition-none"
+            />
+            <span
+              aria-hidden="true"
+              className="pointer-events-none absolute bottom-3 left-3 flex translate-y-1 items-center gap-1.5 rounded-sm border border-sky/60 bg-navy/70 px-2 py-1 font-sans text-[0.625rem] font-semibold uppercase tracking-[0.14em] text-white opacity-0 transition-[opacity,transform] duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:translate-y-0 group-hover:opacity-100 group-focus-within:translate-y-0 group-focus-within:opacity-100 motion-reduce:transition-none motion-reduce:group-hover:translate-y-0"
+            >
+              <FaLinkedin className="text-[1.1em] text-sky" />
+              LinkedIn
+            </span>
           </>
         )}
       </div>
@@ -123,9 +142,17 @@ export default function TeamCard({
             href={profile}
             target="_blank"
             rel="noopener noreferrer"
-            className="rounded-sm outline-none before:absolute before:inset-0 before:content-['']"
+            className="relative inline rounded-sm outline-none before:absolute before:inset-0 before:content-['']"
           >
-            {name}
+            <span className="relative inline-block">
+              {name}
+              {/* The same underline the nav items draw, so a name that goes
+                  somewhere behaves like every other link on the site. */}
+              <span
+                aria-hidden="true"
+                className="absolute -bottom-0.5 left-0 h-px w-full origin-left scale-x-0 bg-sky transition-transform duration-300 ease-[cubic-bezier(0.16,1,0.3,1)] group-hover:scale-x-100 group-focus-within:scale-x-100 motion-reduce:transition-none"
+              />
+            </span>
             <FaLinkedin
               aria-hidden="true"
               className="ml-2 inline-block -translate-y-px text-[0.7em] text-white/35 transition-colors duration-200 group-hover:text-sky"

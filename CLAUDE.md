@@ -309,6 +309,14 @@ conversion. `people.js` stores a `slug`; `headshots.js` resolves it via
 `import.meta.glob`. **After adding or replacing a headshot, re-run the script and
 commit its output**, or that member renders as initials.
 
+**A card's hover names its destination rather than moving.** The portrait scaled
+4% at first, which says something is happening and nothing about what. Now a scrim
+lifts off the bottom of the frame with a bordered "LinkedIn" plate rising into it,
+the ring warms to sky, and the name draws the nav's own sky underline. All of it
+is gated on the person actually having a profile, so a card that goes nowhere does
+not look clickable, and the inline LinkedIn glyph beside the name stays as the
+at-rest signal for touch, where there is no hover at all.
+
 Executives load eagerly at high fetch priority; everyone below the fold stays
 lazy. Full detail, including why the roster deviates from the Eyebrow, Framed
 Figure, and SectionDivider rules, is in DESIGN.md under Roster Grid.
