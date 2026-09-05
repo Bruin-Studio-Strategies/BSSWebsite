@@ -2,9 +2,9 @@ import NavBar from "../../components/NavBar";
 import Footer from "../../components/Footer";
 import Services from "./sections/Services";
 import Process from "./sections/Process";
-import { Link } from "react-router-dom";
 import board from "../../assets/board.jpg";
 import SectionDivider from "../../components/SectionDivider";
+import CtaButton from "../../components/CtaButton.jsx";
 export default function Clients() {
   return (
     <>
@@ -83,12 +83,9 @@ export default function Clients() {
               </a>{" "}
               or fill out our contact form.
             </p>
-            <Link
-              to="/contact"
-              className="mt-7 inline-flex items-center rounded-sm bg-magenta px-6 py-3 font-sans text-sm font-semibold uppercase tracking-wide text-white transition-all duration-150 hover:-translate-y-0.5 hover:bg-magenta/80 hover:shadow-lg hover:shadow-magenta/30 active:translate-y-0 active:shadow-none"
-            >
+            <CtaButton to="/contact" className="mt-7">
               Contact Us
-            </Link>
+            </CtaButton>
           </div>
 
           <img

@@ -317,10 +317,12 @@ institutional half of the identity.
 
 ### Buttons
 
-- **Shape:** near-square (`rounded-sm`, 2px), uppercase Inter 600 at `text-sm` with `tracking-wide`.
-- **Primary:** solid Signal Magenta, white text, `px-6 py-3`. On hover it lifts 2px, drops to 80% magenta, and gains a magenta-tinted glow; on active it returns to the baseline with no shadow. Optional trailing arrow slides 4px right on group hover.
-- **Outline (nav "Apply Now"):** transparent with a 1px magenta border, white text, `px-4 py-2`. Fills solid magenta on hover. This is the standing recruitment CTA in the navbar and mobile menu.
-- **Transitions:** 150–200ms on the project easing curve. Never a color-only change — always paired with the 2px lift.
+- **Shape:** near-square (`rounded-sm`, 2px), uppercase Inter 600, letter-spaced into the same small-caps family as the eyebrows (`0.18em` primary, `0.16em` outline) rather than a default `tracking-wide`.
+- **Primary:** solid Signal Magenta, white text, `px-7 py-3` at `text-sm`. One per screen, by The One Action Rule.
+- **Outline (nav "Apply Now"):** transparent with a 1px magenta border, white text, `px-4 py-2` at `text-xs`. The standing recruitment CTA in the navbar and mobile menu — it has to stay available on every page without competing with whatever primary the page below it is showing.
+- **Hover is a wipe, not a lift.** A veil sweeps across the face of the button from the left over 450ms on the project easing curve: navy/35 on the primary, so the magenta *deepens*; solid magenta on the outline, so the border fills. Nothing translates, nothing glows. Focus-visible fires the same sweep, so a keyboard gets the mouse's feedback.
+- **Why:** the wipe is this site's gesture — the nav underline draws in from the left, the service cells rule in from the left, the recruitment spine fills from the top. A button that lifted 2px and grew a magenta-tinted glow was speaking a different language from every other interactive thing on the site, and it was the generic one. Deepening rather than fading matters too: a primary action that gets lighter when you reach for it reads as going away.
+- **Every apply control on the site is one component** (`components/ApplyButton.jsx`), linking to one URL (`src/applyLink.js`). There is no second implementation.
 - **There is no secondary or ghost button variant.** When an action is not primary, it is a text link with an animated underline, not a weaker button.
 
 ### Ruled Cells
