@@ -31,10 +31,12 @@ import { GateContext } from "./sceneGate.js";
 
 const EASE = [0.16, 1, 0.3, 1];
 
-// Out is quick because it answers a click; in is a little slower because it is an
-// arrival. Together they are under half a second.
-const OUT = 0.16;
-const IN = 0.28;
+// Covering is quicker than revealing: covering answers a click and wants to keep
+// up with it, revealing is an arrival and can be watched. Together they are about
+// three quarters of a second — slow enough to read as a transition rather than a
+// repaint, short enough that clicking through the nav never feels held up.
+const OUT = 0.26;
+const IN = 0.46;
 
 // Until the terrain has painted there is nothing to show, so the landing page is
 // covered by its own gradient rather than by a blank white flash.
@@ -47,6 +49,13 @@ const PATIENCE_MS = 450;
 // A gate that never opens must not trap the page — a WebGL context that dies
 // mid-compile would otherwise leave the gradient up forever.
 const GATE_TIMEOUT_MS = 9000;
+
+// Once the veil is up it stays up this long at minimum. Without a floor, a hero
+// that reports itself ready a few milliseconds after mounting makes the veil
+// blink — up and straight back down — and what shows through in that blink is
+// whatever stand-in was on screen underneath, which on the landing page is the
+// old flat hero the redesign replaced.
+const MIN_COVER_MS = 700;
 
 function Veil({ visible, held, reduced, onCovered }) {
   return createPortal(
@@ -128,10 +137,14 @@ export default function PageTransition({ children }) {
   }, []);
 
   const gated = gateCount > 0 && !gatesTimedOut.current;
+
+  // Held from the moment the veil goes up. Cleared by its own timer rather than
+  // by the gate, so a fast release cannot shorten it.
+  const [floorHeld, setFloorHeld] = useState(true);
   // Covered while leaving as well, so the veil is already up at the moment the
   // incoming route mounts. That is what lets a page with a gate simply keep it
   // there instead of fading a loading screen in over its own half-drawn hero.
-  const covering = openingHold || gated || leaving;
+  const covering = openingHold || gated || leaving || floorHeld;
 
   // A new pathname fades the page out. Comparing pathnames rather than location
   // objects keeps a query-string or hash change from triggering one.
@@ -148,6 +161,13 @@ export default function PageTransition({ children }) {
     window.scrollTo(0, 0);
     setLeaving(false);
   }, [leaving, location]);
+
+  useEffect(() => {
+    if (!(openingHold || gated || leaving)) return undefined;
+    setFloorHeld(true);
+    const id = setTimeout(() => setFloorHeld(false), MIN_COVER_MS);
+    return () => clearTimeout(id);
+  }, [openingHold, gated, leaving]);
 
   // The spinner earns its way in only once the wait has run long enough.
   useEffect(() => {

@@ -34,11 +34,13 @@ const PHASE_GROUPS = 6;
 // about a third of what it was, because the streak is now much further away as
 // well as longer-lived.
 //
-// There is one meteor mesh, so the gap is what sets the rate and the duty cycle is
-// its ceiling: at a 0.5-2.0s gap against a 2.2s life, something is burning roughly
-// two-thirds of the time. Shortening the gap further would just leave one on screen
-// permanently, which reads as an object rather than as a sky.
-const METEOR_GAP = [0.5, 2.0];
+// The gap is per streak, and there are METEOR_COUNT of them running independently,
+// which is the only way the sky gets busier past a point: with a single mesh the
+// duty cycle is the ceiling, and shortening its gap just leaves one streak
+// permanently on screen — an object, not a sky. Three on their own schedules put
+// roughly two in the air at once and let them overlap at different angles.
+const METEOR_GAP = [0.6, 2.4];
+const METEOR_COUNT = 3;
 const METEOR_LIFE = 2.2;
 const METEOR_TRAVEL = 52;
 const METEOR_TAIL = 22;
@@ -99,11 +101,19 @@ function makeMeteorGeometry() {
 export default function Starfield({ scrollYProgress, reducedMotion }) {
   const groupRef = useRef();
   const layerRefs = useRef([]);
-  const meteorRef = useRef();
-  const meteorMat = useRef();
+  const meteorRefs = useRef([]);
+  const meteorMats = useRef([]);
   const smooth = useRef(null);
   const clock = useRef(0);
-  const shot = useRef({ until: -1, next: 3, dir: new THREE.Vector3(), from: new THREE.Vector3() });
+  // Staggered first firings, so the pool does not open with all three at once.
+  const shots = useRef(
+    Array.from({ length: METEOR_COUNT }, (_, i) => ({
+      until: -1,
+      next: 0.4 + i * 1.1,
+      dir: new THREE.Vector3(),
+      from: new THREE.Vector3(),
+    }))
+  );
   const { camera } = useThree();
 
   const random = useMemo(() => starRandom(), []);
@@ -171,46 +181,52 @@ export default function Starfield({ scrollYProgress, reducedMotion }) {
     // it at all. Brightness still rides the sunset (see the opacity below), so an
     // early one is faint against the day sky rather than absent.
     const t = clock.current;
-    const s = shot.current;
-    if (t > s.next) {
-      s.until = t + METEOR_LIFE;
-      s.next = s.until + METEOR_GAP[0] + random() * (METEOR_GAP[1] - METEOR_GAP[0]);
-      // Spawned so the arc actually crosses the frame. The camera is pitched down
-      // and the top of the frame is only ~8 degrees above horizontal, so the old
-      // start band of y 18-42 at this depth was 14-43 degrees up — every meteor was
-      // born above the viewport and most never entered it. That, not the interval,
-      // was why they seemed rare.
-      //
-      // Starting just above the top edge on the right and falling left carries the
-      // streak down through the visible band and out the far side.
-      s.from.set(5 + random() * 40, 6 + random() * 9, -62 + random() * 18);
-      // The two components are drawn independently and over wide ranges, which is
-      // the whole reason the angle varies. Scaling both from one narrow range —
-      // what this did before — moved the vector's length but barely its direction,
-      // so every meteor fell at the same 36 degrees. This spans roughly 16 to 60
-      // degrees below horizontal. Shallow ones skim the band, steep ones drop out
-      // of the bottom of it partway through, which is what makes the sky read as
-      // having more than one meteor in it.
-      s.dir.set(-0.45 - random() * 0.45, -0.25 - random() * 0.55, 0).normalize();
-    }
 
-    if (meteorRef.current && meteorMat.current) {
-      const live = t < s.until;
-      meteorRef.current.visible = live;
-      if (live) {
-        const age = 1 - (s.until - t) / METEOR_LIFE;
-        const travel = METEOR_TRAVEL * age;
-        meteorRef.current.position.copy(s.from).addScaledVector(s.dir, travel);
-        meteorRef.current.rotation.z = Math.atan2(s.dir.y, s.dir.x);
-        // Stretches as it accelerates, then goes out — a streak that simply
-        // translated at constant length would read as an object, not a burn.
-        meteorRef.current.scale.setScalar(4.5 + age * 11);
-        // Floored rather than scaled straight off the sunset. At the very top of
-        // the page `eased` is 0, so multiplying by it alone made the landing state
-        // — the thing most people look at longest — fire meteors at zero opacity.
-        // They are dimmer against the day sky than against night, but present.
-        meteorMat.current.opacity = Math.sin(Math.PI * age) * 0.9 * (0.45 + eased * 0.55);
+    for (let i = 0; i < METEOR_COUNT; i++) {
+      const s = shots.current[i];
+
+      if (t > s.next) {
+        s.until = t + METEOR_LIFE;
+        s.next = s.until + METEOR_GAP[0] + random() * (METEOR_GAP[1] - METEOR_GAP[0]);
+        // Spawned so the arc actually crosses the frame. The camera is pitched down
+        // and the top of the frame is only ~8 degrees above horizontal, so the old
+        // start band of y 18-42 at this depth was 14-43 degrees up — every meteor was
+        // born above the viewport and most never entered it. That, not the interval,
+        // was why they seemed rare.
+        //
+        // Starting just above the top edge on the right and falling left carries the
+        // streak down through the visible band and out the far side.
+        s.from.set(5 + random() * 40, 6 + random() * 9, -62 + random() * 18);
+        // The two components are drawn independently and over wide ranges, which is
+        // the whole reason the angle varies. Scaling both from one narrow range —
+        // what this did before — moved the vector's length but barely its direction,
+        // so every meteor fell at the same 36 degrees. This spans roughly 16 to 60
+        // degrees below horizontal. Shallow ones skim the band, steep ones drop out
+        // of the bottom of it partway through, which is what makes the sky read as
+        // having more than one meteor in it.
+        s.dir.set(-0.45 - random() * 0.45, -0.25 - random() * 0.55, 0).normalize();
       }
+
+      const mesh = meteorRefs.current[i];
+      const mat = meteorMats.current[i];
+      if (!mesh || !mat) continue;
+
+      const live = t < s.until;
+      mesh.visible = live;
+      if (!live) continue;
+
+      const age = 1 - (s.until - t) / METEOR_LIFE;
+      const travel = METEOR_TRAVEL * age;
+      mesh.position.copy(s.from).addScaledVector(s.dir, travel);
+      mesh.rotation.z = Math.atan2(s.dir.y, s.dir.x);
+      // Stretches as it accelerates, then goes out — a streak that simply
+      // translated at constant length would read as an object, not a burn.
+      mesh.scale.setScalar(4.5 + age * 11);
+      // Floored rather than scaled straight off the sunset. At the very top of
+      // the page `eased` is 0, so multiplying by it alone made the landing state
+      // — the thing most people look at longest — fire meteors at zero opacity.
+      // They are dimmer against the day sky than against night, but present.
+      mat.opacity = Math.sin(Math.PI * age) * 0.9 * (0.45 + eased * 0.55);
     }
   });
 
@@ -236,17 +252,30 @@ export default function Starfield({ scrollYProgress, reducedMotion }) {
         </points>
       ))}
 
-      <line ref={meteorRef} geometry={meteorGeometry} visible={false}>
-        <lineBasicMaterial
-          ref={meteorMat}
-          vertexColors
-          transparent
-          opacity={0}
-          blending={THREE.AdditiveBlending}
-          depthWrite={false}
-          fog={false}
-        />
-      </line>
+      {/* One geometry, shared; each streak needs its own material because they
+          burn and fade on their own schedules. */}
+      {Array.from({ length: METEOR_COUNT }, (_, i) => (
+        <line
+          key={i}
+          ref={(el) => {
+            meteorRefs.current[i] = el;
+          }}
+          geometry={meteorGeometry}
+          visible={false}
+        >
+          <lineBasicMaterial
+            ref={(el) => {
+              meteorMats.current[i] = el;
+            }}
+            vertexColors
+            transparent
+            opacity={0}
+            blending={THREE.AdditiveBlending}
+            depthWrite={false}
+            fog={false}
+          />
+        </line>
+      ))}
     </group>
   );
 }

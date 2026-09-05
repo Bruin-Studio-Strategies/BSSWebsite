@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
-import { Canvas } from "@react-three/fiber";
+import { Canvas, useFrame } from "@react-three/fiber";
 import Terrain from "./Terrain.jsx";
 import DistantRidge from "./DistantRidge.jsx";
 import Starfield from "./Starfield.jsx";
@@ -23,6 +23,39 @@ function useInView(ref) {
     return () => observer.disconnect();
   }, [ref]);
   return inView;
+}
+
+// Readiness is reported from inside the frame loop, not from `onCreated`.
+// `onCreated` fires when the WebGL context exists, which is well before the
+// terrain and the logo have built their geometry — two rAFs after it is still two
+// rAFs into an empty scene. Counting real rendered frames means the veil lifts on
+// a drawn landscape rather than on a canvas that merely exists.
+//
+// Three frames rather than one: the first is often the frame the geometry is
+// uploaded on, and the sunset lighting settles a frame behind that.
+function ReportWhenDrawn({ onReady, running }) {
+  const frames = useRef(0);
+  const fired = useRef(false);
+
+  useFrame(() => {
+    if (fired.current) return;
+    frames.current += 1;
+    if (frames.current >= 3) {
+      fired.current = true;
+      onReady?.();
+    }
+  });
+
+  // The frame loop is parked when the hero is off screen, and a parked loop
+  // never draws a frame to count. Landing on an already-scrolled page would
+  // otherwise hold the veil up until its timeout with nothing behind it loading.
+  useEffect(() => {
+    if (running || fired.current) return;
+    fired.current = true;
+    onReady?.();
+  }, [running, onReady]);
+
+  return null;
 }
 
 export default function HeroScene({
@@ -70,13 +103,9 @@ export default function HeroScene({
               (e) => e.preventDefault(),
               false,
             );
-            // Wait a couple frames so the terrain has actually painted before telling
-            // the splash screen to dismiss, instead of revealing a half-built scene.
-            requestAnimationFrame(() =>
-              requestAnimationFrame(() => onReady?.()),
-            );
           }}
         >
+          <ReportWhenDrawn onReady={onReady} running={live} />
           <SunsetLighting
             scrollYProgress={scrollYProgress}
             exitProgress={exitProgress}

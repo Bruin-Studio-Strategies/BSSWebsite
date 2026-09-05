@@ -104,6 +104,15 @@ section below scrolls 1:1 with the wheel; easing the camera or letting it lag ma
 the two layers move at visibly different speeds through the hand-off. That is why the
 sink uses `TRACKING_TAU` rather than the scene's default follower constant.
 
+**Readiness is reported from inside the frame loop, not from `onCreated`.**
+`onCreated` fires when the WebGL context exists, which is well before the terrain
+and the logo have built their geometry — the two `requestAnimationFrame`s that
+used to follow it were two frames into an empty scene, so the loading screen lifted
+on a canvas that merely existed. `ReportWhenDrawn` counts three real rendered
+frames instead. It also fires immediately when the frame loop is parked, since the
+loop only runs while the hero is in view and a parked loop never draws a frame to
+count.
+
 **The scene is the background for the hero *and* for `Info`, not just the hero.** In
 `Landing.jsx` both live inside one `relative` stage whose first child is the pinned
 canvas; the content is pulled back over it with `-mt-[100vh]`. That stage must never
@@ -149,6 +158,13 @@ separately, with the loading overlay as its own element, is what broke the hero'
 loading screen: the overlay had to fade in *after* the incoming hero was already
 on screen. It also mounts covered, so the first paint of any visit is the gradient
 rather than an unpainted page.
+
+Timings are 0.26s up and 0.46s down — about three quarters of a second door to
+door, and a **700ms floor** holds the veil once it is up. Without the floor a hero
+that reports itself ready almost immediately makes the veil blink, and what shows
+through the blink is the stand-in underneath: on the landing page that is the old
+flat hero the redesign replaced, so the site appeared to load, flash the 2024
+design, and then correct itself.
 
 `useSceneGate` (in `sceneGate.js`, its own module so `PageTransition.jsx` stays
 components-only and keeps fast refresh) lets a page hold the veil up while it gets
