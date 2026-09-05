@@ -301,7 +301,7 @@ The form language is rectangular and lightly softened — corners are cut, not
 rounded, at the scale where it matters.
 
 - **Buttons and small interactive surfaces:** `rounded-sm` (2px). Nearly square. This is what keeps CTAs reading as institutional rather than consumer-app.
-- **Panels and cards:** `rounded-xl` (12px). Enough to feel considered, not enough to feel friendly.
+- **Panels and cards:** there aren't any. Groups of peer items are ruled cells with square corners (see Ruled Cells); the only radius above `rounded-sm` in content belongs to photographs.
 - **Photographs and figures:** `rounded-2xl` (16px), always with a `ring-1 ring-white/10` frame.
 - **Circles** (`rounded-full`) are reserved for social icon buttons and scene elements. A circle around a decorative icon inside content is a legacy pattern being removed.
 - **Borders** are 1px at white/10 by default, white/20 where a division needs to assert, and shift to a brand color only on hover (`hover:border-magenta/40`).
@@ -323,13 +323,37 @@ institutional half of the identity.
 - **Transitions:** 150–200ms on the project easing curve. Never a color-only change — always paired with the 2px lift.
 - **There is no secondary or ghost button variant.** When an action is not primary, it is a text link with an animated underline, not a weaker button.
 
-### Cards / Panels
+### Ruled Cells
 
-- **Corner style:** `rounded-xl` (12px).
-- **Background:** a white veil — `bg-white/[0.055]` at rest, `bg-white/[0.09]` on hover — with a `white/15` hairline border. Panels need a surface tone, not only a border: transparent panels on a dark gradient sit on the same plane as the page and the whole section reads as blended together. The veil is white-alpha rather than a navy fill because navy separates near the top of the page gradient but drops to 1.02:1 against it lower down, where most content lives; a white veil holds roughly even separation at every height. Over the live 3D scene use `bg-white/[0.03]` with `backdrop-blur-sm` instead (see The Two-Ground Rule).
-- **Internal padding:** `p-5 sm:p-6`.
-- **Anatomy:** sky-blue uppercase eyebrow (phase, number, or category) → Agatho title → Inter body at white/60.
-- **Hover:** border warms to `magenta/40`, fill lifts to white/[0.05], and the whole card nudges 4px right. Entry is a 20px fade-up on scroll, once, at 40% visibility.
+The system has no filled card. A group of peer items — the six services on
+`/clients` — is set as ruled cells, which is the same hairline language the
+recruitment timeline and the process schedule use.
+
+- **Rule:** each cell carries a `white/15` hairline on its top edge only, and no
+  border on the other three. Nothing is rounded, because nothing is a box.
+- **Grid:** column gap only (`gap-x-8`), never a row gap. A row gap detaches each
+  cell's rule from the cell above and the grid falls apart into stacked cards.
+  Vertical air is the cells' own padding (`pt-7 pb-8`) instead.
+- **Anatomy:** sky-blue tabular numeral → Agatho title → the item's motif → Inter
+  body at white/70.
+- **Hover:** a sky rule scales in from the left over the hairline, overhanging the
+  cell by 16px on each side from `sm` up so it reads as part of the grid's ruling
+  rather than as the edge of a panel. Nothing fills, nothing lifts. The numeral
+  turns sky at the same time.
+- **Ground, not fill:** the section sits on a wide `purple/32` radial bloom rather
+  than giving each cell a surface. Six line drawings on flat navy read as a
+  spreadsheet; the answer is to light the ground under them, not to put each one
+  in a box.
+
+A filled panel was tried first — `rounded-xl` with a `bg-white/[0.055]` veil,
+lifting to `bg-white/[0.09]` on hover — on the reasoning that a transparent panel
+on a dark gradient sits on the same plane as the page. It separated correctly and
+still read as generic: a veil is the most anonymous way to make a panel, and it
+was a third vocabulary on a site that already had two. If a filled surface is ever
+genuinely needed, the veil must be white-alpha and not navy — navy separates near
+the top of the page gradient but drops to 1.02:1 against it lower down, where most
+content lives. Over the live 3D scene the fill would be `bg-white/[0.03]` with
+`backdrop-blur-sm` (see The Two-Ground Rule).
 
 ### Navigation
 

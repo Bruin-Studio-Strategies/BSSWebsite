@@ -25,7 +25,10 @@ export default function Clients() {
           services for creative and business ventures.
         </p>
       </header>
-      <SectionDivider className="my-12" />
+      {/* No divider between the header and Services: the services grid now opens
+          with a hairline of its own on the first row of cells, so a rule here put
+          two of them a heading apart. The margin does the separating. */}
+      <div className="mt-20 sm:mt-24" />
       <Services />
       <SectionDivider className="my-12" />
       {/* Section opener, then the engagement's two fixed facts — duration and

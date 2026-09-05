@@ -84,20 +84,26 @@ function ServiceCell({ service, index, reduced }) {
           transition: { duration: 0.6, ease: EASE, delay: (index % 3) * 0.08 },
         },
       }}
-      // Cards carry an actual surface tone, not just a hairline. Transparent
-      // panels on a dark gradient read as the same plane as the page, which is
-      // why the section felt blended together.
+      // No fill. The cells are defined by the rules between them the way a
+      // printed table is, which is the hairline language the recruitment
+      // timeline and the process schedule already speak — a filled panel was a
+      // third vocabulary on a site that only needed two.
       //
-      // The fill is white-alpha rather than navy: navy separates near the top of
-      // the page gradient but is indistinguishable from it lower down, at 1.02:1
-      // — which is exactly where this section sits. A white veil holds roughly
-      // the same separation at every height instead.
-      className={`group relative rounded-xl border p-5 transition-colors duration-300 sm:p-6 ${
-        hovered
-          ? "border-sky/50 bg-white/[0.09]"
-          : "border-white/15 bg-white/[0.055]"
-      }`}
+      // Rows carry padding rather than margin and the grid has no row gap, so
+      // each cell's top rule butts against the one above and the ruling reads as
+      // a grid rather than as six detached underlines.
+      className="group relative border-t border-white/15 pb-8 pt-7"
     >
+      {/* Hover draws a sky rule over the hairline instead of tinting the cell.
+          It overhangs the cell on both sides so the mark reads as belonging to
+          the grid's ruling rather than to a box. */}
+      <span
+        aria-hidden="true"
+        className={`pointer-events-none absolute -top-px left-0 right-0 h-px origin-left bg-sky transition-transform duration-500 ease-[cubic-bezier(0.16,1,0.3,1)] motion-reduce:transition-none sm:-left-4 sm:-right-4 ${
+          hovered ? "scale-x-100" : "scale-x-0"
+        }`}
+      />
+
       <div className="flex items-baseline gap-3">
         <span
           className={`font-sans text-[0.6875rem] tabular-nums tracking-[0.2em] transition-colors duration-300 ${
@@ -142,7 +148,9 @@ export default function Services() {
         Our Services
       </h3>
 
-      <ul className="mt-12 grid grid-cols-1 gap-5 sm:grid-cols-2 md:grid-cols-3">
+      {/* Column gap only. A row gap would break every cell's top rule away from
+          the cell above it and the grid would come apart into stacked cards. */}
+      <ul className="mt-12 grid grid-cols-1 gap-x-8 sm:grid-cols-2 md:grid-cols-3">
         {SERVICES.map((service, i) => (
           <ServiceCell key={service.title} service={service} index={i} reduced={reduced} />
         ))}
