@@ -29,11 +29,14 @@ function ColumnHeading({ children, className = "" }) {
   );
 }
 
+// Always font-sans. An address is information, not a statement — Agatho is a
+// high-contrast display serif and an email set in it, full of @ and dots and
+// lowercase, looks like a mistake.
 function MailLink({ address, className = "" }) {
   return (
     <a
       href={`mailto:${address}`}
-      className={`text-white underline decoration-sky/40 underline-offset-4 transition-colors duration-200 hover:decoration-sky hover:text-sky ${className}`}
+      className={`font-sans text-white underline decoration-white/25 underline-offset-4 transition-colors duration-200 hover:text-sky hover:decoration-sky ${className}`}
     >
       {address}
     </a>
@@ -65,9 +68,11 @@ export default function Contact() {
 
       {/* Both columns hang off one rule rather than floating at their own heights,
           and both are bounded — left at 20rem, right at 36rem — so they sit as two
-          columns of a page instead of smearing text across the full 72rem. The
-          space between them is the point: this page has two answers, not one long
-          one. */}
+          columns of a page instead of smearing text across the full 72rem. 23rem
+          on the left is measured, not picked: the general address is 31 characters
+          and sets about 350px at text-xl, so a narrower column breaks it mid-address.
+          The space between the columns is the point — this page has two answers,
+          not one long one. */}
       <section className="relative mx-auto mb-72 mt-14 w-4/5 max-w-6xl sm:mb-44 sm:mt-20">
         {/* Atmosphere, not paint. Deep Iris only ever works as the layer things
             sit on — the same radial bloom that grounds the services grid and sits
@@ -78,7 +83,7 @@ export default function Contact() {
           className="pointer-events-none absolute -bottom-16 -top-24 left-1/4 right-[-10%] -z-10 bg-[radial-gradient(55%_50%_at_60%_45%,rgba(82,55,148,0.38),transparent_70%)] blur-2xl"
         />
 
-        <div className="grid gap-x-16 gap-y-14 border-t border-white/15 pt-10 md:grid-cols-[minmax(0,20rem)_minmax(0,36rem)] md:justify-between">
+        <div className="grid gap-x-16 gap-y-14 border-t border-white/15 pt-10 md:grid-cols-[minmax(0,23rem)_minmax(0,34rem)] md:justify-between">
           <div>
             <ColumnHeading>Email us</ColumnHeading>
             {/* The one address that always works, and the second-loudest thing on
@@ -86,7 +91,7 @@ export default function Contact() {
                 know they want to email, and should not have to find it. */}
             <MailLink
               address={EMAIL}
-              className="mt-4 block break-words font-display text-2xl leading-tight decoration-sky/30 sm:text-3xl"
+              className="mt-4 inline-block text-lg leading-snug decoration-sky/40 sm:text-xl"
             />
 
             <ColumnHeading className="mt-14">By role</ColumnHeading>
@@ -96,7 +101,7 @@ export default function Contact() {
                   <dt className="font-sans text-sm text-white/70">{role}</dt>
                   <dd className="mt-1.5 flex flex-col gap-1">
                     {emails.map((address) => (
-                      <MailLink key={address} address={address} className="break-words text-sm" />
+                      <MailLink key={address} address={address} className="text-sm" />
                     ))}
                   </dd>
                 </div>
