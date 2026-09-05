@@ -258,11 +258,23 @@ stale one line at a time.
 Fields are ruled rather than boxed (see Form Fields in DESIGN.md), and the submit
 is the shared `CtaButton`, which grew a `<button>` branch for it.
 
-**Both columns hang off one rule and both are bounded** — 20rem left, 36rem right,
-pushed apart with `md:justify-between`. Unbounded, they smeared small text across
-the full 72rem measure and read as two things floating rather than two columns of
-a page. The space between them is load-bearing: this page has two answers, not one
-long one.
+**The form leads and the addresses are the aside beside it.** Both were the same
+weight at first — a sky micro-label over each column, and two of them on the left
+against one on the right — so neither led and the page made the reader choose
+before it had told them anything. They are different *kinds* of thing now: the
+form is the page's function and carries an Agatho subhead; the address column
+opens with a line of body copy instead of a competing heading, and keeps one sky
+label ("By role") for the list underneath.
+
+Primary content left, aside right, matching `/clients` and `/recruitment`. Both
+columns hang off one rule and both are bounded — 34rem and 23rem, pushed apart
+with `md:justify-between`. Unbounded, they smeared small text across the full
+72rem. 23rem on the aside is measured: the general address is 31 characters and
+sets about 350px at `text-xl`, so a narrower column breaks it mid-address.
+
+**Addresses are always `font-sans`.** The general one was briefly Agatho at
+`text-3xl` — a high-contrast display serif rendering something full of `@` and
+dots reads as a mistake. Agatho carries authority; an address is information.
 
 **What made it read as grey was sky having nothing to do.** The column headings
 were white/50, but the system's Label token *is* Instrument Sky — with the

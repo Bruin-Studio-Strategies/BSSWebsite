@@ -66,35 +66,48 @@ export default function Contact() {
         </p>
       </header>
 
-      {/* Both columns hang off one rule rather than floating at their own heights,
-          and both are bounded — left at 20rem, right at 36rem — so they sit as two
-          columns of a page instead of smearing text across the full 72rem. 23rem
-          on the left is measured, not picked: the general address is 31 characters
-          and sets about 350px at text-xl, so a narrower column breaks it mid-address.
-          The space between the columns is the point — this page has two answers,
-          not one long one. */}
+      {/* The two ways of reaching the club were previously the same weight — a sky
+          micro-label over each column, two of them on the left against one on the
+          right — so neither led and the page asked the reader to choose before
+          telling them anything. They are now different *kinds* of thing rather
+          than two of a kind: the form is the page's function and carries an Agatho
+          subhead, and the addresses are the aside beside it, opening with a line
+          of body copy rather than a competing heading.
+
+          Primary content left, aside right, which is the arrangement /clients and
+          /recruitment already use. 34rem and 23rem: the general address is 31
+          characters and sets about 350px at text-xl, so a narrower aside would
+          break it mid-address. */}
       <section className="relative mx-auto mb-72 mt-14 w-4/5 max-w-6xl sm:mb-44 sm:mt-20">
         {/* Atmosphere, not paint. Deep Iris only ever works as the layer things
             sit on — the same radial bloom that grounds the services grid and sits
-            behind the framed photographs, placed here under the form so the right
-            half of the page has a surface instead of being bare gradient. */}
+            behind the framed photographs, placed under the form so the page has a
+            surface where the reader is actually working. */}
         <div
           aria-hidden="true"
-          className="pointer-events-none absolute -bottom-16 -top-24 left-1/4 right-[-10%] -z-10 bg-[radial-gradient(55%_50%_at_60%_45%,rgba(82,55,148,0.38),transparent_70%)] blur-2xl"
+          className="pointer-events-none absolute -bottom-16 -top-24 left-[-10%] right-1/3 -z-10 bg-[radial-gradient(55%_50%_at_45%_45%,rgba(82,55,148,0.38),transparent_70%)] blur-2xl"
         />
 
-        <div className="grid gap-x-16 gap-y-14 border-t border-white/15 pt-10 md:grid-cols-[minmax(0,23rem)_minmax(0,34rem)] md:justify-between">
+        <div className="grid gap-x-16 gap-y-16 border-t border-white/15 pt-10 md:grid-cols-[minmax(0,34rem)_minmax(0,23rem)] md:justify-between">
           <div>
-            <ColumnHeading>Email us</ColumnHeading>
-            {/* The one address that always works, and the second-loudest thing on
-                the page after the headline — most people who open this already
-                know they want to email, and should not have to find it. */}
+            <h3 className="font-display text-2xl leading-tight text-white sm:text-3xl">
+              Send us a message
+            </h3>
+            <div className="mt-8">
+              <Form />
+            </div>
+          </div>
+
+          <div>
+            <p className="font-sans text-base leading-relaxed text-white/70">
+              Or email us directly at
+            </p>
             <MailLink
               address={EMAIL}
-              className="mt-4 inline-block text-lg leading-snug decoration-sky/40 sm:text-xl"
+              className="mt-2 inline-block text-lg leading-snug decoration-sky/40 sm:text-xl"
             />
 
-            <ColumnHeading className="mt-14">By role</ColumnHeading>
+            <ColumnHeading className="mt-12">By role</ColumnHeading>
             <dl className="mt-4">
               {OFFICERS.map(({ role, emails }) => (
                 <div key={role} className="border-t border-white/10 py-4 last:border-b">
@@ -107,13 +120,6 @@ export default function Contact() {
                 </div>
               ))}
             </dl>
-          </div>
-
-          <div>
-            <ColumnHeading>Or send a message</ColumnHeading>
-            <div className="mt-6">
-              <Form />
-            </div>
           </div>
         </div>
       </section>
