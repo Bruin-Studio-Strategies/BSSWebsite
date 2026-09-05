@@ -246,6 +246,20 @@ stale one line at a time.
 Fields are ruled rather than boxed (see Form Fields in DESIGN.md), and the submit
 is the shared `CtaButton`, which grew a `<button>` branch for it.
 
+**Both columns hang off one rule and both are bounded** — 20rem left, 36rem right,
+pushed apart with `md:justify-between`. Unbounded, they smeared small text across
+the full 72rem measure and read as two things floating rather than two columns of
+a page. The space between them is load-bearing: this page has two answers, not one
+long one.
+
+**What made it read as grey was sky having nothing to do.** The column headings
+were white/50, but the system's Label token *is* Instrument Sky — with the
+headline in Agatho and everything else white-on-gradient, no accent named the
+structure. They are sky now; the general address is Agatho at `text-2xl`/`3xl`,
+second-loudest thing on the page after the headline; and a purple radial bloom
+sits under the form column, which is the one thing Deep Iris is allowed to do
+(ground, never paint). Magenta stays only on the submit.
+
 **The old form reported success it had not had.** It called `setSubmitted(true)`
 synchronously after `emailjs.send` and logged failures to the console, so a send
 that never arrived still thanked you. It now awaits the promise and has real

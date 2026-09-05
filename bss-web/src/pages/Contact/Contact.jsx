@@ -15,11 +15,25 @@ const OFFICERS = [
   },
 ];
 
+// The Label token, which is Instrument Sky — not white at an opacity. Setting
+// these in white/50 is what made the page read as grey: with the headline in
+// Agatho and everything else white-on-gradient, sky had nowhere to do its job of
+// naming the structure.
+function ColumnHeading({ children, className = "" }) {
+  return (
+    <h3
+      className={`font-sans text-[0.6875rem] font-semibold uppercase tracking-[0.2em] text-sky ${className}`}
+    >
+      {children}
+    </h3>
+  );
+}
+
 function MailLink({ address, className = "" }) {
   return (
     <a
       href={`mailto:${address}`}
-      className={`text-sky underline decoration-sky/30 underline-offset-4 transition-colors duration-200 hover:decoration-sky ${className}`}
+      className={`text-white underline decoration-sky/40 underline-offset-4 transition-colors duration-200 hover:decoration-sky hover:text-sky ${className}`}
     >
       {address}
     </a>
@@ -32,12 +46,7 @@ export default function Contact() {
       {/* Same measure, alignment and opener as every other page. This one was
           centred above sm and left-aligned below it, on a `w-10/12` grid nothing
           else uses, with the headline in EB Garamond — it read as a page from the
-          old site that had been left behind.
-
-          The address column and the form sit side by side rather than the form
-          being the whole page: most people who open this already know which they
-          want, and putting the general address in the first viewport means the
-          ones who just want to email are not made to fill in a form first. */}
+          old site that had been left behind. */}
       <header className="mx-auto mt-10 w-4/5 max-w-6xl sm:mt-16">
         <span className="inline-block font-sans text-xs font-semibold uppercase tracking-[0.2em] text-sky">
           Contact
@@ -51,38 +60,52 @@ export default function Contact() {
         </p>
       </header>
 
-      <section className="mx-auto mb-72 mt-14 grid w-4/5 max-w-6xl gap-x-16 gap-y-14 sm:mb-44 sm:mt-20 md:grid-cols-[minmax(0,24rem)_1fr]">
-        <div>
-          <h3 className="font-sans text-[0.6875rem] font-semibold uppercase tracking-[0.2em] text-white/50">
-            General
-          </h3>
-          {/* The one address that always works, set larger than the rest, because
-              it is the right answer for almost everyone reading this page. */}
-          <MailLink address={EMAIL} className="mt-3 block break-words text-lg sm:text-xl" />
+      {/* Both columns hang off one rule rather than floating at their own heights,
+          and both are bounded — left at 20rem, right at 36rem — so they sit as two
+          columns of a page instead of smearing text across the full 72rem. The
+          space between them is the point: this page has two answers, not one long
+          one. */}
+      <section className="relative mx-auto mb-72 mt-14 w-4/5 max-w-6xl sm:mb-44 sm:mt-20">
+        {/* Atmosphere, not paint. Deep Iris only ever works as the layer things
+            sit on — the same radial bloom that grounds the services grid and sits
+            behind the framed photographs, placed here under the form so the right
+            half of the page has a surface instead of being bare gradient. */}
+        <div
+          aria-hidden="true"
+          className="pointer-events-none absolute -bottom-16 -top-24 left-1/4 right-[-10%] -z-10 bg-[radial-gradient(55%_50%_at_60%_45%,rgba(82,55,148,0.38),transparent_70%)] blur-2xl"
+        />
 
-          <h3 className="mt-12 font-sans text-[0.6875rem] font-semibold uppercase tracking-[0.2em] text-white/50">
-            By role
-          </h3>
-          <dl className="mt-4">
-            {OFFICERS.map(({ role, emails }) => (
-              <div key={role} className="border-t border-white/10 py-4 last:border-b">
-                <dt className="font-sans text-sm text-white">{role}</dt>
-                <dd className="mt-1.5 flex flex-col gap-1">
-                  {emails.map((address) => (
-                    <MailLink key={address} address={address} className="break-words text-sm" />
-                  ))}
-                </dd>
-              </div>
-            ))}
-          </dl>
-        </div>
+        <div className="grid gap-x-16 gap-y-14 border-t border-white/15 pt-10 md:grid-cols-[minmax(0,20rem)_minmax(0,36rem)] md:justify-between">
+          <div>
+            <ColumnHeading>Email us</ColumnHeading>
+            {/* The one address that always works, and the second-loudest thing on
+                the page after the headline — most people who open this already
+                know they want to email, and should not have to find it. */}
+            <MailLink
+              address={EMAIL}
+              className="mt-4 block break-words font-display text-2xl leading-tight decoration-sky/30 sm:text-3xl"
+            />
 
-        <div className="md:pl-4">
-          <h3 className="font-sans text-[0.6875rem] font-semibold uppercase tracking-[0.2em] text-white/50">
-            Or send a message
-          </h3>
-          <div className="mt-6">
-            <Form />
+            <ColumnHeading className="mt-14">By role</ColumnHeading>
+            <dl className="mt-4">
+              {OFFICERS.map(({ role, emails }) => (
+                <div key={role} className="border-t border-white/10 py-4 last:border-b">
+                  <dt className="font-sans text-sm text-white/70">{role}</dt>
+                  <dd className="mt-1.5 flex flex-col gap-1">
+                    {emails.map((address) => (
+                      <MailLink key={address} address={address} className="break-words text-sm" />
+                    ))}
+                  </dd>
+                </div>
+              ))}
+            </dl>
+          </div>
+
+          <div>
+            <ColumnHeading>Or send a message</ColumnHeading>
+            <div className="mt-6">
+              <Form />
+            </div>
           </div>
         </div>
       </section>
