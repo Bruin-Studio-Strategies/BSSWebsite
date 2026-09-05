@@ -60,12 +60,15 @@ export default function TeamPage() {
           <h3 className="mt-4 text-balance font-display text-4xl leading-[1.1] text-white sm:text-5xl">
             Become a Bruin Studio Strategies Consultant
           </h3>
-          {/* One sentence rather than two: at a wider measure the second
-              sentence started mid-line and broke across it, which read as an
-              accident. 29rem is measured, not guessed — the clause before the
-              dash sets 455px in Inter 16/300, so anything from 455 to 477px
-              puts the break on the dash. text-pretty covers the fallback font. */}
-          <p className="mt-6 max-w-[29rem] text-pretty font-sans text-base leading-relaxed text-white/70">
+          {/* Two measures, because the same sentence wants different treatment at
+              each. Below lg it is clamped to 29rem so the break lands on the em
+              dash rather than mid-clause — the leading clause sets 455px in
+              Inter 16/300, so 455–477px puts the break there, and text-pretty
+              covers the fallback font. From lg the column is 72rem and the whole
+              sentence sets in ~48rem, so it goes on one line; clamping it there
+              only produces a break with nothing behind it. Same treatment as the
+              closing line on /recruitment. */}
+          <p className="mt-6 max-w-[29rem] text-pretty font-sans text-base leading-relaxed text-white/70 lg:max-w-none">
             We recruit UCLA students from every major and every year — no prior
             consulting experience required.
           </p>
