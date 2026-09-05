@@ -498,13 +498,34 @@ Scroll reveals fire once, never repeating. Every animation defers to
 `prefers-reduced-motion`, and heavy 3D work is additionally feature-detected, lazy
 loaded behind `Suspense`, DPR-capped, and quality-tiered by viewport.
 
+**The system's gesture is a wipe.** Things arrive by being drawn or swept from an
+edge, not by fading, lifting, or growing: the nav underline scales in from the
+left, the service cell rules in from the left, the recruitment spine fills from
+the top, the buttons sweep a veil across their own face. A cross-fade is what this
+system does when it has nothing to say about direction.
+
+**One curtain covers every route change, and it is also the hero's loading
+screen** (`transition/PageTransition.jsx`). It slides down over the outgoing page
+in 0.34s, the route swaps underneath it with an instant scroll to top, and it
+keeps travelling down and off the bottom in 0.52s — continuous travel in one
+direction, because a panel that retreats the way it came reads as a door that
+changed its mind. It is painted in the body's own gradient, so it is the page's
+ground with nothing printed on it rather than a foreign surface passing over.
+
+A page that needs time before it can be shown holds the curtain down instead of
+running its own splash afterwards: `useSceneGate` (in `transition/sceneGate.js`)
+is what the landing page's 3D scene uses to do that, and a 9s timeout guarantees
+the curtain lifts even if the gate never opens. The spinner inside it only fades
+up after the curtain has been held 450ms, so a fast machine never sees one. Under
+`prefers-reduced-motion` the curtain cross-fades in 0.2s and still gates.
+
 ## Do's and Don'ts
 
 ### Do:
 
 - **Do** open every section with the eyebrow → Agatho headline → white/70 body sequence.
 - **Do** express secondary text as white at reduced opacity (70/50/30), never as a gray.
-- **Do** keep primary buttons at 2px radius, uppercase, with the 2px hover lift.
+- **Do** keep primary buttons at 2px radius, uppercase, and let hover sweep a veil across the face rather than lift the button.
 - **Do** use `cubic-bezier(0.16, 1, 0.3, 1)` for every transition and reveal, and guard every one of them with `prefers-reduced-motion`.
 - **Do** present photographs in the framed-figure pattern — 16px radius, white/10 ring, gradient bloom behind.
 - **Do** design against the project's real breakpoints (576 / 960 / 1440), mobile-first.
@@ -518,7 +539,7 @@ loaded behind `Suspense`, DPR-capped, and quality-tiered by viewport.
 - **Don't** use Tailwind's stock `blue-*`, `gray-*`, or `slate-*` classes. Every color comes from a brand token or a white alpha.
 - **Don't** put more than one magenta element on a screen, or use magenta for anything that isn't the primary action.
 - **Don't** apply `backdrop-blur` to a panel that sits on the flat page gradient — glass is only for surfaces over the live 3D scene.
-- **Don't** give a surface a shadow at rest; shadows respond to hover only, and they are colored glows rather than black drops.
+- **Don't** answer a hover with a lift and a colored glow. That is the one move this system never makes; hover is a wipe, a rule, or a tonal shift.
 - **Don't** build white cards with saturated color header blocks (the legacy `ServiceCard` pattern). Panels are dark, bounded by hairlines.
 - **Don't** set headings in EB Garamond, or set running text in Agatho.
 - **Don't** hand-roll a divider with `<hr>`, a solid fill, or a stock `gray-*` background; there is one divider component.

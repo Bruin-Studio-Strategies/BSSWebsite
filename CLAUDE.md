@@ -122,6 +122,35 @@ It is time-based, and it snaps instead of easing across a gap longer than a fram
 without that, landing on an already-scrolled page replays the whole sunset from
 daylight, and scrolling back up from below the hero runs it backwards.
 
+## Page transitions (`src/transition/`)
+
+**One curtain covers every route change, and it is also the landing page's
+loading screen.** Before this they were two things fighting: routes cross-faded
+in `AnimatePresence mode="wait"` (0.5s out, then 0.5s in, so most of a second of
+empty gradient), `scrollToTop` ran with `behavior: "smooth"` *during* that fade so
+the outgoing page visibly slid as it dissolved, and then on `/` the 3D scene's own
+splash slammed in at z-999 after the fade had already started and left separately.
+
+`PageTransition` renders the routes against a **deferred location**: the curtain
+slides down (0.34s), the swap and an instant `scrollTo(0, 0)` happen underneath
+it, then it keeps going down and off the bottom (0.52s). The travel is one
+direction throughout — parking it back above the viewport at the end has to be
+instant (`duration: 0`), or the reset sweeps the panel back up across the screen
+and every navigation ends with a second wipe.
+
+`useSceneGate` (in `sceneGate.js`, its own module so `PageTransition.jsx` stays
+components-only and keeps fast refresh) lets a page hold the curtain down while it
+gets ready. `HeroBackdrop` is the only caller, and only on the WebGL path — the
+flat fallback has nothing to compile, so gating it would stall the page waiting on
+work that never starts. It registers in a *layout* effect, because a passive one
+runs after the curtain has already decided there is nothing to wait for. A 9s
+timeout releases the curtain regardless, and the spinner only fades up after the
+curtain has been held 450ms, so a fast machine never sees one.
+
+Every route used to carry its own copy of the same `motion.div` wrapper — six of
+them, so a new route could ship with no transition at all. `App.jsx` is now plain
+`<Route>` elements.
+
 ## For Students (`/recruitment`)
 
 Rebuilt on the same measure and section-opener language as `/clients`, but with a

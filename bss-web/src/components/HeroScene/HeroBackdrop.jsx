@@ -2,7 +2,7 @@ import { Suspense, lazy, useState } from "react";
 import { useReducedMotion } from "framer-motion";
 import Wave from "../../assets/waves.png";
 import RotatingLogo from "../RotatingLogo.jsx";
-import LoadingSplash from "../LoadingSplash.jsx";
+import useSceneGate from "../../transition/sceneGate.js";
 import { isWebGLAvailable } from "../../utils/webgl.js";
 import useHeroScrollProgress, { useSceneExitProgress } from "../../hooks/useHeroScrollProgress.js";
 
@@ -42,6 +42,12 @@ export default function HeroBackdrop() {
   // fallback would render, leaving the hero blank for a frame on first paint.
   const [webglOk] = useState(isWebGLAvailable);
   const [sceneReady, setSceneReady] = useState(false);
+
+  // Holds the page transition's curtain down until the terrain has actually
+  // painted, which is what makes that curtain this page's loading screen. Only
+  // the WebGL path gates: the flat fallback has nothing to compile, so gating it
+  // would stall the page behind a curtain waiting on work that never starts.
+  useSceneGate(webglOk && !sceneReady);
   const prefersReducedMotion = useReducedMotion();
   const scrollYProgress = useHeroScrollProgress();
   const exitProgress = useSceneExitProgress();
@@ -57,9 +63,6 @@ export default function HeroBackdrop() {
 
   return (
     <>
-      {/* Covers the whole page (not just this section) until the terrain has actually
-          painted, so slow machines get a real loading screen instead of a brief flash. */}
-      <LoadingSplash visible={!sceneReady} reducedMotion={!!prefersReducedMotion} />
       <div className="absolute inset-0 z-0" style={fadeStyle}>
         <Suspense fallback={<FlatFallback />}>
           <HeroScene
