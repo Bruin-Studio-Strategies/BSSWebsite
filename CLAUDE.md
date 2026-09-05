@@ -227,6 +227,34 @@ cycle's and needs confirming.
 Not yet touched in this pass: navbar styling, the "What is BSS?"/testimonial section,
 the Contact page, most copy.
 
+## Contact (`/contact`)
+
+Brought onto the redesign without changing what the page does. It was the last
+page still on the old site's terms: a `w-10/12` grid nothing else uses, centred
+above `sm` and left-aligned below it, an EB Garamond headline, and a form of
+default-bordered boxes with a `bg-blue-500` button and `blue-500` focus rings —
+four No Stock Blue violations in one component.
+
+Now the standard header (eyebrow, Agatho, body at white/70 on `w-4/5 max-w-6xl`)
+over a two-column body: addresses on the left, form on the right. **The general
+address is in the first viewport and set larger than everything else**, because
+most people opening this page already know they want to email, and making them
+fill in a form first is the page working against them. Officer contacts are listed
+by role rather than by name — the roster turns over yearly and a name list goes
+stale one line at a time.
+
+Fields are ruled rather than boxed (see Form Fields in DESIGN.md), and the submit
+is the shared `CtaButton`, which grew a `<button>` branch for it.
+
+**The old form reported success it had not had.** It called `setSubmitted(true)`
+synchronously after `emailjs.send` and logged failures to the console, so a send
+that never arrived still thanked you. It now awaits the promise and has real
+`idle`/`sending`/`sent`/`error` states, with the failure naming the club's address
+as the way through.
+
+Splitting the page by audience (client vs. student) was considered and rejected as
+doing too much for what this page is.
+
 ## Team page (`/team`)
 `/team` rebuilt into the redesign's visual world: one uniform cell per member (no
 ranking by size — see The Equal Cell Rule in DESIGN.md), name/role/major always

@@ -357,6 +357,23 @@ the top of the page gradient but drops to 1.02:1 against it lower down, where mo
 content lives. Over the live 3D scene the fill would be `bg-white/[0.03]` with
 `backdrop-blur-sm` (see The Two-Ground Rule).
 
+### Form Fields
+
+- **Ruled, never boxed.** A field is a `white/20` hairline you write on, with a
+  transparent ground — `border-b` only, no border on the other three sides and no
+  radius. A bordered input box is the one shape this system does not have anywhere
+  else; everything that separates content is a single rule.
+- **Focus lights the rule** to Instrument Sky over 200ms. That is the whole focus
+  state: no ring, no glow, no lift.
+- **Label** above the field in the label-micro token (Inter 600, 0.6875rem,
+  uppercase, `0.2em`, white/50), 12px clear of it.
+- **Required is the default**, so it goes unmarked. Marking every field "(required)"
+  labels the rule rather than the exception.
+- **Submit is the shared `CtaButton`** with a `type`, not a second control that
+  looks like it. Its label carries the state — "Send message" → "Sending" →
+  "Sent" — and the outcome sits directly under it. A failure names the recovery
+  (the club's address as a mail link), never just that something went wrong.
+
 ### Navigation
 
 - **Bar:** transparent, `h-24`, sitting above the hero scene rather than over an opaque strip, so the moving scene shows through. Fades and drops in 16px on mount.

@@ -43,13 +43,17 @@ const VARIANTS = {
 export default function CtaButton({
   to,
   href,
+  type,
+  disabled = false,
   variant = "solid",
   className = "",
   onClick,
   children,
 }) {
   const { frame, veil } = VARIANTS[variant];
-  const classes = `${BASE} ${frame} ${className}`;
+  const classes = `${BASE} ${frame} ${className} ${
+    disabled ? "cursor-not-allowed opacity-60" : ""
+  }`;
 
   const body = (
     <>
@@ -63,6 +67,16 @@ export default function CtaButton({
       <span className="relative">{children}</span>
     </>
   );
+
+  // A control with no destination is a real <button>, so a form's submit is the
+  // same object as the site's links rather than a second thing that looks like it.
+  if (type) {
+    return (
+      <button type={type} onClick={onClick} disabled={disabled} className={classes}>
+        {body}
+      </button>
+    );
+  }
 
   // An in-app destination is a router Link so it does not reload the app; an
   // external form is a plain anchor opening in its own tab.
