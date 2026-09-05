@@ -379,7 +379,7 @@ content lives. Over the live 3D scene the fill would be `bg-white/[0.03]` with
 - **Bar:** transparent, `h-24`, sitting above the hero scene rather than over an opaque strip, so the moving scene shows through. Fades and drops in 16px on mount.
 - **Items:** Inter at `text-sm` / `lg:text-base`, white/80, brightening to white on hover. A 1px sky-blue underline scales in from the left on hover and stays drawn on the active route — the active state and the hover state are the same treatment, which is intentional.
 - **CTA:** the magenta outline button, pushed right with `ml-auto`.
-- **Mobile:** below `sm`, a hamburger opens a full-screen overlay; items fade up in a 60ms stagger. The overlay's background is currently a stock blue and is a known violation of The No Stock Blue Rule.
+- **Mobile:** below `sm`, a hamburger opens a full-screen overlay on Studio Navy; items fade up in a 60ms stagger. (It was `bg-blue-950` until the stock-blue sweep.)
 
 ### Inputs / Fields
 

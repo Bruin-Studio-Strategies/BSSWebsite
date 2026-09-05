@@ -6,7 +6,6 @@ import {
   GRID_STEP,
   markTriangles,
   meshWithHole,
-  ridgePath,
   scatterPoints,
   toSmoothPath,
 } from "./geometry.js";

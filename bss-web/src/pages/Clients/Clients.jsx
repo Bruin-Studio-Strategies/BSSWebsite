@@ -1,4 +1,3 @@
-import NavBar from "../../components/NavBar";
 import Footer from "../../components/Footer";
 import Services from "./sections/Services";
 import Process from "./sections/Process";

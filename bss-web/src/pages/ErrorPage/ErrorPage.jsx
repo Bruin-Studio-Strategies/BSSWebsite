@@ -1,21 +1,29 @@
 import Footer from "../../components/Footer";
+import CtaButton from "../../components/CtaButton.jsx";
 
-import { Link } from "react-router-dom";
-
+// Was two EB Garamond lines beside an 18rem numeral in a centred flex row, with
+// a bg-blue-900 button — a stock blue, and the numeral alone was wider than a
+// phone. Now it opens the way every other page does and the numeral is a
+// clamp that can actually shrink.
 export default function ErrorPage() {
   return (
     <>
-      <div className="flex gap-x-10 justify-center sm:mb-48">
-        <h1 className="font-serif text-[18rem] text-white">404</h1>
-        <div className="flex flex-col justify-center align-middle gap-y-10 mr-20">
-          <h3 className="text-3xl font-serif">Page Not Found</h3>
-          <Link to="/">
-            <button className="text-white bg-blue-900 hover:bg-blue-800 rounded-sm p-2">
-              Go to the homepage
-            </button>
-          </Link>
-        </div>
-      </div>
+      <section className="mx-auto mb-72 mt-16 w-4/5 max-w-6xl sm:mb-44 sm:mt-24">
+        <span className="inline-block font-sans text-xs font-semibold uppercase tracking-[0.2em] text-sky">
+          404
+        </span>
+        <h2 className="mt-4 font-display text-5xl leading-[1.05] text-white sm:text-6xl">
+          Page not found
+        </h2>
+        <p className="mt-6 max-w-[42rem] font-sans text-base leading-relaxed text-white/70">
+          That page has moved or never existed. Everything the site has is one
+          click away in the navigation above.
+        </p>
+        <CtaButton to="/" className="mt-8">
+          Back to home
+        </CtaButton>
+      </section>
+
       <Footer />
     </>
   );

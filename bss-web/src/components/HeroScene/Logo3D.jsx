@@ -6,7 +6,6 @@ import { SUN_X_START, SUN_Y_TOP, SUN_Z, getSunPosition } from "./sunPath.js";
 import { follow } from "./smoothing.js";
 import logoSrc from "../../assets/logo-plain.png";
 
-const GLOW_COLOR = "#E24FB0";
 // Scaled with SUN_Z: the sun moved from 28 units out to 40 to clear the distant
 // ridge, and sizeAttenuation is not in play here, so the mark has to grow by the
 // same 1.43x to keep its apparent size.
