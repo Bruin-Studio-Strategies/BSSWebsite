@@ -33,7 +33,12 @@ const PHASE_GROUPS = 6;
 // to actually follow: 2.2 seconds to cross, against 0.85 before. Speed comes out
 // about a third of what it was, because the streak is now much further away as
 // well as longer-lived.
-const METEOR_GAP = [1.6, 4.5];
+//
+// There is one meteor mesh, so the gap is what sets the rate and the duty cycle is
+// its ceiling: at a 0.5-2.0s gap against a 2.2s life, something is burning roughly
+// two-thirds of the time. Shortening the gap further would just leave one on screen
+// permanently, which reads as an object rather than as a sky.
+const METEOR_GAP = [0.5, 2.0];
 const METEOR_LIFE = 2.2;
 const METEOR_TRAVEL = 52;
 const METEOR_TAIL = 22;
@@ -179,7 +184,14 @@ export default function Starfield({ scrollYProgress, reducedMotion }) {
       // Starting just above the top edge on the right and falling left carries the
       // streak down through the visible band and out the far side.
       s.from.set(5 + random() * 40, 6 + random() * 9, -62 + random() * 18);
-      s.dir.set(-0.62 - random() * 0.2, -0.45 - random() * 0.16, 0).normalize();
+      // The two components are drawn independently and over wide ranges, which is
+      // the whole reason the angle varies. Scaling both from one narrow range —
+      // what this did before — moved the vector's length but barely its direction,
+      // so every meteor fell at the same 36 degrees. This spans roughly 16 to 60
+      // degrees below horizontal. Shallow ones skim the band, steep ones drop out
+      // of the bottom of it partway through, which is what makes the sky read as
+      // having more than one meteor in it.
+      s.dir.set(-0.45 - random() * 0.45, -0.25 - random() * 0.55, 0).normalize();
     }
 
     if (meteorRef.current && meteorMat.current) {
