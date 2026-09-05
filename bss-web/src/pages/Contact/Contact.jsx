@@ -94,9 +94,13 @@ export default function Contact() {
             <p className="font-sans text-base leading-relaxed text-white/70">
               Email us directly at
             </p>
+            {/* text-base below sm, not text-lg: the container is `w-4/5`, so on a
+                320px phone it is 256px wide and this 31-character address sets
+                about 273px at 18px — it would have pushed the page sideways.
+                `break-words` is the safety net under that, not the plan. */}
             <MailLink
               address={EMAIL}
-              className="mt-2 inline-block text-lg leading-snug decoration-sky/40 sm:text-xl"
+              className="mt-2 inline-block break-words text-base leading-snug decoration-sky/40 sm:text-xl"
             />
 
             <ColumnHeading className="mt-12">By role</ColumnHeading>
