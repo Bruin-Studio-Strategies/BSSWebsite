@@ -259,6 +259,14 @@ own bottom clearance (`pb-96 sm:pb-60` on the landing, hand-tuned elsewhere) or
 content will sit under it. This is a known structural debt: when a page is
 rebuilt, prefer moving it into flow over adding another magic padding value.
 
+**The Left Rule.** Everything is left-aligned at every width. There is no
+centred breakpoint: the hero, the landing's "What is BSS?" block and its team
+block each used to centre below `md` and switch to left above it, so scrolling a
+phone crossed the alignment three times. Centred type also has no rule to hang
+off, which is the structure the rest of the system is built on. The only centred
+things left are the mobile nav overlay and the footer, which are bars rather than
+reading columns.
+
 **The Air Rule.** When a section feels cramped, remove an element before reducing
 spacing. Generous vertical rhythm is doing identity work here, not just
 readability work.
@@ -380,6 +388,7 @@ content lives. Over the live 3D scene the fill would be `bg-white/[0.03]` with
 - **Items:** Inter at `text-sm` / `lg:text-base`, white/80, brightening to white on hover. A 1px sky-blue underline scales in from the left on hover and stays drawn on the active route — the active state and the hover state are the same treatment, which is intentional.
 - **CTA:** the magenta outline button, pushed right with `ml-auto`.
 - **Mobile:** below `sm`, a hamburger opens a full-screen overlay on Studio Navy; items fade up in a 60ms stagger. (It was `bg-blue-950` until the stock-blue sweep.)
+- **Footer on mobile:** a centred stack, with the nav links *wrapped* into two rows rather than stacked into five. The bar is a fixed `h-60` and five stacked links needed about 300px, which pushed the social icons out of the bottom of it.
 
 ### Inputs / Fields
 

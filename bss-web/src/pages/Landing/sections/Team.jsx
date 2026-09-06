@@ -59,7 +59,7 @@ export default function Team() {
           whileInView="show"
           viewport={viewport}
           variants={stagger}
-          className="order-1 text-center md:order-2 md:text-left"
+          className="order-1 text-left md:order-2"
         >
           <motion.span
             variants={fadeUp}
@@ -75,7 +75,7 @@ export default function Team() {
           </motion.h3>
           <motion.p
             variants={fadeUp}
-            className="font-sans text-base text-white/70 leading-relaxed max-w-xl mx-auto md:mx-0"
+            className="font-sans text-base text-white/70 leading-relaxed max-w-xl"
           >
             At Bruin Studio Strategies, we are more than UCLA students—we are a community of
             innovators reshaping entertainment consulting. With diverse backgrounds in fields
@@ -84,7 +84,7 @@ export default function Team() {
           </motion.p>
           <motion.p
             variants={fadeUp}
-            className="font-sans text-base text-white/70 leading-relaxed max-w-xl mx-auto mt-4 md:mx-0"
+            className="mt-4 font-sans text-base text-white/70 leading-relaxed max-w-xl"
           >
             We pride ourselves on fostering a free-flowing and creative environment where
             innovative ideas flourish, turning market research and unique ideas into actionable
@@ -93,7 +93,7 @@ export default function Team() {
           </motion.p>
           <motion.div
             variants={fadeUp}
-            className="mt-8 flex flex-col items-center gap-4 sm:flex-row sm:justify-center md:justify-start"
+            className="mt-8 flex flex-col items-start gap-4 sm:flex-row sm:items-center"
           >
             <ApplyButton />
             <span className="font-sans text-white/50 text-sm">

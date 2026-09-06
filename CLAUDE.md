@@ -131,6 +131,20 @@ It is time-based, and it snaps instead of easing across a gap longer than a fram
 without that, landing on an already-scrolled page replays the whole sunset from
 daylight, and scrolling back up from below the hero runs it backwards.
 
+## Mobile
+
+**Left-aligned everywhere** (The Left Rule in DESIGN.md). The hero and the
+landing's two copy blocks centred below `md` and switched to left above it, so
+scrolling a phone crossed the alignment three times.
+
+**Hover does not exist there, and most of this site is read there.** Anything
+gated on hover needs a touch path or it simply never happens: the clients page's
+six motifs were hover-only and never moved on a phone. `hooks/useHoverCapable.js`
+reports whether the device has a fine, hovering pointer; without one the service
+cells drive their motif from their own scroll position instead, playing on entry
+and rewinding on exit. The same reasoning is why a team card's name carries a
+resting underline rather than only a hover state.
+
 ## Page transitions (`src/transition/`)
 
 **A 0.34s cross-fade, and a separate loading screen for the hero.** Two things

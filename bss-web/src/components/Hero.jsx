@@ -4,7 +4,10 @@ const EASE = [0.16, 1, 0.3, 1];
 
 const headlineContainer = {
   hidden: {},
-  show: { transition: { staggerChildren: 0.12, delayChildren: 0.27 } },
+  // Tightened from 0.12/0.27. The old timing meant the headline was still
+  // arriving most of a second in, and on a phone that lands right after the
+  // loading screen lifts — so the first thing you saw was an empty hero.
+  show: { transition: { staggerChildren: 0.08, delayChildren: 0.1 } },
 };
 
 // rotateX flip-in (needs the h1's [perspective] below) instead of a flat
@@ -41,10 +44,12 @@ export default function Hero({ scrollYProgress }) {
   return (
     <motion.div
       style={{ y, opacity }}
-      className="relative flex flex-col text-center sm:text-start items-center sm:items-start"
+      // Left-aligned at every width. The site's pages all open on a left rule,
+      // and the hero centring below sm was the one place that broke it.
+      className="relative flex flex-col items-start text-start"
     >
       <motion.h4
-        {...fadeUpProps(0.15, reduced)}
+        {...fadeUpProps(0.05, reduced)}
         className="font-sans text-sm sm:text-base text-white/60 font-medium ml-2 tracking-wide"
       >
         Work with the Best
@@ -65,7 +70,7 @@ export default function Hero({ scrollYProgress }) {
       </motion.h1>
 
       <motion.p
-        {...fadeUpProps(0.55, reduced)}
+        {...fadeUpProps(0.3, reduced)}
         className="w-5/6 sm:w-auto sm:whitespace-nowrap ml-2 mt-8 sm:mt-5 text-white/70"
       >
         Providing strategic consulting for the entertainment industry

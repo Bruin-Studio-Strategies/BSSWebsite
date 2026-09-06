@@ -30,7 +30,7 @@ export default function Info() {
     <>
       <section className="mx-auto max-w-6xl px-6 sm:px-10 md:px-14 lg:px-20 py-20 sm:py-28">
         <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-10 sm:gap-14 lg:gap-20">
-          <motion.div className="text-center md:text-left">
+          <motion.div className="text-left">
             <motion.span
               className="inline-block font-sans text-xs sm:text-sm font-semibold uppercase tracking-[0.2em] text-sky"
             >
@@ -42,7 +42,7 @@ export default function Info() {
               What is BSS?
             </motion.h3>
             <motion.p
-              className="font-sans text-base sm:text-lg lg:text-xl text-white/70 leading-relaxed max-w-xl mx-auto md:mx-0"
+              className="font-sans text-base sm:text-lg lg:text-xl text-white/70 leading-relaxed max-w-xl"
             >
               Bruin Studio Strategies, UCLA's first and premier entertainment consulting group,
               unites technical consulting fundamentals, technology, and Gen-Z insights to deliver
@@ -84,7 +84,11 @@ export default function Info() {
           </motion.div>
           <motion.blockquote
             variants={fadeUp}
-            className="font-serif italic text-lg sm:text-2xl lg:text-3xl text-white/90 leading-relaxed"
+            // Agatho, not EB Garamond, which the redesign is retiring — and not
+            // italic, because Agatho ships no italic and the browser would
+            // synthesise a slant. Smaller on mobile: at 18px with relaxed
+            // leading this quote filled a phone screen on its own.
+            className="font-display text-base leading-relaxed text-white/90 sm:text-2xl sm:leading-snug lg:text-3xl"
           >
             "Partnering with the Bruin Studios Strategies group was a fantastic experience.
             Their teams brought creativity, professionalism, and real passion to our case prompt,
