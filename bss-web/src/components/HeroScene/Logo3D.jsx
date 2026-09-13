@@ -2,13 +2,17 @@ import { useEffect, useMemo, useRef } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import { Billboard, useTexture } from "@react-three/drei";
 import * as THREE from "three";
-import { SUN_X_START, SUN_Y_TOP, SUN_Z, getSunPosition } from "./sunPath.js";
+import { SUN_X_START, SUN_Y_TOP, SUN_Z, getSunPosition, sunFrameFit } from "./sunPath.js";
 import { follow } from "./smoothing.js";
 import logoSrc from "../../assets/logo-plain.png";
 
 // Scaled with SUN_Z: the sun moved from 28 units out to 40 to clear the distant
 // ridge, and sizeAttenuation is not in play here, so the mark has to grow by the
 // same 1.43x to keep its apparent size.
+//
+// That size is authored against the desktop frame. On a narrow frame the same
+// mark covers far more of the width, so `sunFrameFit` scales it back down — see
+// sunPath.js for the frame the arc and this size were measured against.
 const SUN_SCALE = 2.45;
 // logo-plain.png is a 1:1 square (the mark itself doesn't fill the frame edge to
 // edge), so a plain square plane matches it without distortion.
@@ -39,7 +43,7 @@ export default function Logo3D({ scrollYProgress, reducedMotion }) {
   const descend = useRef(null);
   const glowTexture = useMemo(() => makeGlowTexture(), []);
   const logoMap = useTexture(logoSrc);
-  const { gl } = useThree();
+  const { gl, camera, size } = useThree();
 
   useEffect(() => {
     // Sharpens the thin strokes at oblique/minified viewing angles instead of
@@ -53,7 +57,11 @@ export default function Logo3D({ scrollYProgress, reducedMotion }) {
   useFrame((_, delta) => {
     if (!groupRef.current) return;
     const t = follow(descend, reducedMotion ? 0 : scrollYProgress.get(), delta);
-    getSunPosition(t, groupRef.current.position);
+    // Read every frame rather than on resize: Terrain sets camera.fov from its
+    // own effect, and this must not depend on which effect ran first.
+    const fit = sunFrameFit(camera, size.width / size.height);
+    getSunPosition(t, groupRef.current.position, fit.y);
+    groupRef.current.scale.setScalar(SUN_SCALE * fit.size);
     // Spins in-plane (Z axis) tied directly to scroll progress — a slow scroll
     // turns it slowly, not a spin of its own. Applied to the logo mesh itself
     // (inside the Billboard) rather than the group, so it keeps facing the

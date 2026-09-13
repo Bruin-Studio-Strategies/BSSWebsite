@@ -1,7 +1,7 @@
 import { useEffect, useRef } from "react";
 import { useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
-import { getSunPosition } from "./sunPath.js";
+import { getSunPosition, sunFrameFit } from "./sunPath.js";
 import { follow } from "./smoothing.js";
 
 // The canvas is alpha:true with no scene.background, so the empty space above the
@@ -45,7 +45,7 @@ export default function SunsetLighting({ scrollYProgress, exitProgress, reducedM
   const sink = useRef(null);
   const sky = useRef(new THREE.Color(SKY_DAY));
   const sunPos = useRef(new THREE.Vector3());
-  const { scene } = useThree();
+  const { camera, scene, size } = useThree();
 
   useEffect(() => {
     scene.background = sky.current;
@@ -74,7 +74,10 @@ export default function SunsetLighting({ scrollYProgress, exitProgress, reducedM
     // position uses the same raw smoothed t, so this tracks the sun exactly
     // instead of the light sitting at a fixed studio position the whole time.
     if (keyRef.current) {
-      getSunPosition(smoothed, sunPos.current);
+      // Same frame fit as Logo3D, or the light would come from the arc the sun
+      // used to ride rather than the one it is on — on a phone that is a
+      // noticeably lower angle than the mark you can see in the sky.
+      getSunPosition(smoothed, sunPos.current, sunFrameFit(camera, size.width / size.height).y);
       keyRef.current.position.copy(sunPos.current);
     }
 

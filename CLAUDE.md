@@ -70,6 +70,20 @@ has to be re-scored with them. `DistantRidge` and `Starfield` are seeded from th
 module. Everything unlit in the scene (the ridge, the fog) has to be lerped toward
 night explicitly — only the lights respond to the sunset on their own.
 
+**The sun's arc is authored against the desktop frame and fitted to every other
+one.** `sunPath.js` places it in world units measured for a 45-degree lens at
+aspect 1.6 — a half-height of 16.6 and a half-width of 26.6 at the sun's depth.
+A portrait phone runs Terrain's widened lens and pulled-back camera, so at that
+same depth the frame is ~26 units tall and ~12 wide: the authored sweep covered a
+third of it and the mark filled 59% of its width, which is why the sun tracked
+low across the ridge and came in enormous. `sunFrameFit()` returns the factor to
+raise the arc by and the factor to scale the mark by — both 1 on desktop, so that
+composition is untouched — and `Logo3D` and `SunsetLighting` read it every frame
+rather than memoising on resize, because `Terrain` sets `camera.fov` from its own
+effect and the ordering between two components' effects is not something to rely
+on. The X span is deliberately left alone: at 14.3 the sun already starts just
+outside a phone's frame and sweeps in, which is the entrance the hero wants.
+
 **The hero ends by sinking into a dune, not by fading out.** `terrainField.js`
 authors two shapes on top of the noise, and they do different jobs:
 
