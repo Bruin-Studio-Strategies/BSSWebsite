@@ -10,7 +10,7 @@ import { APPLICATION_URL } from "../../applyLink.js";
 // PLACEHOLDER: standing in until there is a photograph from an actual info
 // session or coffee chat, which is what a student deciding whether to apply
 // most wants to see — the room they would be walking into. One-line swap.
-import groupPhoto from "../../assets/group.JPG";
+import groupPhoto from "../../assets/optimized/group-1280.webp";
 
 // Structure:
 //   header (photo + the apply action)

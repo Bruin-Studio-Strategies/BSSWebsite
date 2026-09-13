@@ -1,6 +1,6 @@
 import { motion, useReducedMotion } from "framer-motion";
 import ApplyButton from "../../../components/ApplyButton.jsx";
-import group from "../../../assets/group.JPG";
+import group from "../../../assets/optimized/group-1280.webp";
 import {
   OPENER_ACTIONS,
   OPENER_ALIGN,
@@ -73,12 +73,13 @@ export default function Team() {
           >
             Meet the Team
           </motion.span>
-          <motion.h3
+          {/* h2, under the hero's h1 — see Info.jsx. */}
+          <motion.h2
             variants={fadeUp}
             className={`font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-white mt-4 mb-6 leading-[1.1] ${OPENER_BALANCE}`}
           >
             Our Team
-          </motion.h3>
+          </motion.h2>
           <motion.p
             variants={fadeUp}
             className={`font-sans text-sm sm:text-base md:text-lg lg:text-xl text-white/70 leading-relaxed max-w-xl ${OPENER_MEASURE} ${OPENER_BALANCE}`}

@@ -1,6 +1,6 @@
 import { Suspense, lazy, useState } from "react";
 import { useReducedMotion } from "framer-motion";
-import Wave from "../../assets/waves.png";
+import Wave from "../../assets/optimized/waves-1280.webp";
 import RotatingLogo from "../RotatingLogo.jsx";
 import useSceneGate from "../../transition/sceneGate.js";
 import { isWebGLAvailable } from "../../utils/webgl.js";

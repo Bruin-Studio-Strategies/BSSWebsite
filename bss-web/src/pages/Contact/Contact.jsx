@@ -20,13 +20,18 @@ const OFFICERS = [
 // these in white/50 is what made the page read as grey: with the headline in
 // Agatho and everything else white-on-gradient, sky had nowhere to do its job of
 // naming the structure.
+//
+// An h2, like the form's "Or send a message": the address column and the form are
+// peer sections directly under the page's h1. It was an h3, and because the
+// address column comes first in the markup the outline dropped from h1 straight
+// to h3 before reaching the form's h2.
 function ColumnHeading({ children, className = "" }) {
   return (
-    <h3
+    <h2
       className={`font-sans text-[0.6875rem] font-semibold uppercase tracking-[0.2em] text-sky ${className}`}
     >
       {children}
-    </h3>
+    </h2>
   );
 }
 
@@ -129,9 +134,11 @@ export default function Contact() {
           </div>
 
           <div>
-            <h3 className="font-display text-xl leading-tight text-white sm:text-2xl md:text-3xl">
+            {/* h2, directly under the page's h1 — it was an h3, which skipped a
+                level in the outline. */}
+            <h2 className="font-display text-xl leading-tight text-white sm:text-2xl md:text-3xl">
               Or send a message
-            </h3>
+            </h2>
             <div className="mt-8">
               <Form />
             </div>

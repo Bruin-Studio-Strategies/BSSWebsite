@@ -50,12 +50,15 @@ export default function Hero({ scrollYProgress }) {
       // on centred text pulls it off-axis.
       className={`relative flex flex-col ${OPENER_ITEMS} ${OPENER_ALIGN}`}
     >
-      <motion.h4
+      {/* A paragraph, not a heading. It was an h4 sitting in front of the h1,
+          which made the page's outline open on a fourth-level heading — this is
+          a label over the headline, and it carries no section of its own. */}
+      <motion.p
         {...fadeUpProps(0.05, reduced)}
         className="font-sans text-sm sm:text-base text-white/60 font-medium md:ml-2 tracking-wide"
       >
         Work with the Best
-      </motion.h4>
+      </motion.p>
 
       <motion.h1
         variants={headlineContainer}

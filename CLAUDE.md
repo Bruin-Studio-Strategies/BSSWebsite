@@ -343,6 +343,31 @@ conversion. `people.js` stores a `slug`; `headshots.js` resolves it via
 `import.meta.glob`. **After adding or replacing a headshot, re-run the script and
 commit its output**, or that member renders as initials.
 
+**The rest of the site's photographs follow the same rule.** `src/assets/IMG_9814.JPG`,
+`group.JPG`, `board.jpg`, `paramount.png` and `waves.png` are originals and are never
+imported; `scripts/optimize-site-images.mjs` derives one WebP each into
+`src/assets/optimized/` (1280px for the photos, which is right for a 3x phone column
+and a 2x laptop column alike; 320px for the Paramount mark, which draws 36px tall) and
+writes the 1200x630 `public/og-image.jpg` social card. That took the landing page's
+images from ~4.3 MB to ~0.7 MB. Re-run it after replacing a source image, and commit
+the output.
+
+## SEO (`src/seo/`)
+
+**The site is a client-rendered SPA behind a catch-all rewrite, so `index.html` is
+served for every path.** `RouteMeta.jsx` rewrites the title, description, canonical,
+robots, Open Graph and Twitter tags on every route change from the table in
+`siteMeta.js`; the 404 is `noindex`. `index.html` keeps the landing page's values
+plus Organization JSON-LD as static defaults, because link unfurlers (Instagram,
+iMessage, Discord) never run JavaScript and only ever see that file — keep the two in
+step. `SITE_URL` in `siteMeta.js` is still Vercel's production alias, and it is
+duplicated in `index.html`, `public/robots.txt` and `public/sitemap.xml`; when the
+club has a real domain, all four change together.
+
+**Every page has exactly one `h1`.** `SectionOpener` renders page openers as `h1` and
+section openers as `h2`; everything under them steps down from there. The hero's "Work
+with the Best" label is a paragraph, not a heading.
+
 **A card's hover names its destination rather than moving.** The portrait scaled
 4% at first, which says something is happening and nothing about what. Now a scrim
 lifts off the bottom of the frame with a bordered "LinkedIn" plate rising into it,

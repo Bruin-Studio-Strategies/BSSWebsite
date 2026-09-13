@@ -145,9 +145,9 @@ function ServiceCell({ service, index, reduced }) {
         >
           {String(index + 1).padStart(2, "0")}
         </span>
-        <h4 className="font-display text-lg leading-snug text-white sm:text-xl md:text-2xl">
+        <h3 className="font-display text-lg leading-snug text-white sm:text-xl md:text-2xl">
           {service.title}
-        </h4>
+        </h3>
       </div>
 
       <div className="mt-5">

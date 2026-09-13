@@ -134,7 +134,7 @@ export default function TeamCard({
         )}
       </div>
 
-      <h4 className="mt-4 font-display text-lg leading-tight text-white sm:text-xl">
+      <h3 className="mt-4 font-display text-lg leading-tight text-white sm:text-xl">
         {profile ? (
           // The ::before overlay makes the whole card the LinkedIn target while
           // keeping exactly one link per person in the accessibility tree.
@@ -165,7 +165,7 @@ export default function TeamCard({
         ) : (
           name
         )}
-      </h4>
+      </h3>
 
       <p className="mt-1.5 font-sans text-[0.7rem] font-semibold uppercase tracking-[0.14em] text-white/70">
         {role}

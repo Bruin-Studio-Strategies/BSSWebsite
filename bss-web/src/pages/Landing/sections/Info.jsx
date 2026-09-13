@@ -1,7 +1,9 @@
 import { motion, useReducedMotion } from "framer-motion";
 import { FaQuoteLeft } from "react-icons/fa";
-import group from "../../../assets/IMG_9814.JPG";
-import paramountLogo from "../../../assets/paramount.png"; // transparent Paramount logo
+// Derivatives from scripts/optimize-site-images.mjs, never the originals: the
+// group photo was 1.1 MB and the Paramount mark 1.8 MB for a logo drawn 36px tall.
+import group from "../../../assets/optimized/IMG_9814-1280.webp";
+import paramountLogo from "../../../assets/optimized/paramount-320.webp"; // transparent Paramount logo
 import { OPENER_ALIGN, OPENER_BALANCE, OPENER_MEASURE } from "../../../components/openerAlignment.js";
 
 const EASE = [0.16, 1, 0.3, 1];
@@ -37,11 +39,13 @@ export default function Info() {
             >
               Who We Are
             </motion.span>
-            <motion.h3
+            {/* h2, under the hero's h1: this is a section of the landing page,
+                and the outline is what a crawler reads the page's shape from. */}
+            <motion.h2
               className={`font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-white mt-4 mb-6 leading-[1.1] ${OPENER_BALANCE}`}
             >
               What is BSS?
-            </motion.h3>
+            </motion.h2>
             <motion.p
               className={`font-sans text-sm sm:text-base md:text-lg lg:text-xl text-white/70 leading-relaxed max-w-xl ${OPENER_MEASURE} ${OPENER_BALANCE}`}
             >

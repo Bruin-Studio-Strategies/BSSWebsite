@@ -19,9 +19,12 @@ import {
 // edge and a three-word question took three lines, which read as cramped rather
 // than confident. The landing page is not a caller — its blocks animate and run
 // their own scale — but it takes the same alignment from openerAlignment.js.
+// The ranks are the document outline, not decoration: "page" is the page's one
+// h1 and "section" is an h2 under it. They were h2/h3, which left every interior
+// page without an h1 at all — the landing hero held the site's only one.
 const TITLE = {
-  page: { Tag: "h2", classes: "text-4xl leading-[1.05] sm:text-5xl md:text-6xl" },
-  section: { Tag: "h3", classes: "text-3xl leading-[1.1] sm:text-4xl md:text-5xl" },
+  page: { Tag: "h1", classes: "text-4xl leading-[1.05] sm:text-5xl md:text-6xl" },
+  section: { Tag: "h2", classes: "text-3xl leading-[1.1] sm:text-4xl md:text-5xl" },
 };
 
 export default function SectionOpener({
