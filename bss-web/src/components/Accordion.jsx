@@ -1,12 +1,19 @@
 import { useId, useState } from "react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
 
+import { OPENER_ALIGN, OPENER_MEASURE } from "./openerAlignment.js";
+
 const EASE = [0.16, 1, 0.3, 1];
 
 // Was a filled bg-blue-950 block with a sort-arrow icon and an EB Garamond
 // title. Rebuilt as a ruled row: the divider between questions is the only
 // structure it needs, which lets a stack of them read as a printed index rather
 // than as a column of buttons.
+//
+// Centred below md with the section opener above it, left from md up. The toggle
+// stays on the right at every width, so a spacer of the same width sits opposite
+// it while the row is centred — without it the question centres on the space left
+// over beside the toggle, which lands it a few pixels off the page's axis.
 export default function Accordion({ title, children }) {
   const [active, setActive] = useState(false);
   const panelId = useId();
@@ -20,9 +27,18 @@ export default function Accordion({ title, children }) {
         aria-expanded={active}
         aria-controls={panelId}
         onClick={() => setActive((a) => !a)}
-        className="group flex w-full items-start justify-between gap-8 py-6 text-left"
+        className={`group flex w-full items-start justify-between gap-3 py-6 sm:gap-4 md:gap-8 ${OPENER_ALIGN}`}
       >
-        <span className="font-display text-xl leading-snug text-white transition-colors duration-200 group-hover:text-white sm:text-2xl">
+        <span aria-hidden="true" className="mt-2 h-3 w-3 shrink-0 md:hidden" />
+
+        {/* Balanced, because a question in Agatho on a 312px phone column breaks
+            a word or two from its end — "…look for in an / applicant?" — and a
+            stack of rows each ending on a stranded word reads as a layout fault. */}
+        {/* One step below the Title role on phones. At 18px three of the four
+            questions are 3-19px wider than the 258px the row leaves beside the
+            toggle, so they each broke to two lines; at 16px the widest needs
+            246px and every question sets on one line. */}
+        <span className="text-balance font-display text-base leading-snug text-white transition-colors duration-200 group-hover:text-white sm:text-xl md:text-2xl">
           {title}
         </span>
 
@@ -48,9 +64,11 @@ export default function Accordion({ title, children }) {
             animate={{ height: "auto", opacity: 1 }}
             exit={reduced ? { opacity: 0 } : { height: 0, opacity: 0 }}
             transition={{ duration: reduced ? 0 : 0.4, ease: EASE }}
-            className="overflow-hidden"
+            className={`overflow-hidden ${OPENER_ALIGN}`}
           >
-            <p className="max-w-[46rem] pb-7 font-sans text-base leading-relaxed text-white/70">
+            <p
+              className={`max-w-[46rem] pb-7 font-sans text-sm leading-relaxed text-white/70 sm:text-base ${OPENER_MEASURE}`}
+            >
               {children}
             </p>
           </motion.div>

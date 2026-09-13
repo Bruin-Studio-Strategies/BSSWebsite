@@ -179,8 +179,9 @@ accents that each have exactly one job.
 ### Neutral
 
 - **Studio Navy** (`#0F172E`): the anchoring dark. Footer ground, terrain valley floor, the base every panel tints toward. The nearest thing this system has to black.
-- **Horizon Indigo** (`#3D3C95`): the top of the page gradient and the scene's daytime sky. Where the light is coming from.
-- **Deep Night** (`#0A0D3D`): the bottom of the page gradient. The page literally gets darker as you scroll.
+- **Horizon Indigo** (`#3D3C95`): the scene's daytime sky, where the light is coming from. It is no longer the page gradient's top — on the landing page the canvas covers that band completely, so the raw colour was only ever visible on the interior pages, which then read as a lighter site than home.
+- **Night Indigo** (`#2B2A68`): the top of the page gradient. Horizon Indigo taken down to what the landing page actually looks like under its scene.
+- **Deep Night** (`#0A0D3D`): the bottom of the page gradient. The page literally gets darker as you scroll — over a fixed 1200px, not a percentage of the document, so every page darkens at the same rate rather than at a depth set by its own length.
 - **Night Sky** (`#141338`) and **Ridge Shadow** (`#211D4E`): the scene's dusk sky and its distant ridge silhouette. Available for large background masses on any page that wants the landscape's depth without rendering it.
 - **Starlight** (`#E8E6FF`), **Lilac Ambient** (`#C9BEFF`), **Orchid Key** (`#B98CE0`): the light in the scene — stars, ambient bounce, key light. Not UI colors. Documented so future scene work stays in the same light.
 - **White at opacity** — 100% for headings, 70% for body, 50% for supporting detail, 30% for the quietest metadata, 20% for strong hairlines, 10% for ordinary hairlines, 3% for glass fill. This ladder replaces a gray scale entirely.
@@ -223,9 +224,11 @@ distance between them is the hierarchy.
 ### Hierarchy
 
 - **Display** (Agatho 400–500, `clamp(2.25rem, 6vw, 6rem)`, line-height 1.1): page-opening headlines. Landing hero only, at present. The scale is the point — do not use it at half size for decoration.
-- **Headline** (Agatho 400, `text-4xl` → `text-6xl`, line-height 1.1): section headings — "What is BSS?", "Our Team". Always paired with a sky-blue eyebrow above it.
-- **Title** (Agatho 500, `text-xl` → `text-2xl`, line-height 1.3): card and panel headings, timeline entries, accordion questions.
-- **Body** (Inter 300, `text-base` → `text-lg`, line-height 1.625, max width ~`max-w-xl` / 65–75ch): all running text, at white/70. Never justified, never full-bleed.
+- **Headline** (Agatho 400, line-height 1.05–1.1): page and section headings, through `SectionOpener` — page `text-4xl` → `sm:text-5xl` → `md:text-6xl`, section `text-3xl` → `sm:text-4xl` → `md:text-5xl`; the landing's "What is BSS?" and "Our Team" add `lg:text-6xl`. Always paired with a sky-blue eyebrow above it.
+- **Title** (Agatho 500, `text-lg` → `sm:text-xl` → `md:text-2xl`, line-height 1.3): card and panel headings, service cells, process phases, accordion questions. Timeline entries and the roster band headings run one step larger on the same ladder; accordion questions run one step smaller on phones only (`text-base`), because a row shares its width with the toggle and at 18px most of the questions broke to two lines.
+
+**The Narrow Step Rule.** Below `md` every Agatho role steps down one size per breakpoint, and desktop sizes arrive at `md`, not `sm`. At desktop sizes on a 312px phone column a page headline ran edge to edge, section questions took three lines, and the page read as cramped rather than confident. Body copy steps down once: running text is `text-sm` (14px) below `sm` and 16px from `sm`, because at 16px — and still at 15px — a phone's 312px column read as dense after the headings came down. Form inputs are the exception and stay at 16px — iOS Safari zooms the page on focus into any field set smaller.
+- **Body** (Inter 300, `text-sm` (14px) on phones → `sm:text-base` (16px), and `md:text-lg` → `lg:text-xl` for the landing's copy blocks; line-height 1.625, max width ~`max-w-xl` / 65–75ch): all running text, at white/70. Never justified, never full-bleed. Form inputs stay at `text-base` at every width.
 - **Label** (Inter 600, `text-xs` → `text-sm`, uppercase, letter-spacing `0.2em`, Instrument Sky): the eyebrow above headings, phase markers on process cards, category tags. This is the system's most recognizable small detail.
 - **Label Micro** (Inter 600, `0.6875rem`, uppercase, letter-spacing `0.2em`): one step below Label, for annotation that sits *inside* a diagram rather than labelling a block of content — week numerals on the project schedule, its legend, row numbering, and the "each project includes" spec. Never use it for a section eyebrow; if a label introduces content, it is a Label.
 
@@ -259,13 +262,27 @@ own bottom clearance (`pb-96 sm:pb-60` on the landing, hand-tuned elsewhere) or
 content will sit under it. This is a known structural debt: when a page is
 rebuilt, prefer moving it into flow over adding another magic padding value.
 
-**The Left Rule.** Everything is left-aligned at every width. There is no
-centred breakpoint: the hero, the landing's "What is BSS?" block and its team
-block each used to centre below `md` and switch to left above it, so scrolling a
-phone crossed the alignment three times. Centred type also has no rule to hang
-off, which is the structure the rest of the system is built on. The only centred
-things left are the mobile nav overlay and the footer, which are bars rather than
-reading columns.
+**The Opener Rule.** Below `md` (960px) every section opener — eyebrow,
+headline, lede and the action under it — is centred; from `md` up it hangs left.
+What sits under an opener stays left at every width when it carries a left edge
+of its own: the recruitment spine, the contact form and address list, roster
+bands and cards, and the testimonial quote — centring them would take the edge
+away. Stacked blocks with no edge to hang from centre with their opener below
+`md`, because left-aligned under a centred heading they read as a second layout:
+the clients page's service cells and process phases, and the FAQ rows. A centred
+FAQ row keeps its toggle on the right and carries a spacer of the toggle's width
+opposite it, so the question centres on the page's axis rather than on the space
+left beside the control. So a phone reads the same way on every page — centred
+heading, left-aligned content — instead of each surface choosing for itself.
+
+The alignment lives in `components/openerAlignment.js` and nowhere else. Interior
+pages get it through `SectionOpener`; the landing's hero and copy blocks, which
+animate and run a larger scale, import the classes directly. Centred lines are
+balanced (`max-md:text-balance`), because uneven centred lines are what make
+centred type look careless — below `md` only, since several measures above it are
+tuned to break on a particular word. Left-aligned at every width shipped briefly
+and was reverted on the project owner's call. The mobile nav overlay and the
+footer are centred bars, not reading columns.
 
 **The Air Rule.** When a section feels cramped, remove an element before reducing
 spacing. Generous vertical rhythm is doing identity work here, not just
@@ -326,7 +343,7 @@ institutional half of the identity.
 ### Buttons
 
 - **Shape:** near-square (`rounded-sm`, 2px), uppercase Inter 600, letter-spaced into the same small-caps family as the eyebrows (`0.18em` primary, `0.16em` outline) rather than a default `tracking-wide`.
-- **Primary:** solid Signal Magenta, white text, `px-7 py-3` at `text-sm`. One per screen, by The One Action Rule.
+- **Primary:** solid Signal Magenta, white text, `px-7 py-3` at `text-sm` from `sm`; `px-6 py-3.5` at `text-xs` on phones, where body copy is 14px and the desktop frame read as oversized. 44px tall at both sizes. One per screen, by The One Action Rule.
 - **Outline (nav "Apply Now"):** transparent with a 1px magenta border, white text, `px-4 py-2` at `text-xs`. The standing recruitment CTA in the navbar and mobile menu — it has to stay available on every page without competing with whatever primary the page below it is showing.
 - **Hover is a wipe, not a lift.** A veil sweeps across the face of the button from the left over 450ms on the project easing curve: navy/35 on the primary, so the magenta *deepens*; solid magenta on the outline, so the border fills. Nothing translates, nothing glows. Focus-visible fires the same sweep, so a keyboard gets the mouse's feedback.
 - **Why:** the wipe is this site's gesture — the nav underline draws in from the left, the service cells rule in from the left, the recruitment spine fills from the top. A button that lifted 2px and grew a magenta-tinted glow was speaking a different language from every other interactive thing on the site, and it was the generic one. Deepening rather than fading matters too: a primary action that gets lighter when you reach for it reads as going away.
@@ -387,7 +404,7 @@ content lives. Over the live 3D scene the fill would be `bg-white/[0.03]` with
 - **Bar:** transparent, `h-24`, sitting above the hero scene rather than over an opaque strip, so the moving scene shows through. Fades and drops in 16px on mount.
 - **Items:** Inter at `text-sm` / `lg:text-base`, white/80, brightening to white on hover. A 1px sky-blue underline scales in from the left on hover and stays drawn on the active route — the active state and the hover state are the same treatment, which is intentional.
 - **CTA:** the magenta outline button, pushed right with `ml-auto`.
-- **Mobile:** below `sm`, a hamburger opens a full-screen overlay on Studio Navy; items fade up in a 60ms stagger. (It was `bg-blue-950` until the stock-blue sweep.)
+- **Mobile:** below `md` (960px), a hamburger opens a full-screen overlay on Studio Navy; items fade up in a 60ms stagger. (It was `bg-blue-950` until the stock-blue sweep.) The switch used to be `sm`, and the full row — which needs about 1000px — spent every tablet width squashing the logo, breaking link labels onto two lines, and pushing the Apply button off the edge.
 - **Footer on mobile:** a centred stack, with the nav links *wrapped* into two rows rather than stacked into five. The bar is a fixed `h-60` and five stacked links needed about 300px, which pushed the social icons out of the bottom of it.
 
 ### Inputs / Fields
@@ -521,9 +538,17 @@ centred rule are all previous versions of this component, not alternatives to it
 ### Section Opener
 
 Eyebrow (sky, uppercase, `0.2em`) → Agatho headline → Inter body at white/70,
-revealed as a 12%-staggered fade-up group triggered once at 30% visibility. The
-most-reused pattern in the codebase and the fastest way to make a new page look
-like it belongs.
+with an optional action under it. The most-reused pattern in the codebase and the
+fastest way to make a new page look like it belongs.
+
+It is a component, `components/SectionOpener.jsx`, and every page header and
+section heading on the interior pages renders through it rather than pasting the
+markup. `size="page"` opens a page (h2, `text-5xl sm:text-6xl`); the default
+`"section"` opens a section inside one (h3, `text-4xl sm:text-5xl`). A tuned lede
+measure goes in `measure`, not as an extra class — two `max-w-*` utilities on one
+element resolve by stylesheet order. Alignment comes from The Opener Rule and is
+not a prop. The landing's blocks are not callers: they animate as a staggered
+fade-up group at a larger scale, and import only the alignment classes.
 
 ### Motion
 
@@ -556,7 +581,7 @@ after 450ms, so a fast machine never sees one.
 
 ### Do:
 
-- **Do** open every section with the eyebrow → Agatho headline → white/70 body sequence.
+- **Do** open every section with the eyebrow → Agatho headline → white/70 body sequence, through `SectionOpener` rather than pasted markup.
 - **Do** express secondary text as white at reduced opacity (70/50/30), never as a gray.
 - **Do** keep primary buttons at 2px radius, uppercase, and let hover sweep a veil across the face rather than lift the button.
 - **Do** use `cubic-bezier(0.16, 1, 0.3, 1)` for every transition and reveal, and guard every one of them with `prefers-reduced-motion`.

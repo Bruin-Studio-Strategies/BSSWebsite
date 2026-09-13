@@ -133,9 +133,15 @@ daylight, and scrolling back up from below the hero runs it backwards.
 
 ## Mobile
 
-**Left-aligned everywhere** (The Left Rule in DESIGN.md). The hero and the
-landing's two copy blocks centred below `md` and switched to left above it, so
-scrolling a phone crossed the alignment three times.
+**Openers centre below `md`; content stays left** (The Opener Rule in
+DESIGN.md). `md` is 960px in this project, not Tailwind's 768. Every page header
+and section heading on the interior pages renders through
+`components/SectionOpener.jsx`, and the landing's hero and copy blocks import the
+same classes from `components/openerAlignment.js` — change alignment there,
+never per page. Timelines, forms and roster grids stay left at every width; the
+clients page's service cells and process phases and the recruitment FAQ rows
+centre with their openers below `md`. Left-aligned everywhere was tried and reverted by the person
+running the project.
 
 **Hover does not exist there, and most of this site is read there.** Anything
 gated on hover needs a touch path or it simply never happens: the clients page's
@@ -250,8 +256,8 @@ below it. `applyLink.js` sits at the src root, not in `pages/Recruitment/`,
 because the navbar and the landing page both need it. Its URL is still last
 cycle's and needs confirming.
 
-Not yet touched in this pass: navbar styling, the "What is BSS?"/testimonial section,
-the Contact page, most copy.
+Not yet touched in this pass: navbar styling (only its mobile breakpoint moved, to
+`md`), most copy. The Paramount testimonial is set in Inter Light, not Agatho.
 
 ## Contact (`/contact`)
 

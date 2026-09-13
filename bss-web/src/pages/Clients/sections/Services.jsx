@@ -4,6 +4,8 @@ import { animate, motion, useInView, useMotionValue, useReducedMotion } from "fr
 import useHoverCapable from "../../../hooks/useHoverCapable.js";
 
 import ServiceMotif from "../../../components/ServiceMotifs/Motifs.jsx";
+import SectionOpener from "../../../components/SectionOpener.jsx";
+import { OPENER_ACTIONS, OPENER_ALIGN, OPENER_BALANCE } from "../../../components/openerAlignment.js";
 
 const EASE = [0.16, 1, 0.3, 1];
 
@@ -114,7 +116,12 @@ function ServiceCell({ service, index, reduced }) {
       // Rows carry padding rather than margin and the grid has no row gap, so
       // each cell's top rule butts against the one above and the ruling reads as
       // a grid rather than as six detached underlines.
-      className="group relative border-t border-white/15 pb-8 pt-7"
+      //
+      // Centred below md, with the section opener above it: stacked one to a
+      // row (two at tablet width) under a centred drawing, a left-aligned title
+      // and description read as a second layout. From md the cells sit in a
+      // three-column table and go left with the grid.
+      className={`group relative border-t border-white/15 pb-8 pt-7 ${OPENER_ALIGN}`}
     >
       {/* Hover draws a sky rule over the hairline instead of tinting the cell.
           It overhangs the cell on both sides so the mark reads as belonging to
@@ -126,7 +133,11 @@ function ServiceCell({ service, index, reduced }) {
         }`}
       />
 
-      <div className="flex items-baseline gap-3">
+      {/* The numeral stacks above the title below md. Centred inline, the pair
+          centred as one unit and pushed the title ~15px right of the drawing's
+          axis under it; stacked, the title sits on the axis the way a process
+          phase's title does under its "01 · WEEK 0" line. */}
+      <div className={`flex flex-col items-center gap-1 md:flex-row md:items-baseline md:gap-3 ${OPENER_ACTIONS}`}>
         <span
           className={`font-sans text-[0.6875rem] tabular-nums tracking-[0.2em] transition-colors duration-300 ${
             hovered ? "text-sky" : "text-white/40"
@@ -134,7 +145,7 @@ function ServiceCell({ service, index, reduced }) {
         >
           {String(index + 1).padStart(2, "0")}
         </span>
-        <h4 className="font-display text-xl leading-snug text-white sm:text-2xl">
+        <h4 className="font-display text-lg leading-snug text-white sm:text-xl md:text-2xl">
           {service.title}
         </h4>
       </div>
@@ -143,7 +154,7 @@ function ServiceCell({ service, index, reduced }) {
         <ServiceMotif name={service.motif} progress={progress} />
       </div>
 
-      <p className="mt-5 font-sans text-sm leading-relaxed text-white/70">
+      <p className={`mt-5 font-sans text-sm leading-relaxed text-white/70 ${OPENER_BALANCE}`}>
         {service.description}
       </p>
     </motion.li>
@@ -163,12 +174,7 @@ export default function Services() {
         aria-hidden="true"
         className="pointer-events-none absolute -inset-x-16 -top-10 bottom-0 -z-10 bg-[radial-gradient(60%_50%_at_50%_40%,rgba(82,55,148,0.32),transparent_70%)] blur-2xl"
       />
-      <span className="inline-block font-sans text-xs font-semibold uppercase tracking-[0.2em] text-sky">
-        What We Do
-      </span>
-      <h3 className="mt-4 font-display text-4xl leading-[1.1] text-white sm:text-5xl">
-        Our Services
-      </h3>
+      <SectionOpener eyebrow="What We Do" title="Our Services" />
 
       {/* Column gap only. A row gap would break every cell's top rule away from
           the cell above it and the grid would come apart into stacked cards. */}

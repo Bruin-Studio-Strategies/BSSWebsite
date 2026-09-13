@@ -41,10 +41,16 @@ export default function Footer() {
 
       {/* Wrapped rather than stacked on mobile. Five links in a single column
           needed about 300px and this bar is a fixed 240px, so the social icons
-          were pushed out of the bottom of it. Two wrapped rows fit. */}
+          were pushed out of the bottom of it. Two wrapped rows fit.
+
+          The 17rem cap is what makes those two rows 3 + 2 rather than 4 + 1.
+          Left to the full width the row fits four links and drops "Contact"
+          underneath on its own, which reads as an accident; 17rem is just under
+          the width of Home + For Clients + For Students at their gap, so the
+          break lands after the third and `justify-center` centres both rows. */}
       <motion.div
         variants={fadeUp}
-        className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 sm:flex-nowrap sm:gap-x-8"
+        className="flex max-w-[17rem] flex-wrap items-center justify-center gap-x-6 gap-y-2 sm:max-w-none sm:flex-nowrap sm:gap-x-8"
       >
         <FooterItem path="/">Home</FooterItem>
         <FooterItem path="/clients">For Clients</FooterItem>

@@ -24,7 +24,9 @@ import { GateContext } from "./sceneGate.js";
 const EASE = [0.16, 1, 0.3, 1];
 const FADE = 0.34;
 
-const GRADIENT_BG = "linear-gradient(#3D3C95, 20%, #0a0d3d)";
+// The body's own gradient, repeated here because the loading screen covers the
+// viewport before the page behind it paints. Keep the two in step (index.css).
+const GRADIENT_BG = "linear-gradient(#2B2A68, #0a0d3d 1200px)";
 
 // How long a load has to run before it admits to being one. Under this, a spinner
 // is a flash of anxiety on a machine that was fine.
@@ -111,6 +113,32 @@ export default function PageTransition({ children }) {
 
   const gated = gateCount > 0 && !gatesTimedOut.current;
   const loading = gated || floorHeld;
+
+  // Nothing behind the loading screen is ready to be scrolled — the hero's scene
+  // is still building, and its scroll-driven sunset would read from a position
+  // the visitor set while looking at a curtain. Locking the document is enough:
+  // overflow on <html> is what the viewport scrolls, and it goes back to its own
+  // value (overflow-x stays hidden, set in index.css) the moment the screen
+  // lifts, so sticky positioning below is never affected.
+  //
+  // This has to sit below `loading`, not up with the scroll reset: a `const` read
+  // from an effect declared above it is a temporal-dead-zone throw at render, and
+  // it took the whole app down rather than just this effect.
+  // `touch-action` alongside the overflow, because iOS Safari will still pan a
+  // document whose <html> is overflow:hidden; this is what actually stops a
+  // finger on the phones most of this site is read on.
+  useEffect(() => {
+    if (!loading) return undefined;
+    const root = document.documentElement;
+    const previousOverflow = root.style.overflowY;
+    const previousTouch = root.style.touchAction;
+    root.style.overflowY = "hidden";
+    root.style.touchAction = "none";
+    return () => {
+      root.style.overflowY = previousOverflow;
+      root.style.touchAction = previousTouch;
+    };
+  }, [loading]);
 
   // Arming and expiring the floor are separate effects on purpose. Doing both in
   // one, keyed on the gate, meant that the moment the gate opened its cleanup

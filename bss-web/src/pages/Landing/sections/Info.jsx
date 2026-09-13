@@ -2,6 +2,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import { FaQuoteLeft } from "react-icons/fa";
 import group from "../../../assets/IMG_9814.JPG";
 import paramountLogo from "../../../assets/paramount.png"; // transparent Paramount logo
+import { OPENER_ALIGN, OPENER_BALANCE, OPENER_MEASURE } from "../../../components/openerAlignment.js";
 
 const EASE = [0.16, 1, 0.3, 1];
 
@@ -28,21 +29,21 @@ export default function Info() {
   // is past the scene and keeps the house scroll reveal.
   return (
     <>
-      <section className="mx-auto max-w-6xl px-6 sm:px-10 md:px-14 lg:px-20 py-20 sm:py-28">
+      <section className="mx-auto max-w-6xl px-[10%] sm:px-10 md:px-14 lg:px-20 py-20 sm:py-28">
         <div className="grid grid-cols-1 md:grid-cols-2 items-center gap-10 sm:gap-14 lg:gap-20">
-          <motion.div className="text-left">
+          <motion.div className={OPENER_ALIGN}>
             <motion.span
               className="inline-block font-sans text-xs sm:text-sm font-semibold uppercase tracking-[0.2em] text-sky"
             >
               Who We Are
             </motion.span>
             <motion.h3
-              className="font-display text-4xl sm:text-5xl lg:text-6xl text-white mt-4 mb-6 leading-[1.1]"
+              className={`font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-white mt-4 mb-6 leading-[1.1] ${OPENER_BALANCE}`}
             >
               What is BSS?
             </motion.h3>
             <motion.p
-              className="font-sans text-base sm:text-lg lg:text-xl text-white/70 leading-relaxed max-w-xl"
+              className={`font-sans text-sm sm:text-base md:text-lg lg:text-xl text-white/70 leading-relaxed max-w-xl ${OPENER_MEASURE} ${OPENER_BALANCE}`}
             >
               Bruin Studio Strategies, UCLA's first and premier entertainment consulting group,
               unites technical consulting fundamentals, technology, and Gen-Z insights to deliver
@@ -71,7 +72,7 @@ export default function Info() {
         </div>
       </section>
 
-      <section className="mx-auto max-w-5xl px-6 sm:px-10 pb-20 sm:pb-28">
+      <section className="mx-auto max-w-5xl px-[10%] sm:px-10 pb-20 sm:pb-28">
         <motion.div
           initial="hidden"
           whileInView="show"
@@ -84,11 +85,13 @@ export default function Info() {
           </motion.div>
           <motion.blockquote
             variants={fadeUp}
-            // Agatho, not EB Garamond, which the redesign is retiring — and not
-            // italic, because Agatho ships no italic and the browser would
-            // synthesise a slant. Smaller on mobile: at 18px with relaxed
-            // leading this quote filled a phone screen on its own.
-            className="font-display text-base leading-relaxed text-white/90 sm:text-2xl sm:leading-snug lg:text-3xl"
+            // Inter Light, not a serif. It was EB Garamond italic (being retired),
+            // then Agatho — but four lines of Agatho is running text in a face
+            // built for headings, which the Serif-Asserts Rule rules out, and it
+            // read as heavy. The magenta rule and the quote mark are what mark it
+            // as a quote; the face does not have to. Body size on phones, where
+            // at anything larger this quote filled the screen on its own.
+            className="font-sans font-light text-sm leading-relaxed text-white/90 sm:text-base md:text-2xl md:leading-snug lg:text-3xl"
           >
             "Partnering with the Bruin Studios Strategies group was a fantastic experience.
             Their teams brought creativity, professionalism, and real passion to our case prompt,

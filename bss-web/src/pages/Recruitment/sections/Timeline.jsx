@@ -92,11 +92,11 @@ function Stage({ stage, index, isLast, state, fill, reduced, rowRef }) {
           {stage.time && <span className="text-white/40"> · {stage.time}</span>}
         </p>
 
-        <h3 className="mt-3 font-display text-2xl leading-tight text-white sm:text-3xl">
+        <h3 className="mt-3 font-display text-xl leading-tight text-white sm:text-2xl md:text-3xl">
           {stage.title}
         </h3>
 
-        <p className="mt-3 max-w-[42rem] font-sans text-base leading-relaxed text-white/70">
+        <p className="mt-3 max-w-[42rem] font-sans text-sm leading-relaxed text-white/70 sm:text-base">
           {stage.description}
         </p>
 

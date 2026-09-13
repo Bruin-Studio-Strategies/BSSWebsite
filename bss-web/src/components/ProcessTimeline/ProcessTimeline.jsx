@@ -2,6 +2,7 @@ import { motion, useReducedMotion, useTransform } from "framer-motion";
 
 import { DELIVERABLE_WEEKS, LAST_WEEK, PHASES } from "./phases.js";
 import useScheduleFocus from "./useScheduleFocus.js";
+import { OPENER_ACTIONS, OPENER_ALIGN, OPENER_BALANCE, OPENER_MEASURE } from "../openerAlignment.js";
 
 const EASE = [0.16, 1, 0.3, 1];
 
@@ -41,7 +42,7 @@ function Gridlines() {
 
 function Legend() {
   return (
-    <div className="mt-2 flex flex-wrap items-center gap-x-6 gap-y-2 md:mt-0 md:justify-end">
+    <div className="mt-2 flex flex-wrap items-center justify-center gap-x-6 gap-y-2 md:mt-0 md:justify-end">
       <span className="flex items-center gap-2">
         <span className="h-1.5 w-8 rounded-full bg-sky" />
         <span className="font-sans text-[0.6875rem] uppercase tracking-[0.15em] text-white/60">
@@ -111,9 +112,15 @@ function PhaseRow({ phase, index, isActive, reducedMotion, rowRef }) {
       />
 
       {/* `relative` so this positioned block paints above the wash behind it —
-          a static child would end up underneath it. */}
-      <div className="relative">
-        <div className="flex items-baseline gap-3">
+          a static child would end up underneath it.
+
+          Centred below md with the section opener above it. There the track
+          column is hidden and each phase is a short stacked block of its own, so
+          it has no left edge to hang from, and left-aligned under a centred
+          heading it read as a second layout. From md it sits against the schedule
+          grid and goes left with it. */}
+      <div className={`relative ${OPENER_ALIGN}`}>
+        <div className={`flex items-baseline gap-3 ${OPENER_ACTIONS}`}>
           <span
             className={`font-sans text-[0.6875rem] tabular-nums tracking-[0.2em] transition-colors duration-300 ${
               isActive ? "text-white/70" : "text-white/40"
@@ -130,14 +137,14 @@ function PhaseRow({ phase, index, isActive, reducedMotion, rowRef }) {
           </span>
         </div>
         <h3
-          className={`mt-2 font-display text-xl leading-snug transition-colors duration-300 sm:text-2xl ${
+          className={`mt-2 font-display text-lg leading-snug transition-colors duration-300 sm:text-xl md:text-2xl ${
             isActive ? "text-white" : "text-white/60"
           }`}
         >
           {phase.title}
         </h3>
         <p
-          className={`mt-2 max-w-[42rem] font-sans text-sm leading-relaxed transition-colors duration-300 ${
+          className={`mt-2 max-w-[42rem] font-sans text-sm leading-relaxed transition-colors duration-300 ${OPENER_MEASURE} ${OPENER_BALANCE} ${
             isActive ? "text-white/75" : "text-white/50"
           }`}
         >

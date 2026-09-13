@@ -76,7 +76,28 @@ html {
 
 body {
   margin: 0;
-  background: linear-gradient(#3D3C95, 20%, #0a0d3d);
+  /* Two changes from `linear-gradient(#3D3C95, 20%, #0a0d3d)`.
+
+     The top is darker. Horizon Indigo is the *scene's* day sky, and on the
+     landing page the canvas paints over this gradient for the whole first
+     screen — so that colour was only ever seen raw on the interior pages, where
+     it read as a lighter page than home.
+
+     And the ramp is a fixed 1200px rather than 20%. A percentage is 20% of the
+     document, so the same colour arrived at a different scroll depth on every
+     page: ~1160px down the clients page, ~350px down the contact page. Past the
+     end of the ramp nothing paints and <html>'s own Deep Night shows through,
+     which is the colour the gradient lands on anyway. */
+  background: linear-gradient(#2B2A68, #0a0d3d 1200px);
+  background-repeat: no-repeat;
+  /* The atmosphere blooms (behind the services grid, under the contact form) are
+     deliberately wider than their sections, and that width still counted as
+     scrollable overflow: html's overflow-x:hidden hid the scrollbar, but the page
+     could be dragged sideways on a phone. `clip`, not `hidden` — the comment on
+     html above is why. `clip` paired with a visible overflow-y is the one
+     non-visible value that does not turn body into a scroll container, so
+     position:sticky is untouched. */
+  overflow-x: clip;
 }
 
 p {

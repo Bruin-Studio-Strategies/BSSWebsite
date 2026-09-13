@@ -66,7 +66,9 @@ export default function HeroScene({
 }) {
   const wrapperRef = useRef(null);
   const inView = useInView(wrapperRef);
-  const segments = useQualityTier();
+  // Pixels and MSAA come from the same tier as the geometry — on a phone those
+  // two cost more than the mesh does. See useQualityTier.js.
+  const { segments, dpr, antialias } = useQualityTier();
   const live = inView;
 
   // There is no exit fade. The scene is not a thing that plays and then gets out
@@ -86,9 +88,9 @@ export default function HeroScene({
       style={{ visibility: live ? "visible" : "hidden" }}
     >
         <Canvas
-          dpr={[1, 1.5]}
+          dpr={dpr}
           gl={{
-            antialias: true,
+            antialias,
             alpha: true,
             powerPreference: "high-performance",
           }}

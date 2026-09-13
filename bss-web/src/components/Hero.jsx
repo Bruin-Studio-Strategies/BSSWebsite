@@ -1,4 +1,5 @@
 import { motion, useReducedMotion, useTransform } from "framer-motion";
+import { OPENER_ALIGN, OPENER_ITEMS } from "./openerAlignment.js";
 
 const EASE = [0.16, 1, 0.3, 1];
 
@@ -44,13 +45,14 @@ export default function Hero({ scrollYProgress }) {
   return (
     <motion.div
       style={{ y, opacity }}
-      // Left-aligned at every width. The site's pages all open on a left rule,
-      // and the hero centring below sm was the one place that broke it.
-      className="relative flex flex-col items-start text-start"
+      // Centred below md, left from md up, like every section opener on the site
+      // (see openerAlignment.js). The ml-2 nudges are md-only because an offset
+      // on centred text pulls it off-axis.
+      className={`relative flex flex-col ${OPENER_ITEMS} ${OPENER_ALIGN}`}
     >
       <motion.h4
         {...fadeUpProps(0.05, reduced)}
-        className="font-sans text-sm sm:text-base text-white/60 font-medium ml-2 tracking-wide"
+        className="font-sans text-sm sm:text-base text-white/60 font-medium md:ml-2 tracking-wide"
       >
         Work with the Best
       </motion.h4>
@@ -59,19 +61,21 @@ export default function Hero({ scrollYProgress }) {
         variants={headlineContainer}
         initial="hidden"
         animate="show"
-        className="font-display text-4xl sm:text-6xl lg:text-8xl text-white [perspective:1000px]"
+        // The tablet step is md, not sm: from 576px the desktop sizes (60/96px) broke
+        // "Cut to" and "Success" onto separate lines and filled a tablet's width.
+        className="font-display text-4xl md:text-6xl lg:text-8xl text-white [perspective:1000px]"
       >
         <motion.span variants={wv} className="inline-block">
           Cut to
         </motion.span>{" "}
-        <motion.span variants={wv} className="inline-block text-6xl sm:text-8xl lg:text-9xl font-medium">
+        <motion.span variants={wv} className="inline-block text-6xl md:text-8xl lg:text-9xl font-medium">
           Success
         </motion.span>
       </motion.h1>
 
       <motion.p
         {...fadeUpProps(0.3, reduced)}
-        className="w-5/6 sm:w-auto sm:whitespace-nowrap ml-2 mt-8 sm:mt-5 text-white/70"
+        className="w-5/6 sm:w-auto sm:whitespace-nowrap md:ml-2 mt-8 sm:mt-5 text-sm sm:text-base text-white/70"
       >
         Providing strategic consulting for the entertainment industry
       </motion.p>

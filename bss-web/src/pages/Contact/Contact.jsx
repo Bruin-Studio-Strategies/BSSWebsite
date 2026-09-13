@@ -1,5 +1,6 @@
 import Form from "./sections/Form";
 import Footer from "../../components/Footer";
+import SectionOpener from "../../components/SectionOpener.jsx";
 
 const EMAIL = "bruinstudiostrategies@gmail.com";
 
@@ -49,25 +50,26 @@ export default function Contact() {
       {/* Same measure, alignment and opener as every other page. This one was
           centred above sm and left-aligned below it, on a `w-10/12` grid nothing
           else uses, with the headline in EB Garamond — it read as a page from the
-          old site that had been left behind. */}
+          old site that had been left behind.
+
+          The headline sets on one line from lg up: at 3.75rem Agatho the whole
+          question sets in about 50rem and the column is 72rem there, so a tight
+          clamp was breaking a line that had room to stay whole. Below that the
+          wrap is driven by type size rather than by this measure: on a 390px
+          phone the column is 312px and the question breaks at the page
+          headline's phone size, the same size every other page opens at. Do not
+          shrink this one on its own to change the break — it would make this
+          page's headline quieter than the rest. */}
       <header className="mx-auto mt-10 w-4/5 max-w-6xl sm:mt-16">
-        <span className="inline-block font-sans text-xs font-semibold uppercase tracking-[0.2em] text-sky">
-          Contact
-        </span>
-        {/* One line from lg up: at 3.75rem Agatho the whole question sets in
-            about 50rem and the column is 72rem there, so a tight clamp was
-            breaking a line that had room to stay whole. Below that the wrap is
-            driven by type size rather than by this measure — on a 390px phone
-            the column is 312px and two words of Agatho at 3rem fill it, so the
-            question sets in three lines. Shrinking the face to force two would
-            make this page's headline quieter than every other page's. */}
-        <h2 className="mt-4 max-w-[26ch] text-balance font-display text-5xl leading-[1.05] text-white sm:text-6xl lg:max-w-none">
-          Interested in working with us?
-        </h2>
-        <p className="mt-6 max-w-[42rem] font-sans text-base leading-relaxed text-white/70">
+        <SectionOpener
+          size="page"
+          eyebrow="Contact"
+          title="Interested in working with us?"
+          titleClassName="max-w-[26ch] text-balance lg:max-w-none"
+        >
           Whether you are a company, an organization, or a student on campus,
           we would love to hear from you.
-        </p>
+        </SectionOpener>
       </header>
 
       {/* The two ways of reaching the club were previously the same weight — a sky
@@ -99,16 +101,16 @@ export default function Contact() {
 
         <div className="grid gap-x-20 gap-y-16 border-t border-white/15 pt-10 md:grid-cols-[minmax(0,22rem)_minmax(0,1fr)]">
           <div>
-            <p className="font-sans text-base leading-relaxed text-white/70">
+            <p className="font-sans text-sm leading-relaxed text-white/70 sm:text-base">
               Email us directly at
             </p>
-            {/* text-base below sm, not text-lg: the container is `w-4/5`, so on a
+            {/* Body size below sm, not text-lg: the container is `w-4/5`, so on a
                 320px phone it is 256px wide and this 31-character address sets
                 about 273px at 18px — it would have pushed the page sideways.
                 `break-words` is the safety net under that, not the plan. */}
             <MailLink
               address={EMAIL}
-              className="mt-2 inline-block break-words text-base leading-snug decoration-sky/40 sm:text-xl"
+              className="mt-2 inline-block break-words text-sm leading-snug decoration-sky/40 sm:text-xl"
             />
 
             <ColumnHeading className="mt-12">By role</ColumnHeading>
@@ -127,7 +129,7 @@ export default function Contact() {
           </div>
 
           <div>
-            <h3 className="font-display text-2xl leading-tight text-white sm:text-3xl">
+            <h3 className="font-display text-xl leading-tight text-white sm:text-2xl md:text-3xl">
               Or send a message
             </h3>
             <div className="mt-8">

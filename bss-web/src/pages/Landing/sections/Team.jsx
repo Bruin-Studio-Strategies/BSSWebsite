@@ -1,6 +1,12 @@
 import { motion, useReducedMotion } from "framer-motion";
 import ApplyButton from "../../../components/ApplyButton.jsx";
 import group from "../../../assets/group.JPG";
+import {
+  OPENER_ACTIONS,
+  OPENER_ALIGN,
+  OPENER_BALANCE,
+  OPENER_MEASURE,
+} from "../../../components/openerAlignment.js";
 
 const EASE = [0.16, 1, 0.3, 1];
 
@@ -27,7 +33,7 @@ export default function Team() {
   return (
     // pb-* holds clearance for Footer, which is absolutely positioned (h-60 sm:h-24)
     // rather than sitting in normal flow — see Footer.jsx.
-    <section className="mx-auto max-w-6xl px-6 sm:px-10 md:px-14 lg:px-20 pt-4 sm:pt-8 pb-96 sm:pb-60">
+    <section className="mx-auto max-w-6xl px-[10%] sm:px-10 md:px-14 lg:px-20 pt-4 sm:pt-8 pb-96 sm:pb-60">
       <div className="grid grid-cols-1 md:grid-cols-2 items-start gap-10 sm:gap-14 lg:gap-20">
         <motion.div
           initial="hidden"
@@ -59,7 +65,7 @@ export default function Team() {
           whileInView="show"
           viewport={viewport}
           variants={stagger}
-          className="order-1 text-left md:order-2"
+          className={`order-1 md:order-2 ${OPENER_ALIGN}`}
         >
           <motion.span
             variants={fadeUp}
@@ -69,13 +75,13 @@ export default function Team() {
           </motion.span>
           <motion.h3
             variants={fadeUp}
-            className="font-display text-4xl sm:text-5xl lg:text-6xl text-white mt-4 mb-6 leading-[1.1]"
+            className={`font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-white mt-4 mb-6 leading-[1.1] ${OPENER_BALANCE}`}
           >
             Our Team
           </motion.h3>
           <motion.p
             variants={fadeUp}
-            className="font-sans text-base text-white/70 leading-relaxed max-w-xl"
+            className={`font-sans text-sm sm:text-base md:text-lg lg:text-xl text-white/70 leading-relaxed max-w-xl ${OPENER_MEASURE} ${OPENER_BALANCE}`}
           >
             At Bruin Studio Strategies, we are more than UCLA students—we are a community of
             innovators reshaping entertainment consulting. With diverse backgrounds in fields
@@ -84,7 +90,7 @@ export default function Team() {
           </motion.p>
           <motion.p
             variants={fadeUp}
-            className="mt-4 font-sans text-base text-white/70 leading-relaxed max-w-xl"
+            className="mt-4 font-sans text-sm sm:text-base md:text-lg lg:text-xl text-white/70 leading-relaxed max-w-xl mx-auto md:mx-0"
           >
             We pride ourselves on fostering a free-flowing and creative environment where
             innovative ideas flourish, turning market research and unique ideas into actionable
@@ -93,7 +99,7 @@ export default function Team() {
           </motion.p>
           <motion.div
             variants={fadeUp}
-            className="mt-8 flex flex-col items-start gap-4 sm:flex-row sm:items-center"
+            className={`mt-8 flex flex-col items-center gap-4 sm:flex-row ${OPENER_ACTIONS}`}
           >
             <ApplyButton />
             <span className="font-sans text-white/50 text-sm">

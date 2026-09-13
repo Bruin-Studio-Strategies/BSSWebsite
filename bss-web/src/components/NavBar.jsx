@@ -18,6 +18,13 @@ const mobileItem = {
   show: { opacity: 1, y: 0, transition: { duration: 0.35, ease: EASE } },
 };
 
+// The full row of links needs about 1000px: logo, five items at their gaps, and
+// the Apply button pushed right. It used to switch on at `sm` (576px), and from
+// there to roughly a small laptop the row did not fit — the logo image was
+// squeezed to a sliver, "For Clients" / "For Students" / "Our Team" each broke
+// onto two lines, and at 600px the Apply button ran off the edge. Tablets in
+// portrait sit squarely in that range. The menu button now covers everything
+// below `md` (960px), the same breakpoint the rest of the layout turns on.
 export default function NavBar() {
   const [menuOpen, setMenuOpen] = useState(false);
 
@@ -33,15 +40,18 @@ export default function NavBar() {
         transition={{ duration: 0.6, ease: EASE }}
         className="relative z-20 w-full h-24 p-4 pl-8 pr-20 flex items-center"
       >
-        <button className="sm:hidden" onClick={toggleMenu}>
-          <svg className="h-8 w-8 mr-8 sm:mr-0 fill-white" viewBox="0 0 12 12">
+        <button className="md:hidden" onClick={toggleMenu}>
+          <svg className="h-8 w-8 mr-8 md:mr-0 fill-white" viewBox="0 0 12 12">
             <path d="M.5 5.5h11v1H.5zM.5 2.5h11v1H.5zM.5 8.5h11v1H.5z" />
           </svg>
         </button>
-        <Link to="/">
+        <Link to="/" className="shrink-0">
           <img src={logo} alt="Bruin Studio Strategies Logo" className="h-10 sm:h-12 lg:h-14 mr-8 sm:mt-0" />
         </Link>
-        <div className="justify-start sm:gap-x-12 lg:gap-x-16 items-center w-full ml-5 mt-4 hidden sm:flex">
+        {/* nowrap so a label never breaks onto two lines; the tighter gap covers
+            960–1024px, the one stretch where the row at its usual 48px spacing is
+            about 50px wider than the space it has. */}
+        <div className="justify-start whitespace-nowrap md:gap-x-8 min-[1024px]:gap-x-12 lg:gap-x-16 items-center w-full ml-5 mt-4 hidden md:flex">
           <NavItem path="/">Home</NavItem>
           <NavItem path="/clients">For Clients</NavItem>
           <NavItem path="/recruitment">For Students</NavItem>
@@ -59,7 +69,7 @@ export default function NavBar() {
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
             transition={{ duration: 0.5 }}
-            className="fixed top-0 left-0 z-50 h-full w-full bg-navy sm:hidden"
+            className="fixed top-0 left-0 z-50 h-full w-full bg-navy md:hidden"
           >
             <div className="flex justify-end p-4">
               <button onClick={toggleMenu}>

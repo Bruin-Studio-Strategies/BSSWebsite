@@ -1,5 +1,6 @@
 import Footer from "../../components/Footer";
 import CtaButton from "../../components/CtaButton.jsx";
+import SectionOpener from "../../components/SectionOpener.jsx";
 
 // Was two EB Garamond lines beside an 18rem numeral in a centred flex row, with
 // a bg-blue-900 button — a stock blue, and the numeral alone was wider than a
@@ -9,19 +10,19 @@ export default function ErrorPage() {
   return (
     <>
       <section className="mx-auto mb-72 mt-16 w-4/5 max-w-6xl sm:mb-44 sm:mt-24">
-        <span className="inline-block font-sans text-xs font-semibold uppercase tracking-[0.2em] text-sky">
-          404
-        </span>
-        <h2 className="mt-4 font-display text-5xl leading-[1.05] text-white sm:text-6xl">
-          Page not found
-        </h2>
-        <p className="mt-6 max-w-[42rem] font-sans text-base leading-relaxed text-white/70">
+        <SectionOpener
+          size="page"
+          eyebrow="404"
+          title="Page not found"
+          action={
+            <CtaButton to="/" className="mt-8">
+              Back to home
+            </CtaButton>
+          }
+        >
           That page has moved or never existed. Everything the site has is one
           click away in the navigation above.
-        </p>
-        <CtaButton to="/" className="mt-8">
-          Back to home
-        </CtaButton>
+        </SectionOpener>
       </section>
 
       <Footer />

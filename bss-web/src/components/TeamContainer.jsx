@@ -23,7 +23,7 @@ export default function TeamContainer({ children, title, count }) {
     // between them, since each heading already draws its own.
     <section className="mx-auto mt-20 w-4/5 max-w-6xl sm:mt-28">
       <div className="flex items-baseline gap-5">
-        <h3 className="font-display text-3xl leading-none text-white sm:text-4xl">
+        <h3 className="font-display text-2xl leading-none text-white sm:text-3xl md:text-4xl">
           {title}
         </h3>
         <div aria-hidden="true" className="h-px flex-1 bg-white/15" />

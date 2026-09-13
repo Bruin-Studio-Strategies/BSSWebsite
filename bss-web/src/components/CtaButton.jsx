@@ -29,9 +29,14 @@ import { Link } from "react-router-dom";
 const BASE =
   "group relative isolate inline-flex shrink-0 items-center overflow-hidden rounded-sm font-sans font-semibold uppercase text-white outline-none focus-visible:ring-1 focus-visible:ring-white/70 focus-visible:ring-offset-2 focus-visible:ring-offset-transparent";
 
+// The solid frame steps down on phones with the body copy around it: at the
+// desktop 14px label and 28px side padding it read as oversized once running text
+// there dropped to 14px itself. Height holds at 44px at both sizes (16px line +
+// 28px padding, 20px + 24px) so the touch target does not shrink with the label.
 const VARIANTS = {
   solid: {
-    frame: "bg-magenta px-7 py-3 text-sm tracking-[0.18em]",
+    frame:
+      "bg-magenta px-6 py-3.5 text-xs tracking-[0.16em] sm:px-7 sm:py-3 sm:text-sm sm:tracking-[0.18em]",
     veil: "bg-navy/35",
   },
   outline: {
