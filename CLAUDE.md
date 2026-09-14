@@ -65,7 +65,12 @@ respected, capped device pixel ratio, viewport-scaled terrain resolution.
 phone in Low Power Mode, which caps rAF at 30fps and throttles the GPU with it.
 `useQualityTier` gives each tier a DPR ladder (`dprSteps`, best first); drei's
 `PerformanceMonitor` in `HeroScene` steps down it when frames drop and back up when
-they recover, settling after four flips. At the bottom step the terrain's wireframe
+they recover, settling after four applied changes. **Readings measured while the
+page was scrolling are ignored.** A fast fling costs main-thread time, not GPU time,
+yet it dragged the fps average down; the resulting DPR step reallocates the
+multisampled drawing buffer and froze a frame for 100-250ms mid-fling, then stepped
+back up when the page settled — four resizes in one fast pass, measured. Adapting
+only on idle windows is what keeps fast scrolling smooth; do not remove it. At the bottom step the terrain's wireframe
 pass stops drawing, and a further decline switches the canvas to an even 30fps
 (`ThrottledLoop`, driving `advance` with `frameloop="never"`) for the rest of the
 mount. Fixed per tier, never switched live because each would compile a shader

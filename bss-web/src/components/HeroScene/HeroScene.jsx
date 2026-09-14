@@ -104,6 +104,14 @@ function ReportWhenDrawn({ onReady, running }) {
 // otherwise carry a delta of the whole page lifetime.
 const THROTTLED_FPS = 30;
 
+// PerformanceMonitor's sampling: it decides after this many windows of this length.
+// A decision is ignored if any scroll landed inside the span it was measured over,
+// plus one window of margin.
+const MONITOR_ITERATIONS = 6;
+const MONITOR_SAMPLE_MS = 250;
+const MONITOR_WINDOW_MS = (MONITOR_ITERATIONS + 1) * MONITOR_SAMPLE_MS;
+const MAX_QUALITY_CHANGES = 4;
+
 function ThrottledLoop() {
   const advance = useThree((state) => state.advance);
   const clock = useThree((state) => state.clock);
@@ -161,6 +169,33 @@ export default function HeroScene({
   const atFloor = stepIndex === dprSteps.length - 1;
   const [throttled, setThrottled] = useState(false);
 
+  // Frame-rate samples taken while the page is scrolling are thrown away, and that
+  // is what keeps a fast scroll smooth. A fling costs main-thread time the GPU has
+  // nothing to do with, so it dragged the average under the bound, the monitor
+  // stepped the DPR down, and the step itself — reallocating a multisampled
+  // drawing buffer — froze a frame for 100-250ms in the middle of the fling. Then
+  // the page settled, the monitor stepped back up, and the next fling paid again.
+  // Measured on the preview build: four resizes in one fast pass.
+  //
+  // Idle frames are the honest measure of what the GPU can hold (the stars and
+  // meteors keep it drawing every frame), and a change applied while nobody is
+  // scrolling is a hitch nobody sees.
+  const lastScroll = useRef(-Infinity);
+  const applied = useRef(0);
+  useEffect(() => {
+    const onScroll = () => {
+      lastScroll.current = performance.now();
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+  const adapt = (change) => {
+    if (performance.now() - lastScroll.current < MONITOR_WINDOW_MS) return;
+    if (applied.current >= MAX_QUALITY_CHANGES) return;
+    applied.current += 1;
+    change();
+  };
+
   // There is no exit fade. The scene is not a thing that plays and then gets out
   // of the way — once the descent has landed, the dune's bare face is the surface
   // the page's own copy sits on, so fading the canvas would be fading the section's
@@ -205,14 +240,16 @@ export default function HeroScene({
           {/* Steps the backing store down the tier's ladder when frames drop and
               back up when they recover. Short windows (6 x 250ms) so a phone in
               Low Power Mode, pinned at 30fps, sheds pixels within a couple of
-              seconds rather than after the hero is over. Four flips and it stops
-              adjusting, so a device on the edge settles instead of oscillating —
-              every change reallocates the drawing buffer. */}
+              seconds rather than after the hero is over. Only idle windows count
+              (see `adapt` above), and four applied changes is the limit, so a
+              device on the edge settles instead of oscillating — every change
+              reallocates the drawing buffer. The limit is counted here rather than
+              with drei's `flipflops`, which would also count the ignored ones. */}
           <PerformanceMonitor
-            iterations={6}
-            flipflops={4}
-            onDecline={() => (atFloor ? setThrottled(true) : shiftDpr(1))}
-            onIncline={() => shiftDpr(-1)}
+            iterations={MONITOR_ITERATIONS}
+            ms={MONITOR_SAMPLE_MS}
+            onDecline={() => adapt(() => (atFloor ? setThrottled(true) : shiftDpr(1)))}
+            onIncline={() => adapt(() => shiftDpr(-1))}
           />
           {live && throttled && <ThrottledLoop />}
           <SunsetLighting
