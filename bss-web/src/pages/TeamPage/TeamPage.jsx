@@ -16,14 +16,12 @@ const TEAMS = [
 ];
 
 export default function TeamPage() {
-  const headcount = TEAMS.reduce((total, team) => total + team.people.length, 0);
-
   return (
     <>
       {/* Same measure and opener as the Clients page header, so the two
           interior pages open the same way. */}
       <header className="mx-auto mt-10 w-4/5 max-w-6xl sm:mt-16">
-        <SectionOpener size="page" eyebrow={`${headcount} Members`} title="Meet Our Team">
+        <SectionOpener size="page" title="Meet Our Team">
           {/* The non-breaking space keeps the dash on the end of its line: balanced
               on a phone, the break otherwise lands before it and a line opens on
               "— and". */}

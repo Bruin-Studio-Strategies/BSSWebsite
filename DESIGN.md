@@ -452,11 +452,15 @@ teams are information and stay on the card; they never become a size, a column
 span, or a position of honour. A ranked variant of this grid is not a variant, it
 is a different component and it does not belong to this club.
 
-**Why the band heading breaks the Eyebrow Rule.** The page opener still follows it
-(`37 MEMBERS` → *Meet Our Team* → body). The per-team bands underneath are
-subordinate groupings, not major sections, and three stacked eyebrows announcing
-"Executives / Advisory Board / Consultants" would label a label. The hairline and
-the count carry that job instead.
+**Why the roster breaks the Eyebrow Rule twice.** The page opener has no eyebrow:
+it opens straight on *Meet Our Team* → body. It used to carry a `37 MEMBERS`
+headcount there, which the person running the project removed — a total that
+changes every cycle is not a label worth the most prominent small detail on the
+page, and PRODUCT.md already rules out member counts as a claim. `SectionOpener`
+drops both the eyebrow and the title's top margin when none is passed. The per-team
+bands underneath are subordinate groupings, not major sections, and three stacked
+eyebrows announcing "Executives / Advisory Board / Consultants" would label a
+label. The hairline and the per-team count carry that job instead.
 
 **Why there is no divider between teams.** Each band already opens with a rule.
 `SectionDivider` above one would stack two hairlines with nothing between them.

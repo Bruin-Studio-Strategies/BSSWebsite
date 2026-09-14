@@ -44,11 +44,15 @@ export default function SectionOpener({
 
   return (
     <div className={`${OPENER_ALIGN} ${className}`}>
-      <span className="inline-block font-sans text-xs font-semibold uppercase tracking-[0.2em] text-sky">
-        {eyebrow}
-      </span>
+      {/* Optional. Without one, the title carries no top margin either, so an
+          opener without a label starts at the title instead of under a blank line. */}
+      {eyebrow && (
+        <span className="inline-block font-sans text-xs font-semibold uppercase tracking-[0.2em] text-sky">
+          {eyebrow}
+        </span>
+      )}
       <Tag
-        className={`mt-4 font-display text-white ${classes} ${OPENER_MEASURE} ${OPENER_BALANCE} ${titleClassName}`}
+        className={`${eyebrow ? "mt-4" : ""} font-display text-white ${classes} ${OPENER_MEASURE} ${OPENER_BALANCE} ${titleClassName}`}
       >
         {title}
       </Tag>
