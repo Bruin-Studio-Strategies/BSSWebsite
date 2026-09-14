@@ -21,10 +21,11 @@ import { useEffect, useState } from "react";
 // requestAnimationFrame at 30fps and throttles the GPU with it — measuring is the
 // only way to find that out.
 //
-// `antialias` is MSAA, which multiplies that pixel cost again and is the first
-// thing to drop on a small screen: at this density the terrain's wireframe is
-// already under a pixel per line, and the tiled GPUs in phones pay more for MSAA
-// than desktop parts do.
+// `antialias` is MSAA, on for every tier. It multiplies that pixel cost again,
+// and the tiled GPUs in phones pay more for it than desktop parts do — but
+// without it the terrain's wireframe and the dune crests stair-step visibly, and
+// the person running this project ruled it a must. Cost is recovered from the
+// DPR ladder and the 30fps fallback instead, never by dropping this.
 //
 // `lambert` swaps the terrain's MeshStandardMaterial for MeshLambertMaterial. At
 // roughness 0.85 the standard material's specular term is nearly invisible, and
@@ -32,7 +33,7 @@ import { useEffect, useState } from "react";
 // mount and never switched live: a material swap compiles a new shader, which is
 // a visible hitch on a phone mid-scroll.
 const TIERS = {
-  low: { segments: [56, 32], dprSteps: [1.25, 1, 0.8], antialias: false, lambert: true },
+  low: { segments: [56, 32], dprSteps: [1.25, 1, 0.8], antialias: true, lambert: true },
   mid: { segments: [84, 46], dprSteps: [1.5, 1.25, 1], antialias: true, lambert: false },
   high: { segments: [98, 55], dprSteps: [1.5, 1.25, 1], antialias: true, lambert: false },
 };

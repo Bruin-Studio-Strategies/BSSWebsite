@@ -77,6 +77,9 @@ cleared; the landing's two blurred glow loops (Info, Team) only run on screen; a
 `isWebGLAvailable()` releases its probe context, which used to leak one per visit to
 the home page.
 
+Antialiasing (MSAA) stays on at every tier, phones included — a must per the person
+running the project. Recover cost elsewhere, never by turning it off.
+
 Not done, on purpose: replacing the hero's CSS `mask-image` with a gradient overlay.
 Rejected by the person running the project.
 
