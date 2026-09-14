@@ -61,6 +61,25 @@ scroll-linked camera dolly. Guardrails: lazy-loaded behind `Suspense`, WebGL
 feature-detected with a fallback to the original flat assets, `prefers-reduced-motion`
 respected, capped device pixel ratio, viewport-scaled terrain resolution.
 
+**Cost adapts to the measured frame rate, not just the viewport.** Width cannot see a
+phone in Low Power Mode, which caps rAF at 30fps and throttles the GPU with it.
+`useQualityTier` gives each tier a DPR ladder (`dprSteps`, best first); drei's
+`PerformanceMonitor` in `HeroScene` steps down it when frames drop and back up when
+they recover, settling after four flips. At the bottom step the terrain's wireframe
+pass stops drawing, and a further decline switches the canvas to an even 30fps
+(`ThrottledLoop`, driving `advance` with `frameloop="never"`) for the rest of the
+mount. Fixed per tier, never switched live because each would compile a shader
+mid-scroll: the phone tier renders the terrain with `meshLambertMaterial` instead of
+`meshStandardMaterial`. Also: the canvas is opaque (`alpha: false`, since
+`scene.background` paints every pixel); stars twinkle per star in the vertex shader,
+three draw calls instead of eighteen; the wireframe pass is skipped once it has
+cleared; the landing's two blurred glow loops (Info, Team) only run on screen; and
+`isWebGLAvailable()` releases its probe context, which used to leak one per visit to
+the home page.
+
+Not done, on purpose: replacing the hero's CSS `mask-image` with a gradient overlay.
+Rejected by the person running the project.
+
 The dune field's shape lives in `terrainField.js`, not in `Terrain.jsx`, because the
 mesh and the camera dolly both have to agree on where the ground is — the camera
 clamps itself to a minimum clearance above `surfaceHeightAt()` every frame. Its noise

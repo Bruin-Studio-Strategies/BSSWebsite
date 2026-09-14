@@ -7,8 +7,7 @@ import { follow } from "./smoothing.js";
 // Three magnitudes rather than one. A real sky is mostly faint with a scattering
 // of bright ones, and a uniform spray of identical dots is the single thing that
 // most makes a starfield read as a texture instead of a sky. Three Points objects
-// is three draw calls of nothing; per-point sizing would need a custom shader for
-// no visible gain.
+// is three draw calls.
 // Sizes look large because the field sits 45-90 units out rather than 10-40, and
 // sizeAttenuation shrinks with distance — roughly 2.7x the old values to land at
 // the same apparent size on screen.
@@ -18,16 +17,49 @@ const MAGNITUDES = [
   { count: 1152, size: 0.24, opacity: 0.55, twinkle: 0.45 },
 ];
 
-// Each magnitude is split into this many groups, each scintillating on its own
-// phases and rates. Brightness is a material property, so one Points object can
-// only pulse as a single sheet — 70 bright stars dimming together reads as the sky
-// changing, not as twinkling. Splitting them is what makes neighbouring stars
-// disagree, which is the entire effect.
+// Every star scintillates on its own phases and rates, computed in the vertex
+// shader. Brightness used to be a material property, which meant one Points
+// object could only pulse as a single sheet, so each magnitude was split into
+// six groups to make neighbouring stars disagree — eighteen draw calls, and a
+// sixth of each magnitude still moving in lockstep. Per-star values in an
+// attribute get the effect the groups were approximating, in three draws.
 //
-// Six rather than three: at three, a third of each magnitude moved in lockstep and
-// the sky still read as coherent. Per-star phase would want a custom shader; this
-// gets there in eighteen draw calls of nothing.
-const PHASE_GROUPS = 6;
+// Two rates per star, deliberately incommensurate, so the pair beats against
+// itself and never repeats on a countable cycle. A single sine is a metronome and
+// the eye picks that out as machinery immediately. Both are far faster than the
+// first attempt's 0.9-1.8 rad/s — those were periods of 3.5 to 7 seconds, which
+// is breathing, not scintillation.
+const RATE = [2.1, 4.7];
+const RATE_B = [3.4, 7.35];
+
+// Patches PointsMaterial rather than replacing it, so size attenuation, fog
+// flags and colour management stay three's. `twinkle` is (phase, phaseB, rate,
+// rateB); the result scales the fragment's alpha, which the material's own
+// opacity (the sunset) then multiplies.
+function withTwinkle(uniforms) {
+  return (shader) => {
+    shader.uniforms.uTime = uniforms.uTime;
+    shader.uniforms.uTwinkle = uniforms.uTwinkle;
+    shader.vertexShader = shader.vertexShader
+      .replace(
+        "#include <common>",
+        `#include <common>
+attribute vec4 twinkle;
+uniform float uTime;
+uniform float uTwinkle;
+varying float vTwinkle;`
+      )
+      .replace(
+        "#include <begin_vertex>",
+        `#include <begin_vertex>
+  float wave = 0.6 * sin(uTime * twinkle.z + twinkle.x) + 0.4 * sin(uTime * twinkle.w + twinkle.y);
+  vTwinkle = 1.0 - uTwinkle * 0.5 * (1.0 + wave);`
+      );
+    shader.fragmentShader = shader.fragmentShader
+      .replace("#include <common>", "#include <common>\nvarying float vTwinkle;")
+      .replace("#include <color_fragment>", "#include <color_fragment>\n  diffuseColor.a *= vTwinkle;");
+  };
+}
 
 // Frequent enough to be part of the sky rather than a rare event, and slow enough
 // to actually follow: 2.2 seconds to cross, against 0.85 before. Speed comes out
@@ -61,6 +93,7 @@ function makeStars(random, count) {
   // pushing it far enough away to clear the terrain would have made that worse.
   // Even angular spread means even sky.
   const positions = new Float32Array(count * 3);
+  const twinkle = new Float32Array(count * 4);
   for (let i = 0; i < count; i++) {
     const distance = between(45, 90);
     // Azimuth reaches +/-74 degrees so an ultrawide frustum still finds sky in
@@ -71,9 +104,15 @@ function makeStars(random, count) {
     positions[i * 3] = ground * Math.sin(azimuth);
     positions[i * 3 + 1] = distance * Math.sin(elevation);
     positions[i * 3 + 2] = -ground * Math.cos(azimuth);
+
+    twinkle[i * 4] = between(0, Math.PI * 2);
+    twinkle[i * 4 + 1] = between(0, Math.PI * 2);
+    twinkle[i * 4 + 2] = between(RATE[0], RATE[1]);
+    twinkle[i * 4 + 3] = between(RATE_B[0], RATE_B[1]);
   }
   const geo = new THREE.BufferGeometry();
   geo.setAttribute("position", new THREE.BufferAttribute(positions, 3));
+  geo.setAttribute("twinkle", new THREE.BufferAttribute(twinkle, 4));
   return geo;
 }
 
@@ -119,23 +158,16 @@ export default function Starfield({ scrollYProgress, reducedMotion }) {
   const random = useMemo(() => starRandom(), []);
   const layers = useMemo(
     () =>
-      MAGNITUDES.flatMap((m, mi) =>
-        Array.from({ length: PHASE_GROUPS }, (_, gi) => ({
+      MAGNITUDES.map((m, mi) => {
+        const uniforms = { uTime: { value: 0 }, uTwinkle: { value: m.twinkle } };
+        return {
           ...m,
-          key: `${mi}-${gi}`,
-          geometry: makeStars(random, Math.round(m.count / PHASE_GROUPS)),
-          // Two rates per group, deliberately incommensurate, so the pair beats
-          // against itself and never repeats on a countable cycle. A single sine
-          // is a metronome and the eye picks that out as machinery immediately.
-          //
-          // Both are far faster than the first attempt's 0.9-1.8 rad/s — those were
-          // periods of 3.5 to 7 seconds, which is breathing, not scintillation.
-          phase: mi * 2.4 + gi * 1.87,
-          phaseB: mi * 1.31 + gi * 2.61,
-          rate: 2.1 + gi * 0.52 + mi * 0.23,
-          rateB: 3.4 + gi * 0.79 + mi * 0.41,
-        }))
-      ),
+          key: mi,
+          geometry: makeStars(random, m.count),
+          uniforms,
+          onBeforeCompile: withTwinkle(uniforms),
+        };
+      }),
     [random]
   );
   const meteorGeometry = useMemo(() => makeMeteorGeometry(), []);
@@ -163,15 +195,9 @@ export default function Starfield({ scrollYProgress, reducedMotion }) {
     layerRefs.current.forEach((points, i) => {
       if (!points) return;
       const layer = layers[i];
-      let twinkle = 1;
-      if (!reducedMotion) {
-        const t = clock.current;
-        const wave =
-          0.6 * Math.sin(t * layer.rate + layer.phase) +
-          0.4 * Math.sin(t * layer.rateB + layer.phaseB);
-        twinkle = 1 - layer.twinkle * 0.5 * (1 + wave);
-      }
-      points.material.opacity = night * layer.opacity * twinkle;
+      layer.uniforms.uTime.value = clock.current;
+      layer.uniforms.uTwinkle.value = reducedMotion ? 0 : layer.twinkle;
+      points.material.opacity = night * layer.opacity;
     });
 
     if (reducedMotion) return;
@@ -248,6 +274,7 @@ export default function Starfield({ scrollYProgress, reducedMotion }) {
             opacity={0.25}
             depthWrite={false}
             fog={false}
+            onBeforeCompile={layer.onBeforeCompile}
           />
         </points>
       ))}

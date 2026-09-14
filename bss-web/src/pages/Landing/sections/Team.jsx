@@ -1,4 +1,5 @@
-import { motion, useReducedMotion } from "framer-motion";
+import { useRef } from "react";
+import { motion, useInView, useReducedMotion } from "framer-motion";
 import ApplyButton from "../../../components/ApplyButton.jsx";
 import group from "../../../assets/optimized/group-1280.webp";
 import {
@@ -29,6 +30,8 @@ const viewport = { once: true, amount: 0.3 };
 
 export default function Team() {
   const reducedMotion = useReducedMotion();
+  const glowRef = useRef(null);
+  const glowInView = useInView(glowRef);
 
   return (
     // pb-* holds clearance for Footer, which is absolutely positioned (h-60 sm:h-24)
@@ -36,20 +39,29 @@ export default function Team() {
     <section className="mx-auto max-w-6xl px-[10%] sm:px-10 md:px-14 lg:px-20 pt-4 sm:pt-8 pb-96 sm:pb-60">
       <div className="grid grid-cols-1 md:grid-cols-2 items-start gap-10 sm:gap-14 lg:gap-20">
         <motion.div
+          ref={glowRef}
           initial="hidden"
           whileInView="show"
           viewport={viewport}
           variants={scaleIn}
           className="relative order-2 md:order-1"
         >
+          {/* Loops only on screen — an unconditional loop kept re-rendering this
+              blurred layer while the reader was still up in the 3D hero. */}
           <motion.div
             className="absolute -inset-3 rounded-2xl bg-gradient-to-br from-sky/30 via-purple/20 to-magenta/30 blur-2xl"
             animate={
               reducedMotion
                 ? { opacity: 0.7 }
-                : { opacity: [0.55, 0.8, 0.55], scale: [1, 1.05, 1] }
+                : glowInView
+                  ? { opacity: [0.55, 0.8, 0.55], scale: [1, 1.05, 1] }
+                  : { opacity: 0.55, scale: 1 }
             }
-            transition={{ duration: 6, repeat: reducedMotion ? 0 : Infinity, ease: "easeInOut" }}
+            transition={{
+              duration: 6,
+              repeat: reducedMotion || !glowInView ? 0 : Infinity,
+              ease: "easeInOut",
+            }}
           />
           <motion.img
             src={group}

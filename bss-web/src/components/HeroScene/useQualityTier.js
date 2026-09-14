@@ -9,20 +9,32 @@ import { useEffect, useState } from "react";
 // Widen the terrain again and these have to move with it, or the mesh stretches
 // and the wireframe stops reading as a square grid.
 //
-// `dpr` is the ceiling on the backing store. A modern phone reports a device
-// pixel ratio of 3, so every step of this cap is a large change in fragments: at
-// 1.5 an iPhone 14 renders 589x1278 (750k pixels), at 1.25 it renders 491x1065
-// (520k) — 30% less work per frame for the whole scene. The terrain fills the
-// frame, so it pays that cost on every pixel.
+// `dprSteps` is the ceiling on the backing store, as a ladder from best to
+// cheapest. A modern phone reports a device pixel ratio of 3, so every step is a
+// large change in fragments: at 1.5 an iPhone 14 renders 589x1278 (750k pixels),
+// at 1.25 it renders 491x1065 (520k), at 1 it renders 393x852 (335k). The terrain
+// fills the frame, so it pays that cost on every pixel.
+//
+// The scene starts on the first step and HeroScene walks down the ladder when
+// the frame rate cannot hold (see the PerformanceMonitor there). A tier chosen by
+// viewport width cannot know the phone is in Low Power Mode, which caps
+// requestAnimationFrame at 30fps and throttles the GPU with it — measuring is the
+// only way to find that out.
 //
 // `antialias` is MSAA, which multiplies that pixel cost again and is the first
 // thing to drop on a small screen: at this density the terrain's wireframe is
 // already under a pixel per line, and the tiled GPUs in phones pay more for MSAA
 // than desktop parts do.
+//
+// `lambert` swaps the terrain's MeshStandardMaterial for MeshLambertMaterial. At
+// roughness 0.85 the standard material's specular term is nearly invisible, and
+// it is the most expensive thing the fragment shader does. Decided per tier at
+// mount and never switched live: a material swap compiles a new shader, which is
+// a visible hitch on a phone mid-scroll.
 const TIERS = {
-  low: { segments: [56, 32], dpr: [1, 1.25], antialias: false },
-  mid: { segments: [84, 46], dpr: [1, 1.5], antialias: true },
-  high: { segments: [98, 55], dpr: [1, 1.5], antialias: true },
+  low: { segments: [56, 32], dprSteps: [1.25, 1, 0.8], antialias: false, lambert: true },
+  mid: { segments: [84, 46], dprSteps: [1.5, 1.25, 1], antialias: true, lambert: false },
+  high: { segments: [98, 55], dprSteps: [1.5, 1.25, 1], antialias: true, lambert: false },
 };
 
 function getTier() {

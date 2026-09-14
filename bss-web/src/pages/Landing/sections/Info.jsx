@@ -1,4 +1,5 @@
-import { motion, useReducedMotion } from "framer-motion";
+import { useRef } from "react";
+import { motion, useInView, useReducedMotion } from "framer-motion";
 import { FaQuoteLeft } from "react-icons/fa";
 // Derivatives from scripts/optimize-site-images.mjs, never the originals: the
 // group photo was 1.1 MB and the Paramount mark 1.8 MB for a logo drawn 36px tall.
@@ -22,6 +23,8 @@ const viewport = { once: true, amount: 0.3 };
 
 export default function Info() {
   const reducedMotion = useReducedMotion();
+  const glowRef = useRef(null);
+  const glowInView = useInView(glowRef);
 
   // The first block has no entrance of its own — no fade, no reveal, no gate. It
   // is printed on the dune: by the time it is on screen the hero's descent has
@@ -55,15 +58,24 @@ export default function Info() {
             </motion.p>
           </motion.div>
 
-          <motion.div className="relative">
+          <motion.div ref={glowRef} className="relative">
+            {/* The breathing loop only runs on screen. This block is pulled up over
+                the hero, so an unconditional loop spent the whole 3D sequence
+                re-rendering a blurred layer on the phone GPU the scene needs. */}
             <motion.div
               className="absolute -inset-3 rounded-2xl bg-gradient-to-br from-purple/40 via-magenta/20 to-sky/30 blur-2xl"
               animate={
                 reducedMotion
                   ? { opacity: 0.7 }
-                  : { opacity: [0.55, 0.8, 0.55], scale: [1, 1.05, 1] }
+                  : glowInView
+                    ? { opacity: [0.55, 0.8, 0.55], scale: [1, 1.05, 1] }
+                    : { opacity: 0.55, scale: 1 }
               }
-              transition={{ duration: 6, repeat: reducedMotion ? 0 : Infinity, ease: "easeInOut" }}
+              transition={{
+                duration: 6,
+                repeat: reducedMotion || !glowInView ? 0 : Infinity,
+                ease: "easeInOut",
+              }}
             />
             <motion.img
               src={group}

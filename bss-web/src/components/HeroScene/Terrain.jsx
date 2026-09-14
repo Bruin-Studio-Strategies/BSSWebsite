@@ -115,7 +115,14 @@ function narrowness(aspect) {
   return THREE.MathUtils.clamp((PULLBACK_ASPECT - aspect) / (PULLBACK_ASPECT - 0.45), 0, 1);
 }
 
-export default function Terrain({ scrollYProgress, exitProgress, reducedMotion, segments }) {
+export default function Terrain({
+  scrollYProgress,
+  exitProgress,
+  reducedMotion,
+  segments,
+  lambert = false,
+  wireframe = true,
+}) {
   const dolly = useRef(null);
   const descent = useRef(null);
   const look = useRef(new THREE.Vector3());
@@ -207,25 +214,43 @@ export default function Terrain({ scrollYProgress, exitProgress, reducedMotion, 
       const strength = 0.4 + 0.15 * Math.min(1, sink / 0.6);
       const clearing = THREE.MathUtils.clamp((0.95 - sink) / 0.4, 0, 1);
       wireRef.current.opacity = strength * clearing;
+      // A second full pass over the terrain, so it is skipped outright whenever
+      // it would draw nothing — once cleared, and on a device HeroScene has found
+      // cannot hold its frame rate even at the bottom of its DPR ladder. Toggling
+      // `visible` compiles nothing, so this can change mid-scroll without a hitch.
+      wireRef.current.visible = wireframe && wireRef.current.opacity > 0.001;
     }
   });
 
   return (
     <>
       <mesh geometry={geometry}>
-        <meshStandardMaterial
-          vertexColors
-          roughness={0.85}
-          metalness={0.05}
-          // Pushes the filled surface back so the wireframe drawn on the exact
-          // same vertices wins the depth test. The dunes are viewed at a very
-          // shallow angle, which makes each triangle's depth slope large, and at
-          // factor 1 the offset was not clearing it — lines broke up and
-          // crawled along the crests as the camera moved.
-          polygonOffset
-          polygonOffsetFactor={2}
-          polygonOffsetUnits={2}
-        />
+        {/* polygonOffset pushes the filled surface back so the wireframe drawn on
+            the exact same vertices wins the depth test. The dunes are viewed at a
+            very shallow angle, which makes each triangle's depth slope large, and
+            at factor 1 the offset was not clearing it — lines broke up and crawled
+            along the crests as the camera moved.
+
+            Lambert on the phone tier (see useQualityTier.js): the same diffuse
+            response without the standard material's specular, which at this
+            roughness was barely visible and was most of the per-pixel cost. */}
+        {lambert ? (
+          <meshLambertMaterial
+            vertexColors
+            polygonOffset
+            polygonOffsetFactor={2}
+            polygonOffsetUnits={2}
+          />
+        ) : (
+          <meshStandardMaterial
+            vertexColors
+            roughness={0.85}
+            metalness={0.05}
+            polygonOffset
+            polygonOffsetFactor={2}
+            polygonOffsetUnits={2}
+          />
+        )}
       </mesh>
       <mesh geometry={geometry}>
         {/* depthWrite off: this sits exactly on an opaque surface that has
