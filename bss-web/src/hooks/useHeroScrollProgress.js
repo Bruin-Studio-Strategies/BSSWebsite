@@ -14,7 +14,12 @@ import { useMotionValue } from "framer-motion";
 // would. The sticky element releases once you've scrolled past
 // (TRACK_HEIGHT_VH - 1) viewport-heights, so that's the scroll distance progress
 // maps across. Must match the outer track's height in Landing.jsx.
-const TRACK_HEIGHT_VH = 1.6;
+//
+// 1.4, down from 1.6: the sunset played over 0.6 viewports of scroll and read as
+// sluggish — you had to push through it. Only this phase was shortened. The
+// descent's window below is a derived length, not a pace choice, and moves
+// forward with it unchanged.
+const TRACK_HEIGHT_VH = 1.4;
 
 // One viewport height, in the same unit the layout uses: CSS `100vh`, measured.
 //
@@ -55,7 +60,7 @@ function computeProgress() {
 // has already become the page color and simply stops mattering.
 //
 // Measured from the top of the document in viewport heights. It starts as the
-// sunset finishes (the hero sequence ends at 0.6) and runs while the section
+// sunset finishes (the hero sequence ends at 0.4) and runs while the section
 // below scrolls up over it.
 //
 // The end is arithmetic, not taste. The section below scrolls 1:1 with the wheel;
@@ -71,8 +76,8 @@ function computeProgress() {
 // visibly slid against each other — no amount of easing or lag-tuning touches
 // that, because it is a rate mismatch, not a timing one. Change the drop, the
 // ridge distance, or the field of view and this has to be recomputed.
-const EXIT_START_VH = 0.6;
-const EXIT_END_VH = 1.76;
+const EXIT_START_VH = 0.4;
+const EXIT_END_VH = 1.56;
 
 function computeExit() {
   if (typeof window === "undefined") return 0;

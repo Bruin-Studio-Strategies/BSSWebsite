@@ -30,7 +30,7 @@ export default function Landing() {
           {/* Hero track: taller than one viewport so the sticky hero copy stays
               pinned while the sunset plays out. Height here (as a multiple of
               100vh) must match TRACK_HEIGHT_VH in useHeroScrollProgress. */}
-          <div style={{ height: "160vh" }}>
+          <div style={{ height: "140vh" }}>
             <div className="sticky top-24 h-screen">
               <Title />
             </div>
@@ -41,9 +41,9 @@ export default function Landing() {
 
               A sticky element releases when its bottom reaches its container's
               bottom, so this stage's height sets that moment: 100vh of canvas plus
-              160vh of hero track plus this, minus the 100vh the canvas occupies,
-              releases at (60 + this)vh. At 116 that is 176vh — exactly where the
-              descent lands (EXIT_END_VH = 1.76).
+              140vh of hero track plus this, minus the 100vh the canvas occupies,
+              releases at (40 + this)vh. At 116 that is 156vh — exactly where the
+              descent lands (EXIT_END_VH = 1.56).
 
               That matters more than it looks. While the canvas is pinned the dune
               is nailed to the viewport, so any copy scrolling over it slides across
@@ -64,9 +64,9 @@ export default function Landing() {
           py-28 on top of that. The canvas has already released by here, so both
           scroll at the same rate and the copy stays fixed to the face it is on.
 
-          The limit on this number: Info's top enters the viewport at (176 - this)vh
+          The limit on this number: Info's top enters the viewport at (156 - this)vh
           and its copy about 11vh after that, while the canvas does not release until
-          176vh. Past roughly -11 the copy is therefore on screen before the release,
+          156vh. Past roughly -11 the copy is therefore on screen before the release,
           sliding over a dune still pinned to the viewport. At -45 that overlap is
           about a third of a screen. It is tolerable because the descent has all but
           landed by then and the face is flat and barely moving, but it is the thing

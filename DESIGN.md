@@ -252,7 +252,7 @@ A centered measure on a dark field, with air as the primary luxury signal.
 - **The two-column figure/text block** is the system's workhorse: a framed image on one side, eyebrow + headline + body + CTA on the other, `grid-cols-1 md:grid-cols-2`, order swapped between adjacent sections so the page alternates. On mobile it stacks with text first (`order-1`).
 - **Breakpoints are non-standard and deliberate:** `sm: 576px`, `md: 960px`, `lg: 1440px`. This is not Tailwind's default scale — `sm` behaves like a phone-to-tablet break and `md` is where two-column layouts actually engage. Design mobile-first against these numbers, not against the defaults.
 - **Section dividers:** one component, `SectionDivider`, used on every page. A hairline (`h-px`, `w-11/12`, `max-w-3xl`) that fades to transparent at both ends and scales in from its centre when first scrolled into view (0.9s, project easing, `once`, `amount: 1`). Spacing is the only thing a caller varies, passed as `className` — `my-12` between major sections, `my-4` where two sections are deliberately tight. It replaces the legacy `<hr>` elements entirely.
-- **Scroll-pinned sections:** the hero uses a track taller than the viewport (`160vh`) with a `sticky` child, so the scene stays pinned while its animation plays. The track height and the hook's constant must be changed together.
+- **Scroll-pinned sections:** the hero uses a track taller than the viewport (`140vh`) with a `sticky` child, so the scene stays pinned while its animation plays. The track height and the hook's constant must be changed together.
 
 ### Named Rules
 
