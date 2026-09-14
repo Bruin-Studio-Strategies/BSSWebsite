@@ -7,19 +7,21 @@ import { useMotionValue } from "framer-motion";
 // event, which (fed into the 3D camera position and the text's opacity transform)
 // meant the whole hero rendered blank on initial load. A plain scroll listener has
 // no such gap — the starting value is computed synchronously on first render.
-// The hero (see Landing.jsx) sits inside a "sticky" wrapper: a tall outer track
-// (TRACK_HEIGHT_VH * 100vh) with the actual hero pinned via position:sticky
-// inside it, so it stays fully on screen — sky included — for the whole
-// animation instead of scrolling away mid-sequence like plain in-flow content
-// would. The sticky element releases once you've scrolled past
-// (TRACK_HEIGHT_VH - 1) viewport-heights, so that's the scroll distance progress
-// maps across. Must match the outer track's height in Landing.jsx.
 //
-// 1.4, down from 1.6: the sunset played over 0.6 viewports of scroll and read as
-// sluggish — you had to push through it. Only this phase was shortened. The
-// descent's window below is a derived length, not a pace choice, and moves
-// forward with it unchanged.
-const TRACK_HEIGHT_VH = 1.4;
+// Two distances, deliberately different.
+//
+// SUNSET_VH is how far you scroll to play the sunset and the camera's drift. It
+// was 0.6 and read as sluggish — you had to push through it — so it is 0.4.
+//
+// TEXT_TRACK_VH is the hero copy's own track (see Landing.jsx): a track that tall
+// with the copy pinned inside it via position:sticky, so the copy holds still for
+// (TEXT_TRACK_VH - 1) viewports while it fades. It stayed at 1.6 when the sunset
+// was shortened, because tying the fade to the faster sunset cleared the headline
+// off the screen before anyone had read it. The copy now lingers over the first
+// of the descent; the scene does not wait for it. Must match the track's height
+// in Landing.jsx.
+const SUNSET_VH = 0.4;
+const TEXT_TRACK_VH = 1.6;
 
 // One viewport height, in the same unit the layout uses: CSS `100vh`, measured.
 //
@@ -50,7 +52,12 @@ function viewportHeight() {
 
 function computeProgress() {
   if (typeof window === "undefined") return 0;
-  const pinDistance = (TRACK_HEIGHT_VH - 1) * viewportHeight();
+  return Math.min(1, Math.max(0, window.scrollY / (SUNSET_VH * viewportHeight())));
+}
+
+function computeTextProgress() {
+  if (typeof window === "undefined") return 0;
+  const pinDistance = (TEXT_TRACK_VH - 1) * viewportHeight();
   return Math.min(1, Math.max(0, window.scrollY / pinDistance));
 }
 
@@ -76,7 +83,7 @@ function computeProgress() {
 // visibly slid against each other — no amount of easing or lag-tuning touches
 // that, because it is a rate mismatch, not a timing one. Change the drop, the
 // ridge distance, or the field of view and this has to be recomputed.
-const EXIT_START_VH = 0.4;
+const EXIT_START_VH = SUNSET_VH;
 const EXIT_END_VH = 1.56;
 
 function computeExit() {
@@ -123,6 +130,11 @@ function useScrollDriven(compute) {
 
 export function useSceneExitProgress() {
   return useScrollDriven(computeExit);
+}
+
+// The hero copy's pin-and-fade, over its own longer track. See TEXT_TRACK_VH.
+export function useHeroTextProgress() {
+  return useScrollDriven(computeTextProgress);
 }
 
 export default function useHeroScrollProgress() {

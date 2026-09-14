@@ -29,8 +29,10 @@ export default function Landing() {
         <div className="relative z-10 -mt-[100vh] pt-24">
           {/* Hero track: taller than one viewport so the sticky hero copy stays
               pinned while the sunset plays out. Height here (as a multiple of
-              100vh) must match TRACK_HEIGHT_VH in useHeroScrollProgress. */}
-          <div style={{ height: "140vh" }}>
+              100vh) must match TEXT_TRACK_VH in useHeroScrollProgress. It is the
+              copy's track, not the sunset's: the scene plays faster than the copy
+              is allowed to leave. */}
+          <div style={{ height: "160vh" }}>
             <div className="sticky top-24 h-screen">
               <Title />
             </div>
@@ -41,9 +43,10 @@ export default function Landing() {
 
               A sticky element releases when its bottom reaches its container's
               bottom, so this stage's height sets that moment: 100vh of canvas plus
-              140vh of hero track plus this, minus the 100vh the canvas occupies,
-              releases at (40 + this)vh. At 116 that is 156vh — exactly where the
-              descent lands (EXIT_END_VH = 1.56).
+              160vh of hero track plus this, minus the 100vh the canvas occupies,
+              releases at (60 + this)vh. At 96 that is 156vh — exactly where the
+              descent lands (EXIT_END_VH = 1.56). Lengthen the hero track and this
+              shrinks by the same amount, or the release drifts off the landing.
 
               That matters more than it looks. While the canvas is pinned the dune
               is nailed to the viewport, so any copy scrolling over it slides across
@@ -53,7 +56,7 @@ export default function Landing() {
               across it. Info sits outside this stage for the same reason: inside it,
               the release point would depend on Info's own rendered height and land
               somewhere arbitrary in the middle of the section. */}
-          <div aria-hidden="true" style={{ height: "116vh" }} />
+          <div aria-hidden="true" style={{ height: "96vh" }} />
         </div>
       </div>
 

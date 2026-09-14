@@ -1,8 +1,10 @@
 import Hero from "../../../components/Hero.jsx";
-import useHeroScrollProgress from "../../../hooks/useHeroScrollProgress.js";
+import { useHeroTextProgress } from "../../../hooks/useHeroScrollProgress.js";
 
 export default function Title() {
-  const scrollYProgress = useHeroScrollProgress();
+  // The copy's own progress, not the sunset's: it stays pinned and fades over a
+  // longer distance than the scene takes to play. See TEXT_TRACK_VH.
+  const scrollYProgress = useHeroTextProgress();
 
   // Scroll-tied drift/fade lives inside Hero itself.
   return (
