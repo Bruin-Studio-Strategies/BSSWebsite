@@ -55,7 +55,9 @@ export default function Hero({ scrollYProgress }) {
           a label over the headline, and it carries no section of its own. */}
       <motion.p
         {...fadeUpProps(0.05, reduced)}
-        className="font-sans text-sm sm:text-base text-white/60 font-medium md:ml-2 tracking-wide"
+        // Scales with the headline. It stopped at text-base while "Success" grew to
+        // 128px, and at desktop the label read as a caption stranded above it.
+        className="font-sans text-base sm:text-lg md:text-xl lg:text-2xl text-white/60 font-medium md:ml-2 tracking-wide"
       >
         Work with the Best
       </motion.p>
@@ -78,7 +80,10 @@ export default function Hero({ scrollYProgress }) {
 
       <motion.p
         {...fadeUpProps(0.3, reduced)}
-        className="w-5/6 sm:w-auto sm:whitespace-nowrap md:ml-2 mt-8 sm:mt-5 text-sm sm:text-base text-white/70"
+        // Same scale as the label above, for the same reason. Held to one line only
+        // from lg: at these sizes a tablet column is too narrow for it, and nowrap
+        // there pushed it past the edge.
+        className="w-5/6 sm:w-auto lg:whitespace-nowrap md:ml-2 mt-8 sm:mt-5 md:mt-6 text-base sm:text-lg md:text-xl lg:text-2xl text-white/70"
       >
         Providing strategic consulting for the entertainment industry
       </motion.p>
