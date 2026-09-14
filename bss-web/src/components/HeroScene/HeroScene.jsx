@@ -34,12 +34,47 @@ function useInView(ref) {
 //
 // Three frames rather than one: the first is often the frame the geometry is
 // uploaded on, and the sunset lighting settles a frame behind that.
+//
+// Before any of that, every shader in the scene is compiled and every texture
+// uploaded while the loading screen is still up. Left to the first render, anything
+// not drawn in the first frames — the meteors start hidden — compiled the moment it
+// first appeared, and on a phone that is a stall long enough to see, usually during
+// the first scroll. compileAsync uses the driver's parallel compile where it has one,
+// so the wait does not block the page either; the gate's 9s timeout still bounds it.
 function ReportWhenDrawn({ onReady, running }) {
   const frames = useRef(0);
   const fired = useRef(false);
+  const compiled = useRef(false);
+  const { gl, scene, camera } = useThree();
+
+  useEffect(() => {
+    let cancelled = false;
+    scene.traverse((object) => {
+      const materials = Array.isArray(object.material) ? object.material : [object.material];
+      materials.forEach((material) => {
+        if (material?.map) gl.initTexture(material.map);
+      });
+    });
+    // Without the parallel-compile extension, compileAsync only warns and then does
+    // the same synchronous compile — behind the loading screen, that is fine, so
+    // skip straight to it and keep the console clean.
+    const parallel = gl.extensions.has("KHR_parallel_shader_compile");
+    const compiling =
+      parallel && gl.compileAsync
+        ? gl.compileAsync(scene, camera)
+        : Promise.resolve(gl.compile(scene, camera));
+    compiling
+      .catch(() => {})
+      .then(() => {
+        if (!cancelled) compiled.current = true;
+      });
+    return () => {
+      cancelled = true;
+    };
+  }, [gl, scene, camera]);
 
   useFrame(() => {
-    if (fired.current) return;
+    if (fired.current || !compiled.current) return;
     frames.current += 1;
     if (frames.current >= 3) {
       fired.current = true;
@@ -103,7 +138,7 @@ export default function HeroScene({
   const inView = useInView(wrapperRef);
   // Pixels and MSAA come from the same tier as the geometry — on a phone those
   // two cost more than the mesh does. See useQualityTier.js.
-  const { segments, dprSteps, antialias, lambert } = useQualityTier();
+  const { segments, dprSteps, antialias, lambert, mediump } = useQualityTier();
   const live = inView;
 
   // Where on the tier's DPR ladder the scene is sitting. Keyed to the ladder
@@ -192,6 +227,7 @@ export default function HeroScene({
           <DistantRidge
             scrollYProgress={scrollYProgress}
             reducedMotion={reducedMotion}
+            mediump={mediump}
           />
           <Terrain
             scrollYProgress={scrollYProgress}
@@ -199,6 +235,7 @@ export default function HeroScene({
             reducedMotion={reducedMotion}
             segments={segments}
             lambert={lambert}
+            mediump={mediump}
             wireframe={!atFloor}
           />
           <Logo3D

@@ -11,6 +11,7 @@ import {
   surfaceHeightAt,
 } from "./terrainField.js";
 import { follow, TRACKING_TAU } from "./smoothing.js";
+import { mediumpFragment } from "./precision.js";
 
 const NAVY = new THREE.Color("#0F172E");
 const PURPLE = new THREE.Color("#523794");
@@ -122,7 +123,11 @@ export default function Terrain({
   segments,
   lambert = false,
   wireframe = true,
+  mediump = false,
 }) {
+  // A changed onBeforeCompile does not recompile an existing material, so the
+  // materials below are keyed on this: flipping it builds fresh ones.
+  const precision = mediump ? mediumpFragment : undefined;
   const dolly = useRef(null);
   const descent = useRef(null);
   const look = useRef(new THREE.Vector3());
@@ -236,6 +241,8 @@ export default function Terrain({
             roughness was barely visible and was most of the per-pixel cost. */}
         {lambert ? (
           <meshLambertMaterial
+            key={`lambert-${mediump}`}
+            onBeforeCompile={precision}
             vertexColors
             polygonOffset
             polygonOffsetFactor={2}
@@ -243,6 +250,8 @@ export default function Terrain({
           />
         ) : (
           <meshStandardMaterial
+            key={`standard-${mediump}`}
+            onBeforeCompile={precision}
             vertexColors
             roughness={0.85}
             metalness={0.05}
@@ -257,6 +266,8 @@ export default function Terrain({
             already written the same depth, so writing it again only risks
             interfering with how the transparent sun glow sorts against it. */}
         <meshBasicMaterial
+          key={`wire-${mediump}`}
+          onBeforeCompile={precision}
           ref={wireRef}
           vertexColors
           wireframe

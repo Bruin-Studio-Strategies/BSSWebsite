@@ -32,10 +32,13 @@ import { useEffect, useState } from "react";
 // it is the most expensive thing the fragment shader does. Decided per tier at
 // mount and never switched live: a material swap compiles a new shader, which is
 // a visible hitch on a phone mid-scroll.
+//
+// `mediump` runs the terrain's and the far ridge's fragment shaders at medium
+// precision (see precision.js). Fixed per tier for the same compile reason.
 const TIERS = {
-  low: { segments: [56, 32], dprSteps: [1.25, 1, 0.8], antialias: true, lambert: true },
-  mid: { segments: [84, 46], dprSteps: [1.5, 1.25, 1], antialias: true, lambert: false },
-  high: { segments: [98, 55], dprSteps: [1.5, 1.25, 1], antialias: true, lambert: false },
+  low: { segments: [56, 32], dprSteps: [1.25, 1, 0.8], antialias: true, lambert: true, mediump: true },
+  mid: { segments: [84, 46], dprSteps: [1.5, 1.25, 1], antialias: true, lambert: false, mediump: false },
+  high: { segments: [98, 55], dprSteps: [1.5, 1.25, 1], antialias: true, lambert: false, mediump: false },
 };
 
 function getTier() {

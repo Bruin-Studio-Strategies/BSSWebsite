@@ -80,6 +80,18 @@ the home page.
 Antialiasing (MSAA) stays on at every tier, phones included — a must per the person
 running the project. Recover cost elsewhere, never by turning it off.
 
+Also on the phone tier: the terrain's and far ridge's *fragment* shaders run at
+`mediump` (`precision.js`, via `onBeforeCompile`); vertex stages stay highp, because
+distant stars swim and the twinkle clock steps at mediump. Watch for banding in dark
+gradients. Every tier: `ReportWhenDrawn` compiles all shaders (`compileAsync`) and
+uploads textures before it counts ready frames, so nothing compiles on first
+appearance mid-scroll. Scroll progress is set synchronously in the scroll event
+rather than in its own rAF — a callback queued there ran after the scene's
+already-queued frame, so the scene drew a frame behind the page. And progress
+divides by a measured `100vh`, not `innerHeight`, because the phone address bar
+changes `innerHeight` mid-scroll while every vh-sized element in `Landing.jsx` stays
+put — the mismatch jumped the camera.
+
 Not done, on purpose: replacing the hero's CSS `mask-image` with a gradient overlay.
 Rejected by the person running the project.
 

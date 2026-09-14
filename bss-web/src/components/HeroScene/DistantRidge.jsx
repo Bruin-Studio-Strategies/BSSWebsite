@@ -4,6 +4,7 @@ import * as THREE from "three";
 import { createNoise2D } from "simplex-noise";
 import { ridgeRandom } from "./terrainField.js";
 import { follow } from "./smoothing.js";
+import { mediumpFragment } from "./precision.js";
 
 // A flatter, more-faded ridge sitting well behind the main terrain — gives the
 // horizon a sense of depth instead of dunes cutting straight to empty sky.
@@ -20,7 +21,7 @@ const COLOR_DAY = new THREE.Color("#211D4E");
 // above the day fog.
 const COLOR_NIGHT = new THREE.Color("#151340");
 
-export default function DistantRidge({ scrollYProgress, reducedMotion }) {
+export default function DistantRidge({ scrollYProgress, reducedMotion, mediump = false }) {
   const materialRef = useRef();
   const smooth = useRef(null);
 
@@ -64,7 +65,14 @@ export default function DistantRidge({ scrollYProgress, reducedMotion }) {
       {/* getHex() rather than the Color instance: the frame loop mutates this
           material's color, and handing it the shared constant risks mutating
           the constant along with it. */}
-      <meshBasicMaterial ref={materialRef} color={COLOR_DAY.getHex()} />
+      {/* Keyed on precision: a changed onBeforeCompile does not recompile an
+          existing material. See precision.js. */}
+      <meshBasicMaterial
+        key={`ridge-${mediump}`}
+        ref={materialRef}
+        color={COLOR_DAY.getHex()}
+        onBeforeCompile={mediump ? mediumpFragment : undefined}
+      />
     </mesh>
   );
 }
