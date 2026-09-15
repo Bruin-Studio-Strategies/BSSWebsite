@@ -15,13 +15,16 @@ import { useMotionValue } from "framer-motion";
 //
 // TEXT_TRACK_VH is the hero copy's own track (see Landing.jsx): a track that tall
 // with the copy pinned inside it via position:sticky, so the copy holds still for
-// (TEXT_TRACK_VH - 1) viewports while it fades. It stayed at 1.6 when the sunset
-// was shortened, because tying the fade to the faster sunset cleared the headline
-// off the screen before anyone had read it. The copy now lingers over the first
-// of the descent; the scene does not wait for it. Must match the track's height
-// in Landing.jsx.
+// (TEXT_TRACK_VH - 1) viewports while it fades. It did not shrink with the sunset,
+// because tying the fade to the faster sunset cleared the headline off the screen
+// before anyone had read it, and it was then lengthened — 1.6, 1.9, now 2.8 — at
+// the request of the person running the project so the headline holds longer.
+// Must match the track's height in Landing.jsx.
+//
+// At 2.8 the copy's track outruns the descent, which forced the exit window below
+// to move (see EXIT_START_VH).
 const SUNSET_VH = 0.4;
-const TEXT_TRACK_VH = 1.6;
+const TEXT_TRACK_VH = 2.8;
 
 // One viewport height, in the same unit the layout uses: CSS `100vh`, measured.
 //
@@ -66,9 +69,17 @@ function computeTextProgress() {
 // transition across — by the time the reader is into "What is BSS?", the canvas
 // has already become the page color and simply stops mattering.
 //
-// Measured from the top of the document in viewport heights. It starts as the
-// sunset finishes (the hero sequence ends at 0.4) and runs while the section
-// below scrolls up over it.
+// Measured from the top of the document in viewport heights. It runs while the
+// section below scrolls up over it.
+//
+// It does not start the moment the sunset finishes (0.4). The canvas stops being
+// pinned at the end of the hero copy's track, (TEXT_TRACK_VH - 1) viewports, and
+// the descent has to land exactly there — land earlier and the copy below slides
+// over a frozen dune; stretch the window to reach it and the dune and the copy
+// move at different speeds (see the arithmetic below). So the window keeps its
+// length and slides later instead: the scene holds, sunset done, for the stretch
+// between 0.4 and the window's start, which is while the headline is still up
+// being read.
 //
 // The end is arithmetic, not taste. The section below scrolls 1:1 with the wheel;
 // the landscape's apparent speed is set by how far the camera falls and how close
@@ -83,8 +94,9 @@ function computeTextProgress() {
 // visibly slid against each other — no amount of easing or lag-tuning touches
 // that, because it is a rate mismatch, not a timing one. Change the drop, the
 // ridge distance, or the field of view and this has to be recomputed.
-const EXIT_START_VH = SUNSET_VH;
-const EXIT_END_VH = 1.56;
+const EXIT_WINDOW_VH = 1.16;
+const EXIT_END_VH = TEXT_TRACK_VH - 1;
+const EXIT_START_VH = Math.max(SUNSET_VH, EXIT_END_VH - EXIT_WINDOW_VH);
 
 function computeExit() {
   if (typeof window === "undefined") return 0;

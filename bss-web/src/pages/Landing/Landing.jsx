@@ -32,7 +32,7 @@ export default function Landing() {
               100vh) must match TEXT_TRACK_VH in useHeroScrollProgress. It is the
               copy's track, not the sunset's: the scene plays faster than the copy
               is allowed to leave. */}
-          <div style={{ height: "160vh" }}>
+          <div style={{ height: "280vh" }}>
             <div className="sticky top-24 h-screen">
               <Title />
             </div>
@@ -43,10 +43,12 @@ export default function Landing() {
 
               A sticky element releases when its bottom reaches its container's
               bottom, so this stage's height sets that moment: 100vh of canvas plus
-              160vh of hero track plus this, minus the 100vh the canvas occupies,
-              releases at (60 + this)vh. At 96 that is 156vh — exactly where the
-              descent lands (EXIT_END_VH = 1.56). Lengthen the hero track and this
-              shrinks by the same amount, or the release drifts off the landing.
+              280vh of hero track plus this, minus the 100vh the canvas occupies,
+              releases at (180 + this)vh. It is 0 now: the hero copy's track grew
+              long enough to carry the release on its own, and the descent's window
+              was moved to land at 180vh instead (EXIT_END_VH is derived from the
+              track in useHeroScrollProgress). Kept, at zero, because shortening
+              the hero track again means this has to take the difference back.
 
               That matters more than it looks. While the canvas is pinned the dune
               is nailed to the viewport, so any copy scrolling over it slides across
@@ -56,7 +58,7 @@ export default function Landing() {
               across it. Info sits outside this stage for the same reason: inside it,
               the release point would depend on Info's own rendered height and land
               somewhere arbitrary in the middle of the section. */}
-          <div aria-hidden="true" style={{ height: "96vh" }} />
+          <div aria-hidden="true" style={{ height: "0vh" }} />
         </div>
       </div>
 
@@ -67,9 +69,9 @@ export default function Landing() {
           py-28 on top of that. The canvas has already released by here, so both
           scroll at the same rate and the copy stays fixed to the face it is on.
 
-          The limit on this number: Info's top enters the viewport at (156 - this)vh
+          The limit on this number: Info's top enters the viewport at (180 - this)vh
           and its copy about 11vh after that, while the canvas does not release until
-          156vh. Past roughly -11 the copy is therefore on screen before the release,
+          180vh. Past roughly -11 the copy is therefore on screen before the release,
           sliding over a dune still pinned to the viewport. At -45 that overlap is
           about a third of a screen. It is tolerable because the descent has all but
           landed by then and the face is flat and barely moving, but it is the thing

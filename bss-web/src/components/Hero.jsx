@@ -38,7 +38,10 @@ export default function Hero({ scrollYProgress }) {
   // (-25px total) so the fade can stretch across most of the scroll range
   // without ever reading as climbing toward the navbar the way it used to.
   const y = useTransform(scrollYProgress, [0, 1], reduced ? [0, 0] : [0, -25]);
-  const opacity = useTransform(scrollYProgress, [0, 0.85], [1, 0]);
+  // Holds at full opacity for most of the pin and only then fades, so the headline
+  // is read solid rather than already dimming from the first tick. The fade ends at
+  // 0.98, just before the copy unpins, so nothing is left to scroll away half-lit.
+  const opacity = useTransform(scrollYProgress, [0.7, 0.98], [1, 0]);
 
   const wv = reduced ? reducedWordVariant : wordVariant;
 
