@@ -101,13 +101,14 @@ export default function Info() {
           </motion.div>
           <motion.blockquote
             variants={fadeUp}
-            // Inter Light, not a serif. It was EB Garamond italic (being retired),
-            // then Agatho — but four lines of Agatho is running text in a face
-            // built for headings, which the Serif-Asserts Rule rules out, and it
-            // read as heavy. The magenta rule and the quote mark are what mark it
-            // as a quote; the face does not have to. Body size on phones, where
-            // at anything larger this quote filled the screen on its own.
-            className="font-sans font-light text-sm leading-relaxed text-white/90 sm:text-base md:text-2xl md:leading-snug lg:text-3xl"
+            // Agatho, the brand serif. It was EB Garamond italic (being retired),
+            // then Agatho at headline size, which read heavy, then Inter Light,
+            // which read thin and generic — the one client voice on the site set
+            // in the body face. Back in Agatho, but a step smaller than the first
+            // attempt and with open leading, so four lines carry the brand without
+            // weighing like a headline. Body size on phones, where at anything
+            // larger this quote filled the screen on its own.
+            className="font-display font-light text-base leading-relaxed text-white/90 sm:text-lg md:text-xl md:leading-relaxed lg:text-2xl"
           >
             "Partnering with the Bruin Studios Strategies group was a fantastic experience.
             Their teams brought creativity, professionalism, and real passion to our case prompt,

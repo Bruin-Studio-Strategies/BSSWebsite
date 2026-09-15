@@ -310,7 +310,8 @@ because the navbar and the landing page both need it. Its URL is still last
 cycle's and needs confirming.
 
 Not yet touched in this pass: navbar styling (only its mobile breakpoint moved, to
-`md`), most copy. The Paramount testimonial is set in Inter Light, not Agatho.
+`md`), most copy. The Paramount testimonial is set in Agatho Light at body scale — the one sanctioned
+exception to the Serif-Asserts Rule (see DESIGN.md); Inter Light read generic.
 
 ## Contact (`/contact`)
 

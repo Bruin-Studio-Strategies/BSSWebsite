@@ -243,6 +243,13 @@ every page and should not be improvised per-surface.
 numerals used as structure. It never sets running text, never sets UI labels, and
 never sets anything the user has to read quickly.
 
+One exception: the landing page's Paramount testimonial is set in Agatho Light at
+body scale (`text-base` → `lg:text-2xl`, relaxed leading). A client's words about
+the club are the one piece of running text that is itself a statement, and set in
+Inter Light it read as generic body copy. Light and body-sized, never Regular at
+headline size — that version read heavy. The exception is this quote, not quotes in
+general.
+
 ## Layout
 
 A centered measure on a dark field, with air as the primary luxury signal.
