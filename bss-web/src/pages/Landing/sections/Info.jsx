@@ -50,7 +50,7 @@ export default function Info() {
               What is BSS?
             </motion.h2>
             <motion.p
-              className={`font-sans text-sm sm:text-base md:text-lg lg:text-xl text-white/70 leading-relaxed max-w-xl ${OPENER_MEASURE} ${OPENER_BALANCE}`}
+              className={`font-sans text-sm sm:text-base lg:text-lg text-white/70 leading-relaxed max-w-xl ${OPENER_MEASURE} ${OPENER_BALANCE}`}
             >
               Bruin Studio Strategies, UCLA's first and premier entertainment consulting group,
               unites technical consulting fundamentals, technology, and Gen-Z insights to deliver

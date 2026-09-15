@@ -94,7 +94,7 @@ export default function Team() {
           </motion.h2>
           <motion.p
             variants={fadeUp}
-            className={`font-sans text-sm sm:text-base md:text-lg lg:text-xl text-white/70 leading-relaxed max-w-xl ${OPENER_MEASURE} ${OPENER_BALANCE}`}
+            className={`font-sans text-sm sm:text-base lg:text-lg text-white/70 leading-relaxed max-w-xl ${OPENER_MEASURE} ${OPENER_BALANCE}`}
           >
             At Bruin Studio Strategies, we are more than UCLA students—we are a community of
             innovators reshaping entertainment consulting. With diverse backgrounds in fields
@@ -103,7 +103,7 @@ export default function Team() {
           </motion.p>
           <motion.p
             variants={fadeUp}
-            className="mt-4 font-sans text-sm sm:text-base md:text-lg lg:text-xl text-white/70 leading-relaxed max-w-xl mx-auto md:mx-0"
+            className="mt-4 font-sans text-sm sm:text-base lg:text-lg text-white/70 leading-relaxed max-w-xl mx-auto md:mx-0"
           >
             We pride ourselves on fostering a free-flowing and creative environment where
             innovative ideas flourish, turning market research and unique ideas into actionable
