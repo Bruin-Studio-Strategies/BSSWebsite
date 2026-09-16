@@ -8,10 +8,12 @@
 // index.html still carries the landing page's values as its static defaults, for
 // the crawlers that never run JavaScript. Keep the two in step.
 
-// TODO(domain): the club's real domain goes here. This is Vercel's production
-// alias, which works but is what canonical URLs, og:url and the sitemap will all
-// advertise until it is changed. One line, one place.
-export const SITE_URL = "https://bss-website-kypranites-projects.vercel.app";
+// The club's own domain, live since 2026-09-16. Canonical URLs, og:url and the
+// sitemap all advertise this. The `www` host is the canonical one: the apex
+// 308-redirects to it, so dropping the prefix here would point every canonical tag
+// at a redirect. Duplicated in index.html, public/robots.txt and public/sitemap.xml
+// — change all four together.
+export const SITE_URL = "https://www.bruinstudiostrategies.com";
 
 // Absolute, because og:image is one of the few tags that a relative URL simply
 // does not work in — several unfurlers drop the card entirely.

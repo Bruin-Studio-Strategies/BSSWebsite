@@ -400,9 +400,29 @@ robots, Open Graph and Twitter tags on every route change from the table in
 `siteMeta.js`; the 404 is `noindex`. `index.html` keeps the landing page's values
 plus Organization JSON-LD as static defaults, because link unfurlers (Instagram,
 iMessage, Discord) never run JavaScript and only ever see that file — keep the two in
-step. `SITE_URL` in `siteMeta.js` is still Vercel's production alias, and it is
-duplicated in `index.html`, `public/robots.txt` and `public/sitemap.xml`; when the
-club has a real domain, all four change together.
+step. `SITE_URL` in `siteMeta.js` is the club's own domain,
+`https://www.bruinstudiostrategies.com`, live since 2026-09-16 and canonical on the
+`www` host (the apex 308-redirects to it). It is duplicated in `index.html`,
+`public/robots.txt` and `public/sitemap.xml`; all four change together.
+
+**Production is `main`, and the domain rides the latest production deployment.** The
+domain was attached to a different Vercel account, which served a stale build no
+matter what this account deployed; it was claimed with a `_vercel` TXT record at
+Cloudflare (the club's DNS), and Vercel then bound it to the *next* production
+deploy rather than the existing one. If the live site is ever stale while
+`bss-website.vercel.app` is current, that binding — not the build — is what to check.
+
+**Each route ships its own HTML file, written after the build.**
+`scripts/prerender-meta.mjs` (run by `npm run build`, so Vercel runs it too) copies
+`dist/index.html` to `dist/clients/index.html`, `dist/team/index.html` and so on, with
+that route's title, description, canonical and OG/Twitter tags baked in. Vercel checks
+the filesystem before the catch-all rewrite, so those files are what `/team` and
+`/clients` actually serve. Without them every path served the landing page's head —
+five URLs all claiming `canonical: /`, which is how subpages get dropped as
+duplicates, and what unfurlers (which never run JS) saw. The script fails the build if
+a tag it rewrites is missing from `index.html`, so renaming one there cannot silently
+stop working. It rewrites the head only: the body is still React's, so full
+prerendering of content remains a separate, larger change.
 
 **Every page has exactly one `h1`.** `SectionOpener` renders page openers as `h1` and
 section openers as `h2`; everything under them steps down from there. The hero's "Work
