@@ -41,6 +41,79 @@
 
     <link rel="icon" type="image/svg+xml" href="/logo.svg" />
 
+    <!-- The loading screen that exists before JavaScript does.
+         PageTransition's veil is a React component, so it cannot paint until the
+         bundle has downloaded, parsed and mounted — measured at ~800ms on a
+         throttled phone profile and seconds on real mobile data. Until then the
+         page was the body gradient and nothing else, which is what "the loading
+         screen doesn't work" looked like.
+         Styles are inline and the mark is /logo.svg (a plain public file, not a
+         bundled asset) so this needs no stylesheet and no script to appear.
+         main.jsx removes it the moment React commits, by which point the veil is
+         already painted underneath. Values match LoadingScreen in
+         src/transition/PageTransition.jsx — keep the two in step. -->
+    <style>
+      #boot {
+        position: fixed;
+        inset: 0;
+        z-index: 1000;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 1.5rem;
+        background: linear-gradient(#2b2a68, #0a0d3d 1200px);
+      }
+      #boot img {
+        width: 4rem;
+        height: 4rem;
+        animation: boot-spin 1.4s linear infinite;
+      }
+      #boot div {
+        width: 10rem;
+        height: 0.25rem;
+        overflow: hidden;
+        border-radius: 9999px;
+        background: rgba(255, 255, 255, 0.15);
+      }
+      #boot span {
+        display: block;
+        width: 33%;
+        height: 100%;
+        border-radius: 9999px;
+        background: rgba(255, 255, 255, 0.8);
+        animation: boot-slide 1.2s ease-in-out infinite;
+      }
+      @keyframes boot-spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      @keyframes boot-slide {
+        from {
+          transform: translateX(-100%);
+        }
+        to {
+          transform: translateX(300%);
+        }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        #boot img,
+        #boot span {
+          animation: none;
+        }
+      }
+      @media (min-width: 640px) {
+        #boot img {
+          width: 5rem;
+          height: 5rem;
+        }
+        #boot div {
+          width: 12rem;
+        }
+      }
+    </style>
+
     <!-- Static, not injected: this is exactly the kind of thing a crawler reads
          without executing the app. Only facts the club can stand behind — no
          invented ratings, founding dates or member counts. -->
@@ -67,6 +140,10 @@
     </script>
   </head>
   <body>
+    <div id="boot" aria-hidden="true">
+      <img src="/logo.svg" alt="" width="80" height="80" />
+      <div><span></span></div>
+    </div>
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>

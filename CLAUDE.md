@@ -209,6 +209,18 @@ resting underline rather than only a hover state.
 **A 0.34s cross-fade, and a separate loading screen for the hero.** Two things
 that do not know about each other.
 
+**And before either of them, a loading screen that is plain HTML.** The veil below
+is a React component, so it cannot paint until the bundle has downloaded, parsed
+and mounted — ~800ms on a throttled phone profile, seconds on real mobile data, and
+until then the page was bare body gradient with nothing on it. `#boot` in
+`index.html` (inline `<style>`, `/logo.svg` rather than a bundled asset, so it needs
+neither stylesheet nor script) paints on the first byte; `ClearBootScreen` in
+`main.jsx` removes it in a layout effect on React's first commit, by which point the
+veil is already drawn underneath. Its logo size, bar width and animation timings
+mirror `LoadingScreen` so the hand-off is invisible — change one, change both. If
+the bundle never loads at all, this screen stays up: that is the same failure as
+before, minus the blank page.
+
 **Both pages are on screen at once, and that is the whole trick.** `mode="wait"`
 is the obvious way to write this and it cannot produce a clean fade: it unmounts
 the old page *before* mounting the new one, so there is necessarily a stretch in
