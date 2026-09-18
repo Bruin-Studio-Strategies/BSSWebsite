@@ -8,6 +8,15 @@
         "value": "inter",
         "createdAt": "2026-09-05T06:20:23.119Z",
         "reason": "PRODUCT.md Brand Commitments: Inter is the club-supplied brand kit's body face, paired with Agatho for display. Not a default pick."
+      },
+      {
+        "rule": "marquee",
+        "value": "*",
+        "files": [
+          "bss-web/index.html"
+        ],
+        "createdAt": "2026-09-18T02:53:27.777Z",
+        "reason": "The #boot bar is an indeterminate loading indicator shown only before JS mounts, mirroring LoadingScreen in src/transition/PageTransition.jsx; motion signals work in progress, not auto-scrolling content."
       }
     ]
   }
