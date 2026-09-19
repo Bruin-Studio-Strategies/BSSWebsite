@@ -37,6 +37,96 @@
 @tailwind components;
 @tailwind utilities;
 
+/* The page transition's loading screen: CSS animations, and a CSS delay rather
+   than a JS timer.
+
+   The veil is up precisely while the hero's WebGL scene compiles its shaders and
+   builds its geometry, and that work blocks the main thread for seconds on a
+   phone. A setTimeout and a framer-motion animation are both starved by it:
+   measured on a throttled profile, the spinner reached full opacity at 2.0s —
+   exactly as the veil began to fade — so every navigation back to the landing
+   page showed a bare gradient for two seconds and then a flash of spinner on its
+   way out. Compositor-driven opacity and transform keep running through the same
+   block, which is why the pre-JS #boot screen animated fine while this did not.
+
+   Values mirror #boot in index.html; change one, change both. */
+.veil-loader {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  opacity: 0;
+  /* Still a beat before it appears, so a machine that is ready immediately never
+     flashes a spinner — the old PATIENCE_MS, expressed where nothing can starve it. */
+  animation: veil-loader-in 0.3s ease 0.45s forwards;
+}
+
+.veil-loader-mark {
+  width: 4rem;
+  height: 4rem;
+  animation: veil-loader-spin 1.4s linear infinite;
+}
+
+.veil-loader-track {
+  width: 10rem;
+  height: 0.25rem;
+  overflow: hidden;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.15);
+}
+
+.veil-loader-fill {
+  display: block;
+  width: 33%;
+  height: 100%;
+  border-radius: 9999px;
+  background: rgba(255, 255, 255, 0.8);
+  animation: veil-loader-slide 1.2s ease-in-out infinite;
+}
+
+@keyframes veil-loader-in {
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes veil-loader-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@keyframes veil-loader-slide {
+  from {
+    transform: translateX(-100%);
+  }
+  to {
+    transform: translateX(300%);
+  }
+}
+
+@media (min-width: 640px) {
+  .veil-loader-mark {
+    width: 5rem;
+    height: 5rem;
+  }
+
+  .veil-loader-track {
+    width: 12rem;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .veil-loader {
+    animation-delay: 0s;
+  }
+
+  .veil-loader-mark,
+  .veil-loader-fill {
+    animation: none;
+  }
+}
+
 html{
   position:relative;
   scrollbar-color: #6a6a6b #09090b;

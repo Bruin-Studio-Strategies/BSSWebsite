@@ -1,0 +1,23 @@
+{
+  "detector": {
+    "ignoreRules": [],
+    "ignoreFiles": [],
+    "ignoreValues": [
+      {
+        "rule": "overused-font",
+        "value": "inter",
+        "createdAt": "2026-09-19T02:57:31.218Z",
+        "reason": "Brand kit body face paired with Agatho; DESIGN.md Body Font token and commit 472a9f9 record it as the club's own typeface, not a default pick."
+      },
+      {
+        "rule": "marquee",
+        "value": "*",
+        "files": [
+          "index.html"
+        ],
+        "createdAt": "2026-09-19T02:57:34.206Z",
+        "reason": "The #boot bar is an indeterminate loading indicator shown only before JS mounts, mirroring the .veil-loader bar; motion signals work in progress, not auto-scrolling content."
+      }
+    ]
+  }
+}

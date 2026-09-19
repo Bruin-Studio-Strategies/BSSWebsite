@@ -41,7 +41,7 @@ const MIN_COVER_MS = 700;
 // mid-compile would otherwise leave the loading screen up forever.
 const GATE_TIMEOUT_MS = 9000;
 
-function LoadingScreen({ visible, held, reduced }) {
+function LoadingScreen({ visible, reduced }) {
   return createPortal(
     <AnimatePresence>
       {visible && (
@@ -56,32 +56,20 @@ function LoadingScreen({ visible, held, reduced }) {
           exit={{ opacity: 0 }}
           transition={{ duration: reduced ? 0.15 : 0.45, ease: EASE }}
         >
-          <motion.div
-            className="flex flex-col items-center gap-6"
-            initial={false}
-            animate={{ opacity: held ? 1 : 0 }}
-            transition={{ duration: 0.3, ease: EASE }}
-          >
-            <motion.img
-              src={logo}
-              alt=""
-              className="h-16 w-16 sm:h-20 sm:w-20"
-              animate={reduced ? { rotate: 0 } : { rotate: 360 }}
-              transition={reduced ? undefined : { duration: 1.4, repeat: Infinity, ease: "linear" }}
-            />
-            <div className="h-1 w-40 overflow-hidden rounded-full bg-white/15 sm:w-48">
-              <motion.div
-                className="h-full w-1/3 rounded-full bg-white/80"
-                animate={reduced ? { x: "0%" } : { x: ["-100%", "300%"] }}
-                transition={
-                  reduced ? undefined : { duration: 1.2, repeat: Infinity, ease: "easeInOut" }
-                }
-              />
+          {/* Plain elements driven by CSS (see .veil-loader in index.css). This
+              used to be framer-motion gated on a `held` flag set by a 450ms
+              timeout, and both were starved by the very work the screen is
+              covering: the scene's shader compile blocks the main thread, so the
+              spinner appeared just as the veil left. */}
+          <div className="veil-loader">
+            <img src={logo} alt="" className="veil-loader-mark" />
+            <div className="veil-loader-track">
+              <span className="veil-loader-fill" />
             </div>
-          </motion.div>
+          </div>
 
           <span className="sr-only" role="status">
-            {held ? "Loading" : ""}
+            Loading
           </span>
         </motion.div>
       )}

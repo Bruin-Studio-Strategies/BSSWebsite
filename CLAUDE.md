@@ -251,6 +251,15 @@ late. A 700ms floor stops the screen blinking (what shows through a blink is the
 flat 2024 hero underneath), a 9s timeout releases it regardless, and the spinner
 only fades up after 450ms so a fast machine never sees one.
 
+**That spinner is CSS, and has to stay CSS** (`.veil-loader` in `index.css`). It was
+framer-motion revealed by a `setTimeout`, and both live on the main thread — the
+same thread the hero's shader compile blocks for seconds. Measured on a throttled
+phone profile, navigating back to the landing page held the veil up for 2.0s and the
+spinner hit full opacity at 2.0s, i.e. exactly as the veil began to fade: a bare
+gradient for the entire wait, which is what "it doesn't show any loading" was. The
+delay is now `animation-delay` and the motion is compositor-driven, so neither can
+be starved by the work the screen exists to cover.
+
 The floor and its expiry are deliberately two effects. In one effect keyed on the
 gate, the moment the gate opened its cleanup cancelled the pending timer and the
 branch that would have restarted it was skipped — the flag stuck on and no page
