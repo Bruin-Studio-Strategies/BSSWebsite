@@ -343,9 +343,15 @@ the editing rules (plain strings, no HTML; keep the typographic punctuation;
 headlines set in measured columns).
 
 Done so far: `/recruitment` (`recruitment.json`), `/clients` (`clients.json`),
-`/contact` (`contact.json`) and the two cross-page values in `site.json`
-(application URL, club address). Still inline: the landing page, nav and footer,
-and `siteMeta.js`.
+`/contact` (`contact.json`), `/` (`landing.json`) and the two cross-page values
+in `site.json` (application URL, club address). Still inline: nav and footer,
+`siteMeta.js`, and the team roster (`people.js`, which is its own problem — see
+the roster import note below).
+
+**`Hero.jsx` takes its copy as a prop.** It lives in `components/` and the copy
+lives in `pages/Landing/`, so importing it directly would have pointed a shared
+component at a page folder — the same inversion `site.json` exists to avoid.
+`Title.jsx` passes it down.
 
 The contact form's labels are copy and moved; its `name` attributes did not —
 those are the keys the EmailJS template reads. The club's general address had

@@ -15,6 +15,7 @@ these values lives here instead.
 | `recruitment.json` | `/recruitment` — header, the five cycle stages, the FAQ, the closing ask. |
 | `clients.json` | `/clients` — header, the six services, the process phases' copy, the closing ask. |
 | `contact.json` | `/contact` — header, the officer list by role, the form's labels and its outcome messages. |
+| `landing.json` | `/` — the hero's four lines, "What is BSS?", the Paramount testimonial, the team block. |
 
 ## Rules for editing
 
@@ -43,6 +44,10 @@ Two values look like content and are not:
   in `components/ProcessTimeline/phases.js`. The ruler is layout, not content —
   editing "Weeks 1 to 4" changes the label, not the bar. Removing a phase's
   entry fails the build with a named error rather than drawing a blank bar.
+- **The hero headline is two fields**, `headlineLead` and `headlineAccent`.
+  They are set at different sizes and animate as separate words, so the split is
+  typography rather than a sentence cut in half. A headline that needs three
+  parts is a component edit.
 
 ## Why the recruitment page is not cycle-aware
 

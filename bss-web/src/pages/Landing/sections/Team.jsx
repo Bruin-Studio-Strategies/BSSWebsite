@@ -8,6 +8,7 @@ import {
   OPENER_BALANCE,
   OPENER_MEASURE,
 } from "../../../components/openerAlignment.js";
+import { team } from "../content.js";
 
 const EASE = [0.16, 1, 0.3, 1];
 
@@ -83,32 +84,26 @@ export default function Team() {
             variants={fadeUp}
             className="inline-block font-sans text-xs sm:text-sm font-semibold uppercase tracking-[0.2em] text-sky"
           >
-            Meet the Team
+            {team.eyebrow}
           </motion.span>
           {/* h2, under the hero's h1 — see Info.jsx. */}
           <motion.h2
             variants={fadeUp}
             className={`font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-white mt-4 mb-6 leading-[1.1] ${OPENER_BALANCE}`}
           >
-            Our Team
+            {team.title}
           </motion.h2>
           <motion.p
             variants={fadeUp}
             className={`font-sans text-sm sm:text-base lg:text-lg text-white/70 leading-relaxed max-w-xl ${OPENER_MEASURE} ${OPENER_BALANCE}`}
           >
-            At Bruin Studio Strategies, we are more than UCLA students—we are a community of
-            innovators reshaping entertainment consulting. With diverse backgrounds in fields
-            including data science, economics, policy, film, business, and computer science, our
-            members bring diverse perspectives that blend analytical rigor with creative insight.
+            {team.body}
           </motion.p>
           <motion.p
             variants={fadeUp}
             className="mt-4 font-sans text-sm sm:text-base lg:text-lg text-white/70 leading-relaxed max-w-xl mx-auto md:mx-0"
           >
-            We pride ourselves on fostering a free-flowing and creative environment where
-            innovative ideas flourish, turning market research and unique ideas into actionable
-            strategies. Driven through innovation, our team delivers bold solutions that push the
-            boundaries of the entertainment industry.
+            {team.bodySecond}
           </motion.p>
           <motion.div
             variants={fadeUp}
@@ -116,7 +111,7 @@ export default function Team() {
           >
             <ApplyButton />
             <span className="font-sans text-white/50 text-sm">
-              Applications for Fall 2025 are live.
+              {team.applyNote}
             </span>
           </motion.div>
         </motion.div>
