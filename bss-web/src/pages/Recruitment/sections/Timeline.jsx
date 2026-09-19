@@ -1,6 +1,6 @@
 import { motion, useReducedMotion } from "framer-motion";
 
-import { STAGES } from "../stages.js";
+import { STAGES } from "../content.js";
 import useStageFocus from "../useStageFocus.js";
 
 const EASE = [0.16, 1, 0.3, 1];

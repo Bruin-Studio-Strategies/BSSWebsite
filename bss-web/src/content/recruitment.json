@@ -1,0 +1,79 @@
+{
+  "header": {
+    "eyebrow": "For Students",
+    "title": "Join Our Team",
+    "body": "Our next recruitment cycle is Fall 2026. Every stage below is open to any UCLA student, from any major — no prior consulting experience required."
+  },
+  "timeline": {
+    "eyebrow": "How It Works",
+    "title": "Recruitment Timeline",
+    "body": "Five stages, from the day applications open to final interviews. The last two are by invitation.",
+    "stages": [
+      {
+        "title": "Applications Open",
+        "date": "9/30",
+        "description": "Submit your application and take the first step toward joining BSS, where you’ll gain hands-on consulting experience in the entertainment industry."
+      },
+      {
+        "title": "Information Session",
+        "date": "10/6",
+        "time": "7:00 PM",
+        "location": "Pauley Pavilion Club M10A",
+        "attire": "Casual",
+        "description": "Learn more about BSS, meet current members, and get an inside look at what we do and how you can be part of the team."
+      },
+      {
+        "title": "Applications Due",
+        "date": "10/10",
+        "time": "11:59 PM",
+        "description": "Be sure to complete and submit your application by this date to be considered for the next round of recruitment."
+      },
+      {
+        "title": "Coffee Chats",
+        "date": "10/15",
+        "location": "Kerckhoff Patio",
+        "attire": "Business Casual",
+        "inviteOnly": true,
+        "description": "An informal opportunity to chat with BSS members, learn about their experiences, and see if BSS is the right fit for you."
+      },
+      {
+        "title": "Final Interviews",
+        "date": "10/17 + 10/18",
+        "attire": "Business Formal",
+        "inviteOnly": true,
+        "description": "Selected candidates will participate in final interviews, showcasing their simple casing skills and passion for entertainment consulting."
+      }
+    ]
+  },
+  "faq": {
+    "eyebrow": "Questions",
+    "title": "Frequently Asked Questions",
+    "body": "Interested in joining Bruin Studio Strategies or learning more about our process? We’ve answered some of the most common questions below to help you get started.",
+    "items": [
+      {
+        "question": "What does BSS look for in an applicant?",
+        "answer": "We’re looking for students who are passionate about entertainment consulting and eager to learn. Whether you’re detail-oriented, a strategic thinker, or someone with a knack for analytics, we value candidates who are driven, collaborative, and ready to contribute to our team."
+      },
+      {
+        "question": "Do I need any experience to join?",
+        "answer": "No prior experience is necessary! We welcome students from all backgrounds and majors. Our training and hands-on project experience will equip you with the skills you need to succeed in entertainment consulting."
+      },
+      {
+        "question": "What will I be doing in the first quarter?",
+        "answer": "In your first quarter, you’ll focus on building consulting fundamentals through resume workshops, case study training, and professional development sessions. You’ll gain key skills to prepare you for future projects and success in the consulting field."
+      },
+      {
+        "question": "What will I gain from this experience?",
+        "answer": "By joining BSS, you’ll gain practical experience in entertainment consulting, develop a strong professional network, and sharpen valuable skills like problem-solving, teamwork, and communication. This hands-on experience will prepare you for future opportunities in the consulting and entertainment industries."
+      }
+    ]
+  },
+  "closing": {
+    "eyebrow": "Next Step",
+    "title": "Ready to Apply?",
+    "lead": "Start your",
+    "applyLinkText": "application",
+    "betweenLinks": ", or email us at",
+    "tail": "if you have a question we haven’t answered."
+  }
+}

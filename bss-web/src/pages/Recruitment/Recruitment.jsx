@@ -6,7 +6,8 @@ import Footer from "../../components/Footer";
 import SectionDivider from "../../components/SectionDivider";
 import ApplyButton from "../../components/ApplyButton.jsx";
 import SectionOpener from "../../components/SectionOpener.jsx";
-import { APPLICATION_URL } from "../../applyLink.js";
+import { APPLICATION_URL, CONTACT_EMAIL } from "../../content/site.js";
+import { header, timeline, faq, closing } from "./content.js";
 // PLACEHOLDER: standing in until there is a photograph from an actual info
 // session or coffee chat, which is what a student deciding whether to apply
 // most wants to see — the room they would be walking into. One-line swap.
@@ -35,13 +36,11 @@ export default function Recruitment() {
       <header className="mx-auto mt-10 w-4/5 max-w-6xl sm:mt-16 md:grid md:grid-cols-[1fr_minmax(0,26rem)] md:items-center md:gap-x-12">
         <SectionOpener
           size="page"
-          eyebrow="For Students"
-          title="Join Our Team"
+          eyebrow={header.eyebrow}
+          title={header.title}
           action={<ApplyButton className="mt-8" />}
         >
-          Our next recruitment cycle is Fall 2026. Every stage below is open
-          to any UCLA student, from any major — no prior consulting experience
-          required.
+          {header.body}
         </SectionOpener>
 
         {/* The framed figure: brand-gradient bloom behind the photograph rather
@@ -66,9 +65,8 @@ export default function Recruitment() {
       <SectionDivider className="my-12 sm:my-16" />
 
       <section className="mx-auto w-4/5 max-w-6xl">
-        <SectionOpener eyebrow="How It Works" title="Recruitment Timeline" className="mb-12">
-          Five stages, from the day applications open to final interviews. The
-          last two are by invitation.
+        <SectionOpener eyebrow={timeline.eyebrow} title={timeline.title} className="mb-12">
+          {timeline.body}
         </SectionOpener>
         <Timeline />
       </section>
@@ -76,10 +74,8 @@ export default function Recruitment() {
       <SectionDivider className="my-12 sm:my-16" />
 
       <section className="mx-auto w-4/5 max-w-6xl">
-        <SectionOpener eyebrow="Questions" title="Frequently Asked Questions" className="mb-10">
-          Interested in joining Bruin Studio Strategies or learning more about
-          our process? We’ve answered some of the most common questions below to
-          help you get started.
+        <SectionOpener eyebrow={faq.eyebrow} title={faq.title} className="mb-10">
+          {faq.body}
         </SectionOpener>
         <FAQ />
       </section>
@@ -102,27 +98,27 @@ export default function Recruitment() {
       <section className="mx-auto mb-72 mt-24 w-4/5 max-w-6xl sm:mb-44">
         <div>
           <SectionOpener
-            eyebrow="Next Step"
-            title="Ready to Apply?"
+            eyebrow={closing.eyebrow}
+            title={closing.title}
             measure="max-w-[34rem] lg:max-w-none"
           >
-            Start your{" "}
+            {closing.lead}{" "}
             <a
               href={APPLICATION_URL}
               target="_blank"
               rel="noreferrer"
               className="text-sky underline decoration-sky/40 underline-offset-4 transition-colors duration-200 hover:decoration-sky"
             >
-              application
+              {closing.applyLinkText}
             </a>
-            , or email us at{" "}
+            {closing.betweenLinks}{" "}
             <a
-              href="mailto:bruinstudiostrategies@gmail.com"
+              href={`mailto:${CONTACT_EMAIL}`}
               className="text-sky underline decoration-sky/40 underline-offset-4 transition-colors duration-200 hover:decoration-sky"
             >
-              bruinstudiostrategies@gmail.com
+              {CONTACT_EMAIL}
             </a>{" "}
-            if you have a question we haven’t answered.
+            {closing.tail}
           </SectionOpener>
         </div>
       </section>

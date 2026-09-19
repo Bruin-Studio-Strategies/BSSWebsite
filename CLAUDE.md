@@ -280,7 +280,8 @@ timeline's axis) was explored and rejected: it made the reader decode a metaphor
 before finding a date, and dates plus dress code are the whole reason a student
 opens the page.
 
-The cycle lives in `pages/Recruitment/stages.js`. **The page is deliberately not
+The cycle lives in `src/content/recruitment.json`, read through
+`pages/Recruitment/content.js`. **The page is deliberately not
 cycle-aware** — it describes how recruitment works, and a date is an attribute of
 a stage rather than the thing the page is organised around. Every field except
 `title` is optional and a missing one drops its row, so a stage with no venue
@@ -319,16 +320,36 @@ which is why the closing block asks with a text link instead of a second button.
 block into a ruled row; both were used only by this page.
 
 **Every "Apply Now" on the site renders through `components/ApplyButton.jsx`, and
-the link lives in `src/applyLink.js`.** Before that there were four call sites
+the link lives in `src/content/site.json`.** Before that there were four call sites
 (navbar desktop, navbar mobile, the landing team block, the recruitment header,
 and the team page's closing band) carrying four different treatments and, worse,
 three different Google Form URLs.
 The component's two variants are hierarchy rather than taste: `solid` is the
 page's one call to action, `outline` is the navbar's standing link, which has to
 stay available on every page without competing with whatever solid button is
-below it. `applyLink.js` sits at the src root, not in `pages/Recruitment/`,
-because the navbar and the landing page both need it. Its URL is still last
-cycle's and needs confirming.
+below it. The URL sits in `content/site.json`, not in `pages/Recruitment/`,
+because the navbar and the landing page both need it; `content/site.js` is what
+components import, so nothing has to know the value comes from JSON. It is still
+last cycle's and needs confirming.
+
+## Content files (`src/content/`)
+
+**Every string the club should be able to change without opening a component
+lives here, and components own layout only.** This is the groundwork for a CMS —
+the club edits these files through a form rather than through code. The JSON is
+the source of truth; the sibling `.js` modules exist to give the reasoning
+somewhere to live, since JSON carries no comments. `src/content/README.md` holds
+the editing rules (plain strings, no HTML; keep the typographic punctuation;
+headlines set in measured columns).
+
+Done so far: `/recruitment` (`recruitment.json`) and the two cross-page values in
+`site.json` (application URL, club address). Still inline: the landing page, the
+clients page, contact, nav and footer, and `siteMeta.js`.
+
+The recruitment closing ask is split into `lead` / `applyLinkText` /
+`betweenLinks` / `tail` because that sentence wraps two links and the links are
+structure rather than content — the fragments change the words around them, not
+the shape.
 
 Not yet touched in this pass: navbar styling (only its mobile breakpoint moved, to
 `md`), most copy. The Paramount testimonial is set in Agatho Light at body scale — the one sanctioned
