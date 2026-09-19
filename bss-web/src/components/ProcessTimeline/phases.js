@@ -4,6 +4,13 @@
 // Two kinds of row, because the engagement genuinely has two kinds of phase:
 // `span` phases occupy a range of weeks, `milestone` phases are a single dated
 // handoff. `period` is the client-facing copy and stays exactly as written.
+//
+// Copy and geometry are separate on purpose. The titles, periods and
+// descriptions are content and live in `src/content/clients.json` where the club
+// can edit them; the numbers below are layout and stay here. Editing "Weeks 1 to
+// 4" should not be able to move a bar, and moving a bar is not a content edit.
+
+import { process } from "../../pages/Clients/content.js";
 
 export const LAST_WEEK = 9;
 
@@ -17,63 +24,34 @@ export const LAST_WEEK = 9;
 // every phase felt like it flicked past. An equal share means a milestone's
 // window is scroll distance during which the playhead barely moves — it dwells
 // on the diamond, which is exactly the beat a client handoff deserves.
-
-export const PHASES = [
-  {
-    type: "milestone",
-    week: 0,
-    headFrom: 0,
-    headTo: 0.5,
-    title: "Project Kickoff",
-    period: "Week 0",
-    description:
-      "The project officially begins with the creation and approval of the Statement of Work. The contract is finalized with the client and an initial kickoff call is scheduled with the project team to align expectations and goals.",
-  },
-  {
-    type: "span",
-    from: 1,
-    to: 4,
-    headFrom: 0.5,
-    headTo: 4,
-    title: "Research and Analysis",
-    period: "Weeks 1 to 4",
-    description:
-      "The team conducts extensive research and analysis to gather critical data and insights. A slide deck is also created to present these findings as well as the project process",
-  },
-  {
-    type: "milestone",
-    week: 4,
-    headFrom: 4,
-    headTo: 5,
-    deliverable: true,
-    title: "Midterm Deliverable",
-    period: "Week 4",
-    description:
-      "At the mid-point of the project, a deliverable is shared with the client. This is an opportunity to adjust the course of the project and get feedback on the project if needed.",
-  },
-  {
-    type: "span",
-    from: 5,
-    to: 9,
-    headFrom: 5,
-    headTo: 9,
-    title: "Additional Research and Refinements",
-    period: "Weeks 5 to 9",
-    description:
-      "Based on client feedback from the midterm deliverable, additional refinements and research are made to fine-tune the deliverables to implement the client's needs",
-  },
-  {
-    type: "milestone",
-    week: 9,
-    headFrom: 9,
-    headTo: 9,
-    deliverable: true,
-    title: "Final Deliverable",
-    period: "Week 9",
-    description:
-      "The final deliverable is completed and submitted to the client, concluding the project. The team will answer any questions and provide support as needed.",
-  },
+//
+// This list is the authority on order: the ruler reads left to right and the
+// copy is matched to it by `id`, not by its own position in the JSON.
+const GEOMETRY = [
+  { id: "kickoff", type: "milestone", week: 0, headFrom: 0, headTo: 0.5 },
+  { id: "research", type: "span", from: 1, to: 4, headFrom: 0.5, headTo: 4 },
+  { id: "midterm", type: "milestone", week: 4, headFrom: 4, headTo: 5, deliverable: true },
+  { id: "refinement", type: "span", from: 5, to: 9, headFrom: 5, headTo: 9 },
+  { id: "final", type: "milestone", week: 9, headFrom: 9, headTo: 9, deliverable: true },
 ];
+
+const copyById = new Map(process.phases.map((phase) => [phase.id, phase]));
+
+export const PHASES = GEOMETRY.map((geometry) => {
+  const copy = copyById.get(geometry.id);
+
+  // Loud rather than blank: a phase whose copy has been removed would otherwise
+  // draw an unlabelled bar on the schedule, which looks like a rendering fault
+  // rather than a missing paragraph. This fails the build instead.
+  if (!copy) {
+    throw new Error(
+      `Process phase "${geometry.id}" has no copy in src/content/clients.json. ` +
+        `Every phase in the schedule needs a matching entry with that id.`,
+    );
+  }
+
+  return { ...geometry, ...copy };
+});
 
 // Weeks that carry a client-facing handoff — drawn as brighter gridlines so the
 // two moments a client actually receives something read at a glance.

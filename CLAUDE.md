@@ -342,9 +342,15 @@ somewhere to live, since JSON carries no comments. `src/content/README.md` holds
 the editing rules (plain strings, no HTML; keep the typographic punctuation;
 headlines set in measured columns).
 
-Done so far: `/recruitment` (`recruitment.json`) and the two cross-page values in
-`site.json` (application URL, club address). Still inline: the landing page, the
-clients page, contact, nav and footer, and `siteMeta.js`.
+Done so far: `/recruitment` (`recruitment.json`), `/clients` (`clients.json`) and
+the two cross-page values in `site.json` (application URL, club address). Still
+inline: the landing page, contact, nav and footer, and `siteMeta.js`.
+
+**Copy and geometry stay apart.** A process phase's title, period and
+description are content; where its bar sits on the week ruler is layout and
+stays in `components/ProcessTimeline/phases.js`, which merges the two by `id`.
+Editing "Weeks 1 to 4" must not be able to move a bar. Same reasoning makes
+`motif` a fixed dropdown of the six drawings rather than a text field.
 
 The recruitment closing ask is split into `lead` / `applyLinkText` /
 `betweenLinks` / `tail` because that sentence wraps two links and the links are

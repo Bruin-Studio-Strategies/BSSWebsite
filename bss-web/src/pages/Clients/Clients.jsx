@@ -5,6 +5,8 @@ import board from "../../assets/optimized/board-1280.webp";
 import SectionDivider from "../../components/SectionDivider";
 import CtaButton from "../../components/CtaButton.jsx";
 import SectionOpener from "../../components/SectionOpener.jsx";
+import { CONTACT_EMAIL } from "../../content/site.js";
+import { header, process, closing } from "./content.js";
 export default function Clients() {
   return (
     <>
@@ -13,10 +15,8 @@ export default function Clients() {
           w-4/5, which read as a different page grafted on top. Also retires EB
           Garamond here: display type is Agatho. */}
       <header className="mx-auto mt-10 w-4/5 max-w-6xl sm:mt-16">
-        <SectionOpener size="page" eyebrow="For Clients" title="Work With BSS">
-          Bruin Studio Strategies provides honed expertise across various
-          sectors in the entertainment industry, supplying tailored consulting
-          services for creative and business ventures.
+        <SectionOpener size="page" eyebrow={header.eyebrow} title={header.title}>
+          {header.body}
         </SectionOpener>
       </header>
       {/* No divider between the header and Services: the services grid now opens
@@ -34,13 +34,11 @@ export default function Clients() {
           box. Set beside the paragraph it left a hole on wide screens, and
           stacked under it, it was a labelled card holding six words. */}
       <SectionOpener
-        eyebrow="How We Work"
-        title="Project Process"
+        eyebrow={process.eyebrow}
+        title={process.title}
         className="mx-auto mb-14 w-4/5 max-w-6xl"
       >
-        Throughout an 8-week timeframe, we can provide impactful deliverables
-        to clients. Each project runs with 2 project managers and 4&ndash;5
-        consultants.
+        {process.body}
       </SectionOpener>
       <Process />
       {/* Closing CTA as a ruled band on the schedule's own two-column template,
@@ -58,23 +56,23 @@ export default function Clients() {
       <section className="mx-auto mb-72 mt-28 w-4/5 max-w-6xl sm:mb-44">
         <div className="border-t border-white/15 pt-10 md:grid md:grid-cols-[1fr_minmax(0,26rem)] md:items-start md:gap-x-12">
           <SectionOpener
-            eyebrow="Next Step"
-            title="Get Started"
+            eyebrow={closing.eyebrow}
+            title={closing.title}
             measure="max-w-[34rem]"
             action={
               <CtaButton to="/contact" className="mt-7">
-                Contact Us
+                {closing.buttonLabel}
               </CtaButton>
             }
           >
-            Ready to receive our services? Email us at{" "}
+            {closing.lead}{" "}
             <a
-              href="mailto:bruinstudiostrategies@gmail.com"
+              href={`mailto:${CONTACT_EMAIL}`}
               className="text-sky underline decoration-sky/40 underline-offset-4 transition-colors duration-200 hover:decoration-sky"
             >
-              bruinstudiostrategies@gmail.com
+              {CONTACT_EMAIL}
             </a>{" "}
-            or fill out our contact form.
+            {closing.tail}
           </SectionOpener>
 
           <img

@@ -13,6 +13,7 @@ these values lives here instead.
 | --- | --- |
 | `site.json` | Values more than one page needs: the application URL, the club's general address. Read through `site.js`. |
 | `recruitment.json` | `/recruitment` — header, the five cycle stages, the FAQ, the closing ask. |
+| `clients.json` | `/clients` — header, the six services, the process phases' copy, the closing ask. |
 
 ## Rules for editing
 
@@ -28,6 +29,19 @@ these values lives here instead.
   missing one drops its row, so a stage with no venue booked yet still renders
   correctly. This is deliberate: it means a cycle can be published before every
   detail is settled.
+
+## Fields that are not free text
+
+Two values look like content and are not:
+
+- **`motif`** on a service names one of six drawings in
+  `components/ServiceMotifs/`: `market-research`, `growth-strategy`,
+  `data-analytics`, `brand-strategy`, `competitive-analysis`, `market-entry`.
+  Anything else renders nothing. The CMS exposes it as a dropdown.
+- **`id`** on a process phase is what matches it to its place on the week ruler
+  in `components/ProcessTimeline/phases.js`. The ruler is layout, not content —
+  editing "Weeks 1 to 4" changes the label, not the bar. Removing a phase's
+  entry fails the build with a named error rather than drawing a blank bar.
 
 ## Why the recruitment page is not cycle-aware
 
