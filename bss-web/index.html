@@ -39,7 +39,25 @@
     />
     <meta name="twitter:image" content="https://www.bruinstudiostrategies.com/og-image.jpg" />
 
-    <link rel="icon" type="image/svg+xml" href="/logo.svg" />
+    <!-- Icons. All generated from logo.svg by scripts/generate-favicons.mjs and
+         committed to public/ — re-run it after replacing the logo.
+
+         The whole set used to be one line pointing at /logo.svg, and Google's
+         result for the site showed its generic globe placeholder. Two causes.
+         Nothing answered /favicon.ico, which the favicon crawler asks for
+         regardless of what is declared here, and vercel.json's catch-all rewrite
+         answered it with index.html under a 200 — a success, for a file that is
+         not an image. And logo.svg is a bad small icon even where SVG favicons
+         are honoured: hairline ribbons on transparency, which fade to a grey
+         smudge at 16px on a white results card.
+
+         The raw SVG is deliberately not in this list any more. Browsers prefer it
+         when offered, and it is the one icon here with no navy tile behind it.
+         logo.svg is still the source artwork and still what #boot paints below. -->
+    <link rel="icon" href="/favicon.ico" sizes="16x16 32x32 48x48" />
+    <link rel="icon" type="image/png" sizes="96x96" href="/favicon-96.png" />
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    <link rel="manifest" href="/site.webmanifest" />
 
     <!-- The loading screen that exists before JavaScript does.
          PageTransition's veil is a React component, so it cannot paint until the

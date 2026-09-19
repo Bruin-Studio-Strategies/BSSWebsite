@@ -445,6 +445,39 @@ a tag it rewrites is missing from `index.html`, so renaming one there cannot sil
 stop working. It rewrites the head only: the body is still React's, so full
 prerendering of content remains a separate, larger change.
 
+**The favicon is a raster set on a navy tile, not the raw SVG.** Google's result
+for the site showed its generic globe placeholder, for two reasons. Nothing
+answered `/favicon.ico` — the favicon crawler requests that path whatever the page
+declares, and with no such file `vercel.json`'s catch-all rewrite returned
+`index.html` for it under a `200`, which claims success for something that is not
+an image. And the single `rel="icon"` the page did carry pointed at `/logo.svg`:
+hairline ribbons on transparency over a 1440px viewBox, which at 16px on a white
+results card fade to a grey smudge. Anything dropped in `public/` beats the
+rewrite, so shipping real files is the whole fix for the first half.
+
+`scripts/generate-favicons.mjs` (sharp, run by hand like the other two image
+scripts, output committed) renders `public/logo.svg` onto an opaque `#0F172E`
+tile — opaque because Google's white card and Chrome's near-black tab strip would
+each wash out one end of the blue-to-magenta gradient — trims it out of its
+oversized viewBox so the padding means the same on every edge, and writes
+`favicon.ico` (16/32/48 as PNG-in-ICO, packed by hand since sharp cannot write
+the format), `favicon-96.png`, `icon-192/512`, a maskable 512 and
+`apple-touch-icon.png`, plus `public/site.webmanifest`.
+
+**Stroke weight rides the output size, and that trade is the interesting part.**
+The mark is an outline drawing, so downscaling puts each ribbon on a fraction of
+a pixel and alpha-blends it to near-invisibility. Fattening fixes that and costs
+the mark if overdone: measured at 96px, by weight 36 the three rotated triangles
+have merged into one thick outline and it is no longer the brand mark. 20 is the
+most that still resolves as three. So 16/32/48 take heavier weights — the fan is
+not resolvable at those sizes at *any* weight, so they trade it for legibility —
+and 96 and up keep it. 512 is the untouched artwork. The raw SVG is deliberately
+no longer in the icon list: browsers prefer it when offered and it is the one icon
+with no tile behind it. `logo.svg` remains the source artwork and what `#boot`
+paints.
+
+`prerender-meta.mjs` does not touch these tags, so every route file carries them.
+
 **Every page has exactly one `h1`.** `SectionOpener` renders page openers as `h1` and
 section openers as `h2`; everything under them steps down from there. The hero's "Work
 with the Best" label is a paragraph, not a heading.
