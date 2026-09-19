@@ -1,20 +1,8 @@
 import Form from "./sections/Form";
 import Footer from "../../components/Footer";
 import SectionOpener from "../../components/SectionOpener.jsx";
-
-const EMAIL = "bruinstudiostrategies@gmail.com";
-
-// Roles rather than names, because the roster turns over every year and this list
-// would go stale a name at a time. A role with two holders keeps both addresses on
-// one row instead of becoming two rows that look like two different jobs.
-const OFFICERS = [
-  { role: "Co-Presidents", emails: ["awahab1@g.ucla.edu", "Kiankazr@gmail.com"] },
-  { role: "VP of External Affairs", emails: ["rianne.ke06@gmail.com"] },
-  {
-    role: "VPs of Internal Relations",
-    emails: ["carlieharwood@g.ucla.edu", "jyinghe07@g.ucla.edu"],
-  },
-];
+import { CONTACT_EMAIL } from "../../content/site.js";
+import { header, addresses, form } from "./content.js";
 
 // The Label token, which is Instrument Sky — not white at an opacity. Setting
 // these in white/50 is what made the page read as grey: with the headline in
@@ -68,12 +56,11 @@ export default function Contact() {
       <header className="mx-auto mt-10 w-4/5 max-w-6xl sm:mt-16">
         <SectionOpener
           size="page"
-          eyebrow="Contact"
-          title="Interested in working with us?"
+          eyebrow={header.eyebrow}
+          title={header.title}
           titleClassName="max-w-[26ch] text-balance lg:max-w-none"
         >
-          Whether you are a company, an organization, or a student on campus,
-          we would love to hear from you.
+          {header.body}
         </SectionOpener>
       </header>
 
@@ -107,20 +94,20 @@ export default function Contact() {
         <div className="grid gap-x-20 gap-y-16 border-t border-white/15 pt-10 md:grid-cols-[minmax(0,22rem)_minmax(0,1fr)]">
           <div>
             <p className="font-sans text-sm leading-relaxed text-white/70 sm:text-base">
-              Email us directly at
+              {addresses.lead}
             </p>
             {/* Body size below sm, not text-lg: the container is `w-4/5`, so on a
                 320px phone it is 256px wide and this 31-character address sets
                 about 273px at 18px — it would have pushed the page sideways.
                 `break-words` is the safety net under that, not the plan. */}
             <MailLink
-              address={EMAIL}
+              address={CONTACT_EMAIL}
               className="mt-2 inline-block break-words text-sm leading-snug decoration-sky/40 sm:text-xl"
             />
 
-            <ColumnHeading className="mt-12">By role</ColumnHeading>
+            <ColumnHeading className="mt-12">{addresses.rolesLabel}</ColumnHeading>
             <dl className="mt-4">
-              {OFFICERS.map(({ role, emails }) => (
+              {addresses.officers.map(({ role, emails }) => (
                 <div key={role} className="border-t border-white/10 py-4 last:border-b">
                   <dt className="font-sans text-sm text-white/70">{role}</dt>
                   <dd className="mt-1.5 flex flex-col gap-1">
@@ -137,7 +124,7 @@ export default function Contact() {
             {/* h2, directly under the page's h1 — it was an h3, which skipped a
                 level in the outline. */}
             <h2 className="font-display text-xl leading-tight text-white sm:text-2xl md:text-3xl">
-              Or send a message
+              {form.heading}
             </h2>
             <div className="mt-8">
               <Form />

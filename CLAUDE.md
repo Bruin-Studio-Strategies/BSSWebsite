@@ -342,9 +342,15 @@ somewhere to live, since JSON carries no comments. `src/content/README.md` holds
 the editing rules (plain strings, no HTML; keep the typographic punctuation;
 headlines set in measured columns).
 
-Done so far: `/recruitment` (`recruitment.json`), `/clients` (`clients.json`) and
-the two cross-page values in `site.json` (application URL, club address). Still
-inline: the landing page, contact, nav and footer, and `siteMeta.js`.
+Done so far: `/recruitment` (`recruitment.json`), `/clients` (`clients.json`),
+`/contact` (`contact.json`) and the two cross-page values in `site.json`
+(application URL, club address). Still inline: the landing page, nav and footer,
+and `siteMeta.js`.
+
+The contact form's labels are copy and moved; its `name` attributes did not —
+those are the keys the EmailJS template reads. The club's general address had
+been declared a third and fourth time as a local `const EMAIL` in `Contact.jsx`
+and `Form.jsx`; both now read `site.js`.
 
 **Copy and geometry stay apart.** A process phase's title, period and
 description are content; where its bar sits on the week ruler is layout and

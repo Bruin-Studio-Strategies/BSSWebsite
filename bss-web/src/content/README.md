@@ -14,6 +14,7 @@ these values lives here instead.
 | `site.json` | Values more than one page needs: the application URL, the club's general address. Read through `site.js`. |
 | `recruitment.json` | `/recruitment` — header, the five cycle stages, the FAQ, the closing ask. |
 | `clients.json` | `/clients` — header, the six services, the process phases' copy, the closing ask. |
+| `contact.json` | `/contact` — header, the officer list by role, the form's labels and its outcome messages. |
 
 ## Rules for editing
 
