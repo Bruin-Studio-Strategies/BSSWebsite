@@ -345,7 +345,16 @@ headlines set in measured columns).
 Done so far: `/recruitment` (`recruitment.json`), `/clients` (`clients.json`),
 `/contact` (`contact.json`), `/` (`landing.json`), `/team` (`team.json`) and the
 cross-page values in `site.json` (application URL, club address, the nav links,
-the footer's social links). Still inline: `siteMeta.js`.
+the footer's social links, and each route's SEO title and description in
+`seo.json`). Every page's copy is now out of its components.
+
+**`seo.json` has two readers, on purpose.** `src/seo/siteMeta.js` imports it the
+way Vite imports any JSON, for the app; `scripts/prerender-meta.mjs` reads the
+same file with `readFile` instead of importing `siteMeta.js`, because a JSON
+import inside a module Node runs directly needs an import attribute and a Node
+version that honours it. One source of truth, two readers — and the script's
+guard still fails the build with a named error if a tag it rewrites is missing
+from `index.html`.
 
 **The five nav links are written once.** The navbar's desktop row, the navbar's
 mobile menu and the footer all render `NAVIGATION` from `site.json`; they used

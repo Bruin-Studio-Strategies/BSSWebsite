@@ -17,6 +17,7 @@ these values lives here instead.
 | `contact.json` | `/contact` — header, the officer list by role, the form's labels and its outcome messages. |
 | `landing.json` | `/` — the hero's four lines, "What is BSS?", the Paramount testimonial, the team block. |
 | `team.json` | `/team` — header, the three band headings, the closing ask. The roster itself is `people.js`, not here. |
+| `seo.json` | The title and description each route gives Google and link unfurlers, plus the site's domain and name. |
 
 ## Rules for editing
 
@@ -45,6 +46,12 @@ Two values look like content and are not:
   in `components/ProcessTimeline/phases.js`. The ruler is layout, not content —
   editing "Weeks 1 to 4" changes the label, not the bar. Removing a phase's
   entry fails the build with a named error rather than drawing a blank bar.
+- **`seo.json`'s route keys are structure.** They have to match the routes in
+  `App.jsx` — the title and description under each are the copy. `index.html`
+  carries the landing page's values separately as static defaults for crawlers
+  that never run JavaScript, so those two change together. The build fails with
+  a named error if a tag it rewrites has gone missing, which is deliberate: a
+  silent failure here is how five pages end up all claiming to be the homepage.
 - **`path` on a nav link is structure.** It has to match a route in `App.jsx`,
   so the CMS offers the five that exist rather than a text field. Only `label`
   is copy. The navbar's desktop row, its mobile menu and the footer all read
