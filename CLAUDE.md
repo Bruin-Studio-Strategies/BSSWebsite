@@ -344,8 +344,14 @@ headlines set in measured columns).
 
 Done so far: `/recruitment` (`recruitment.json`), `/clients` (`clients.json`),
 `/contact` (`contact.json`), `/` (`landing.json`), `/team` (`team.json`) and the
-two cross-page values in `site.json` (application URL, club address). Still
-inline: nav and footer, and `siteMeta.js`.
+cross-page values in `site.json` (application URL, club address, the nav links,
+the footer's social links). Still inline: `siteMeta.js`.
+
+**The five nav links are written once.** The navbar's desktop row, the navbar's
+mobile menu and the footer all render `NAVIGATION` from `site.json`; they used
+to write the same list out by hand three times, which is three places to forget
+when a route changes. `path` stays a fixed choice of the routes `App.jsx`
+defines — only `label` is copy.
 
 The team page's *copy* moved; its roster did not. `people.js` is bulk-replaced
 once a year from a spreadsheet rather than edited a field at a time, and each

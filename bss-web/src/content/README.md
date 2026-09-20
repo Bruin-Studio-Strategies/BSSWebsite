@@ -11,7 +11,7 @@ these values lives here instead.
 
 | File | Feeds |
 | --- | --- |
-| `site.json` | Values more than one page needs: the application URL, the club's general address. Read through `site.js`. |
+| `site.json` | Values more than one page needs: the application URL, the club's general address, the five nav links, the footer's social links. Read through `site.js`. |
 | `recruitment.json` | `/recruitment` — header, the five cycle stages, the FAQ, the closing ask. |
 | `clients.json` | `/clients` — header, the six services, the process phases' copy, the closing ask. |
 | `contact.json` | `/contact` — header, the officer list by role, the form's labels and its outcome messages. |
@@ -45,6 +45,10 @@ Two values look like content and are not:
   in `components/ProcessTimeline/phases.js`. The ruler is layout, not content —
   editing "Weeks 1 to 4" changes the label, not the bar. Removing a phase's
   entry fails the build with a named error rather than drawing a blank bar.
+- **`path` on a nav link is structure.** It has to match a route in `App.jsx`,
+  so the CMS offers the five that exist rather than a text field. Only `label`
+  is copy. The navbar's desktop row, its mobile menu and the footer all read
+  this one list.
 - **`bands` on the team page is keyed, not a list.** Renaming "Advisory Board"
   is a content edit; adding a fourth group is not — which groups exist and which
   people feed them is structure in `TeamPage.jsx`.

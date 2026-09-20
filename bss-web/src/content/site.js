@@ -23,3 +23,20 @@ export const APPLICATION_URL = site.applyUrl;
 
 /** The club's general address, shown on the contact page and the closing ask. */
 export const CONTACT_EMAIL = site.contactEmail;
+
+/**
+ * The five links, in order, for the navbar's desktop row, the navbar's mobile
+ * menu and the footer. All three used to write the same list out by hand, which
+ * is three places to forget when a route is added and three chances for them to
+ * disagree.
+ *
+ * `path` is structure, not copy: it has to match a route in `App.jsx`, so the
+ * CMS offers the five that exist rather than a text field. `label` is the copy.
+ */
+export const NAVIGATION = site.navigation;
+
+/** Footer social links. */
+export const SOCIAL = site.social;
+
+/** The club's name, as it is printed in the footer. */
+export const ORGANIZATION_NAME = site.organizationName;

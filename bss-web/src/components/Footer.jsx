@@ -2,6 +2,7 @@ import { motion, useReducedMotion } from "framer-motion";
 import { FaInstagram, FaLinkedin } from "react-icons/fa";
 import logo from "../assets/logo-plain.png";
 import FooterItem from "./FooterItem";
+import { NAVIGATION, ORGANIZATION_NAME, SOCIAL } from "../content/site.js";
 
 const EASE = [0.16, 1, 0.3, 1];
 
@@ -36,7 +37,7 @@ export default function Footer() {
     >
       <motion.div variants={fadeUp} className="flex items-center gap-3 sm:mr-10">
         <img src={logo} alt="" className="h-6 w-6 opacity-80" />
-        <span className="font-display text-sm text-white/70">Bruin Studio Strategies</span>
+        <span className="font-display text-sm text-white/70">{ORGANIZATION_NAME}</span>
       </motion.div>
 
       {/* Wrapped rather than stacked on mobile. Five links in a single column
@@ -52,11 +53,11 @@ export default function Footer() {
         variants={fadeUp}
         className="flex max-w-[17rem] flex-wrap items-center justify-center gap-x-6 gap-y-2 sm:max-w-none sm:flex-nowrap sm:gap-x-8"
       >
-        <FooterItem path="/">Home</FooterItem>
-        <FooterItem path="/clients">For Clients</FooterItem>
-        <FooterItem path="/recruitment">For Students</FooterItem>
-        <FooterItem path="/team">Our Team</FooterItem>
-        <FooterItem path="/contact">Contact</FooterItem>
+        {NAVIGATION.map(({ path, label }) => (
+          <FooterItem key={path} path={path}>
+            {label}
+          </FooterItem>
+        ))}
       </motion.div>
 
       <motion.div variants={fadeUp} className="flex items-center justify-center gap-4 sm:ml-auto">
@@ -64,10 +65,10 @@ export default function Footer() {
           whileHover={reducedMotion ? undefined : { scale: 1.1, rotate: -8 }}
           transition={{ type: "spring", stiffness: 300, damping: 15 }}
           className="flex h-9 w-9 items-center justify-center rounded-full border border-white/20 text-white/70 transition-colors duration-200 hover:border-magenta hover:text-magenta"
-          href="https://www.instagram.com/bruinstudiostrategies/"
+          href={SOCIAL.instagram}
           target="_blank"
           rel="noopener noreferrer"
-          aria-label="Bruin Studio Strategies on Instagram"
+          aria-label={`${ORGANIZATION_NAME} on Instagram`}
         >
           <FaInstagram className="h-4 w-4" />
         </motion.a>
@@ -75,10 +76,10 @@ export default function Footer() {
           whileHover={reducedMotion ? undefined : { scale: 1.1, rotate: 8 }}
           transition={{ type: "spring", stiffness: 300, damping: 15 }}
           className="flex h-9 w-9 items-center justify-center rounded-full border border-white/20 text-white/70 transition-colors duration-200 hover:border-sky hover:text-sky"
-          href="https://www.linkedin.com/company/bruin-studio-strategies"
+          href={SOCIAL.linkedin}
           target="_blank"
           rel="noopener noreferrer"
-          aria-label="Bruin Studio Strategies on LinkedIn"
+          aria-label={`${ORGANIZATION_NAME} on LinkedIn`}
         >
           <FaLinkedin className="h-4 w-4" />
         </motion.a>

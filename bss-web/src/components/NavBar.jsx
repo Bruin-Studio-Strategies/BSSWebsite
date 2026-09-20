@@ -5,6 +5,7 @@ import ApplyButton from "./ApplyButton.jsx";
 import logo from "../assets/logo.png";
 import { Link } from "react-router-dom";
 import { MdClose } from "react-icons/md";
+import { NAVIGATION } from "../content/site.js";
 
 const EASE = [0.16, 1, 0.3, 1];
 
@@ -52,11 +53,11 @@ export default function NavBar() {
             960–1024px, the one stretch where the row at its usual 48px spacing is
             about 50px wider than the space it has. */}
         <div className="justify-start whitespace-nowrap md:gap-x-8 min-[1024px]:gap-x-12 lg:gap-x-16 items-center w-full ml-5 mt-4 hidden md:flex">
-          <NavItem path="/">Home</NavItem>
-          <NavItem path="/clients">For Clients</NavItem>
-          <NavItem path="/recruitment">For Students</NavItem>
-          <NavItem path="/team">Our Team</NavItem>
-          <NavItem path="/contact">Contact</NavItem>
+          {NAVIGATION.map(({ path, label }) => (
+            <NavItem key={path} path={path}>
+              {label}
+            </NavItem>
+          ))}
           <ApplyButton variant="outline" className="ml-auto" />
         </div>
       </motion.nav>
@@ -82,21 +83,19 @@ export default function NavBar() {
               variants={mobileMenu}
               className="flex flex-col items-center pt-20 h-full space-y-8 text-white"
             >
-              <motion.li variants={mobileItem}>
-                <NavItem path="/" className="text-lg" onClick={toggleMenu}>Home</NavItem>
-              </motion.li>
-              <motion.li variants={mobileItem}>
-                <NavItem path="/clients" onClick={toggleMenu}>For Clients</NavItem>
-              </motion.li>
-              <motion.li variants={mobileItem}>
-                <NavItem path="/recruitment" onClick={toggleMenu}>For Students</NavItem>
-              </motion.li>
-              <motion.li variants={mobileItem}>
-                <NavItem path="/team" onClick={toggleMenu}>Our Team</NavItem>
-              </motion.li>
-              <motion.li variants={mobileItem}>
-                <NavItem path="/contact" onClick={toggleMenu}>Contact</NavItem>
-              </motion.li>
+              {/* "Home" alone carries text-lg, as it did when these were written
+                  out by hand — the first item sets the menu's scale. */}
+              {NAVIGATION.map(({ path, label }) => (
+                <motion.li key={path} variants={mobileItem}>
+                  <NavItem
+                    path={path}
+                    className={path === "/" ? "text-lg" : undefined}
+                    onClick={toggleMenu}
+                  >
+                    {label}
+                  </NavItem>
+                </motion.li>
+              ))}
               <motion.li variants={mobileItem}>
                 <ApplyButton variant="outline" onClick={toggleMenu} />
               </motion.li>
