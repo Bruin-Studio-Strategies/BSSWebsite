@@ -383,6 +383,15 @@ stays in `components/ProcessTimeline/phases.js`, which merges the two by `id`.
 Editing "Weeks 1 to 4" must not be able to move a bar. Same reasoning makes
 `motif` a fixed dropdown of the six drawings rather than a text field.
 
+**`.pages.yml` at the repo root is the CMS.** Officers sign in at pagescms.org
+with GitHub, pick this repo, and that file renders as a labelled form; saving
+writes the JSON back and Vercel deploys it. Two rules when editing it: declare
+only what the club should change, because **a field left undeclared can be
+dropped when the CMS rewrites the file**; and anything with a fixed set of valid
+values is a `select`, never a string. That is why a service's `motif`, a process
+phase's `id` and a nav link's `path` are dropdowns — a free-text motif draws an
+empty cell and a free-text path 404s.
+
 The recruitment closing ask is split into `lead` / `applyLinkText` /
 `betweenLinks` / `tail` because that sentence wraps two links and the links are
 structure rather than content — the fragments change the words around them, not
