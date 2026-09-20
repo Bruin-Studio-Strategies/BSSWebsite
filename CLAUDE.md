@@ -362,10 +362,38 @@ to write the same list out by hand three times, which is three places to forget
 when a route changes. `path` stays a fixed choice of the routes `App.jsx`
 defines — only `label` is copy.
 
-The team page's *copy* moved; its roster did not. `people.js` is bulk-replaced
-once a year from a spreadsheet rather than edited a field at a time, and each
-person carries a headshot that has to be resized before the browser sees it, so
-it is on its own track.
+## Roster imports (`roster-import/`)
+
+**The roster is replaced in bulk, not edited a person at a time.** It turns over
+all at once every year, and retyping 37 people through a CMS form is the job
+nobody does. The club drops `roster.csv` and a folder of photographs into
+`roster-import/` through github.com's upload button; the *Import roster* Action
+runs `scripts/import-roster.mjs` then `scripts/optimize-headshots.mjs`, builds,
+and commits the result. Locally that is `npm run roster`.
+
+**`slug` is a column, not something derived.** The existing slugs follow no rule
+anyone could rederive — "Allison McCabe" is filed as `Alli_Mccabe`,
+"Jesse Acosta-Huerta" as `Jesse_Acosta_Huerta` — so deriving them from names
+silently detached three people from their photographs on the first test run. The
+sheet's value wins; a derived one is only the fallback for somebody new. The
+CSV also carries `photoFile`, the filename exactly as it came out of the
+photoshoot Drive, which is what saves anyone renaming 37 files by hand. A
+returning member leaves it blank and keeps the headshot they have.
+
+**Nothing is written until every row is checked.** The failure this replaces was
+silent: a slug that did not match its photograph rendered that person as their
+initials and nobody noticed. It now refuses the whole import and names each
+problem by spreadsheet row. LinkedIn URLs are normalised on the way through —
+that caught a live deep link into someone's education subpage.
+
+**`optimize-headshots.mjs` takes the roster as its authority, not the folder.**
+`Headshots/` is an archive and keeps everyone the club has ever photographed;
+deriving from all of it kept departed members in the bundle, because
+`headshots.js` globs eagerly. Derivatives with no matching person are removed —
+the first real run dropped one. The originals are never deleted.
+
+The team page's *copy* is in `team.json` and moves through the CMS like any
+other page; only the roster goes through this path.
 
 **`Hero.jsx` takes its copy as a prop.** It lives in `components/` and the copy
 lives in `pages/Landing/`, so importing it directly would have pointed a shared

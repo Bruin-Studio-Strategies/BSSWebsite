@@ -1,0 +1,77 @@
+# Rebuilds the team roster whenever somebody uploads a new one.
+#
+# The club's whole process is: edit the sheet, download it as CSV, drag it and
+# the photo folder into roster-import/ using github.com's own upload button.
+# This runs on that push, resizes the photographs, and commits the result —
+# which Vercel then deploys. Nobody has to install anything or use git.
+#
+# It does not loop. A push made with GITHUB_TOKEN does not trigger further
+# workflow runs, so this job's own commit does not start it again.
+
+name: Import roster
+
+on:
+  push:
+    paths:
+      - "roster-import/**"
+  # Also runnable from the Actions tab, for re-running the resize after a change
+  # to the optimizer itself.
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+# A second upload while the first is still resizing would race it to the same
+# files. Queue instead, and let the later one win.
+concurrency:
+  group: roster-import
+  cancel-in-progress: false
+
+jobs:
+  import:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: bss-web/package-lock.json
+
+      # sharp is a devDependency and does the resizing, so this needs the full
+      # install rather than --omit=dev.
+      - name: Install
+        working-directory: bss-web
+        run: npm ci
+
+      # Fails the job with a readable list — "Row 14: …" — if the sheet and the
+      # photo folder disagree. Nothing is written when it fails, so a bad upload
+      # leaves the live roster alone.
+      - name: Read the roster
+        working-directory: bss-web
+        run: node scripts/import-roster.mjs
+
+      - name: Resize the headshots
+        working-directory: bss-web
+        run: node scripts/optimize-headshots.mjs
+
+      # Proves the site still builds before the change is committed, rather than
+      # letting Vercel discover it afterwards.
+      - name: Build
+        working-directory: bss-web
+        run: npm run build
+
+      - name: Commit
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          if git diff --cached --quiet; then
+            echo "Roster is unchanged — nothing to commit."
+            exit 0
+          fi
+          git commit -m "Update the team roster
+
+          Rebuilt from roster-import/ by the Import roster workflow."
+          git push

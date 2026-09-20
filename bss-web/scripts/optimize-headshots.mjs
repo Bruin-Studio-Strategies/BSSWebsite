@@ -12,10 +12,14 @@
  * clean checkout builds without sharp and Vercel never pays the conversion
  * cost. Re-run it after adding or replacing a headshot; --force re-encodes
  * files that already exist.
+ *
+ * Which people get derivatives is decided by src/content/people.json, not by
+ * what is sitting in Headshots/. Anything in the output folder without a
+ * matching person is removed; the originals are left alone.
  */
 
 import { createHash } from "node:crypto";
-import { readdir, readFile, mkdir, writeFile, stat } from "node:fs/promises";
+import { readdir, readFile, mkdir, rm, writeFile, stat } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 import sharp from "sharp";
@@ -34,6 +38,23 @@ const LQIP_WIDTH = 20;
 
 const force = process.argv.includes("--force");
 
+// The roster decides which derivatives exist, not the archive folder.
+// Headshots/ keeps every original the club has ever supplied — it is the
+// archive and nothing imports it — so deriving from all of it would keep last
+// year's members in the bundle forever. headshots.js globs eagerly, so an
+// orphaned derivative is a URL string shipped to every visitor for somebody no
+// longer on the page.
+const PEOPLE_JSON = path.join(HERE, "..", "src", "content", "people.json");
+
+// The shared grey silhouette a member without a photograph falls back to. Not a
+// person, never on the roster, always kept.
+const FALLBACK_SLUG = "Placeholder";
+
+async function rosterSlugs() {
+  const people = JSON.parse(await readFile(PEOPLE_JSON, "utf8"));
+  return new Set([...people.map((person) => person.slug), FALLBACK_SLUG]);
+}
+
 /** Kian_Kazranian.JPG -> Kian_Kazranian */
 const slugOf = (file) => path.basename(file, path.extname(file));
 
@@ -47,8 +68,13 @@ async function exists(file) {
 }
 
 async function main() {
-  const files = (await readdir(SRC_DIR)).filter((f) => /\.(jpe?g|png)$/i.test(f));
-  if (files.length === 0) throw new Error(`No source headshots found in ${SRC_DIR}`);
+  const wanted = await rosterSlugs();
+
+  const all = (await readdir(SRC_DIR)).filter((f) => /\.(jpe?g|png)$/i.test(f));
+  if (all.length === 0) throw new Error(`No source headshots found in ${SRC_DIR}`);
+
+  const files = all.filter((f) => wanted.has(slugOf(f)));
+  const archived = all.length - files.length;
 
   await mkdir(OUT_DIR, { recursive: true });
 
@@ -131,10 +157,23 @@ async function main() {
     `${JSON.stringify(manifest, null, 2)}\n`,
   );
 
+  // Anything left over belongs to someone who has left. Derivatives are
+  // regenerable, so removing them costs nothing; the originals in Headshots/ are
+  // deliberately untouched, because that folder is the club's archive.
+  const pruned = [];
+  for (const file of await readdir(OUT_DIR)) {
+    if (file === "placeholders.json") continue;
+    if (wanted.has(file.replace(/-\d+\.(webp|jpg)$/, ""))) continue;
+    await rm(path.join(OUT_DIR, file));
+    pruned.push(file);
+  }
+
   const mb = (n) => `${(n / 1024 / 1024).toFixed(1)} MB`;
   console.log(
-    `${files.length} headshots — ${written} written, ${skipped} already present\n` +
-      `${mb(bytesIn)} of originals -> ${mb(bytesOut)} of derivatives`,
+    `${files.length} headshots — ${written} written, ${skipped} already present` +
+      (archived ? `, ${archived} archived but not on the roster` : "") +
+      (pruned.length ? `, ${pruned.length} stale derivative(s) removed` : "") +
+      `\n${mb(bytesIn)} of originals -> ${mb(bytesOut)} of derivatives`,
   );
 }
 
