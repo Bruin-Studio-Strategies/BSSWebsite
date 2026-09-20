@@ -15,8 +15,9 @@
  */
 
 import clients from "../../content/clients.json";
+import fill from "../../content/tokens.js";
 
-export const { header, services, process, closing } = clients;
+export const { header, services, process, closing } = fill(clients);
 
 /** The six service cells, in the order they are read. */
 export const SERVICES = services.items;

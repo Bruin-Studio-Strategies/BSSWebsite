@@ -17,7 +17,7 @@ these values lives here instead.
 | `contact.json` | `/contact` — header, the officer list by role, the form's labels and its outcome messages. |
 | `landing.json` | `/` — the hero's four lines, "What is BSS?", the Paramount testimonial, the team block. |
 | `team.json` | `/team` — header, the three band headings, the closing ask. The roster itself is `people.js`, not here. |
-| `seo.json` | The title and description each route gives Google and link unfurlers, plus the site's domain and name. |
+| `seo.json` | The title and description each route gives Google and link unfurlers, the site's domain and name, and the 404 page. |
 
 ## Rules for editing
 
@@ -33,6 +33,23 @@ these values lives here instead.
   missing one drops its row, so a stage with no venue booked yet still renders
   correctly. This is deliberate: it means a cycle can be published before every
   detail is settled.
+
+## One fact, one place
+
+Anything said on two pages is stored once and written as a token. `{cycle}`
+comes from `site.json` and is filled by `tokens.js` wherever it appears — in any
+string in any of these files, not just the two that use it today.
+
+This exists because it already went wrong: the recruitment page's introduction
+and the landing page's apply note both named the cycle, they sit in two
+different CMS forms, and the live site shipped "Fall 2026" on one against
+"Fall 2025" on the other. An unrecognised token is left on the page as written
+(`{cyle}` prints as itself) rather than blanked, so a typo says what to fix
+instead of leaving a hole in a sentence.
+
+The 404 works the same way: `notFound.body` is both the sentence on the page
+and the search-result description, because they were two strings opening with
+the same clause and only one of them changed when the wording did.
 
 ## Fields that are not free text
 

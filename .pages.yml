@@ -47,6 +47,9 @@ content:
             label: Introduction
             type: text
             required: true
+            description: >-
+              Write {cycle} rather than typing the year — it comes from
+              "Current recruitment cycle" under Site-wide.
 
       - name: timeline
         label: Recruitment timeline
@@ -382,7 +385,9 @@ content:
           - name: applyNote
             label: Note beside the Apply button
             type: string
-            description: Names a cycle, so it goes stale — check it each autumn.
+            description: >-
+              Write {cycle} rather than typing the year — it comes from
+              "Current recruitment cycle" under Site-wide.
 
   # --- Team --------------------------------------------------------------
   - name: team
@@ -553,6 +558,15 @@ content:
         label: Club email address
         type: string
         required: true
+      - name: cycle
+        label: Current recruitment cycle
+        type: string
+        required: true
+        description: >-
+          e.g. "Fall 2027". Write this once here and it updates everywhere the
+          site names the cycle. Type {cycle} into any other text box to print
+          it. It used to be spelled out on two pages separately, and the site
+          shipped one saying Fall 2025 while the other said Fall 2026.
       - name: organizationName
         label: Club name
         type: string
@@ -653,10 +667,24 @@ content:
       - name: notFound
         label: "\"Page not found\" page"
         type: object
+        description: >-
+          Used for both the browser tab and the words on the page, so the two
+          cannot disagree.
         fields:
-          - name: title
-            label: Title
+          - name: eyebrow
+            label: Eyebrow
             type: string
-          - name: description
-            label: Description
+          - name: title
+            label: Heading
+            type: string
+            required: true
+          - name: body
+            label: Body
             type: text
+            required: true
+            description: >-
+              Shown on the page and used as the search-result description, so
+              keep it under about 155 characters.
+          - name: buttonLabel
+            label: Button
+            type: string

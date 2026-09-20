@@ -17,5 +17,6 @@
  */
 
 import team from "../../content/team.json";
+import fill from "../../content/tokens.js";
 
-export const { header, bands, closing } = team;
+export const { header, bands, closing } = fill(team);

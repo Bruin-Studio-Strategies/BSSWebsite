@@ -29,7 +29,9 @@
     }
   ],
   "notFound": {
+    "eyebrow": "404",
     "title": "Page not found",
-    "description": "That page has moved or never existed."
+    "body": "That page has moved or never existed. Everything the site has is one click away in the navigation above.",
+    "buttonLabel": "Back to home"
   }
 }

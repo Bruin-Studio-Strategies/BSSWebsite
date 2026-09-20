@@ -14,5 +14,6 @@
  */
 
 import contact from "../../content/contact.json";
+import fill from "../../content/tokens.js";
 
-export const { header, addresses, form } = contact;
+export const { header, addresses, form } = fill(contact);

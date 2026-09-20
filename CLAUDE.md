@@ -356,6 +356,23 @@ version that honours it. One source of truth, two readers — and the script's
 guard still fails the build with a named error if a tag it rewrites is missing
 from `index.html`.
 
+**One fact lives in one place, and tokens carry it.** `{cycle}` in any content
+string is filled from `site.json` by `content/tokens.js`, which every page's
+content module runs its file through at import. The recruitment introduction and
+the landing page's apply note both name the cycle; as independent strings the
+live site shipped "Fall 2026" against "Fall 2025". An unknown token is left
+verbatim rather than blanked — a typo should print itself, not open a hole in a
+sentence.
+
+The 404 is the same shape: `seo.json`'s `notFound.body` is both the meta
+description and the sentence `ErrorPage.jsx` renders, where before the head tag
+and the page held separate copies of the same opening clause.
+
+`index.html`'s landing-page head tags look like a third instance and are not
+one — `prerender-meta.mjs` rewrites `dist/index.html` from `seo.json` like every
+other route, so the built output cannot drift. Only the source file's values are
+redundant.
+
 **The five nav links are written once.** The navbar's desktop row, the navbar's
 mobile menu and the footer all render `NAVIGATION` from `site.json`; they used
 to write the same list out by hand three times, which is three places to forget

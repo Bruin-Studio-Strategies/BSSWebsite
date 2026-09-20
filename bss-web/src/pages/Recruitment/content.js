@@ -16,8 +16,9 @@
  */
 
 import recruitment from "../../content/recruitment.json";
+import fill from "../../content/tokens.js";
 
-export const { header, timeline, faq, closing } = recruitment;
+export const { header, timeline, faq, closing } = fill(recruitment);
 
 /** The five cycle stages, in the order they are read. */
 export const STAGES = timeline.stages;

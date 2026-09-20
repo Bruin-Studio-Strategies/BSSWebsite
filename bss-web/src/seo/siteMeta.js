@@ -44,9 +44,16 @@ export const ROUTE_META = Object.fromEntries(
 // Not in the map above on purpose: an unknown path is not a page, and telling a
 // crawler to index it is how a site ends up with a thousand indexed 404s. The
 // club edits the wording; `noindex` is not theirs to turn off.
+//
+// `body` serves as both the meta description and the sentence on the page. The
+// two used to be separate strings opening with the same clause, so editing the
+// 404 in the CMS changed the browser tab and left the page saying something
+// else. ErrorPage.jsx reads NOT_FOUND from the same object.
+export const NOT_FOUND = seo.notFound;
+
 export const NOT_FOUND_META = {
   title: `${seo.notFound.title} | ${SITE_NAME}`,
-  description: seo.notFound.description,
+  description: seo.notFound.body,
   noindex: true,
 };
 
