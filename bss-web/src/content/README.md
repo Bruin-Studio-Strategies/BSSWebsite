@@ -11,7 +11,7 @@ these values lives here instead.
 
 | File | Feeds |
 | --- | --- |
-| `site.json` | Values more than one page needs: the application URL, the club's general address, the five nav links, the footer's social links. Read through `site.js`. |
+| `site.json` | Values more than one page needs: the application URL, the club's general address, the current recruitment cycle, the five nav links, the footer's social links. Read through `site.js`. |
 | `recruitment.json` | `/recruitment` — header, the five cycle stages, the FAQ, the closing ask. |
 | `clients.json` | `/clients` — header, the six services, the process phases' copy, the closing ask. |
 | `contact.json` | `/contact` — header, the officer list by role, the form's labels and its outcome messages. |
@@ -63,12 +63,13 @@ Two values look like content and are not:
   in `components/ProcessTimeline/phases.js`. The ruler is layout, not content —
   editing "Weeks 1 to 4" changes the label, not the bar. Removing a phase's
   entry fails the build with a named error rather than drawing a blank bar.
-- **`seo.json`'s route keys are structure.** They have to match the routes in
-  `App.jsx` — the title and description under each are the copy. `index.html`
-  carries the landing page's values separately as static defaults for crawlers
-  that never run JavaScript, so those two change together. The build fails with
-  a named error if a tag it rewrites has gone missing, which is deliberate: a
-  silent failure here is how five pages end up all claiming to be the homepage.
+- **`seo.json`'s route `path` values are structure.** They have to match the
+  routes in `App.jsx` — the title and description beside each are the copy. The
+  build fails with a named error if a tag it rewrites has gone missing, which is
+  deliberate: a silent failure here is how five pages end up all claiming to be
+  the homepage. (`index.html` also carries the landing page's tags, for crawlers
+  that never run JavaScript, but the build rewrites them from this file — they
+  are not a second copy to keep in step.)
 - **`path` on a nav link is structure.** It has to match a route in `App.jsx`,
   so the CMS offers the five that exist rather than a text field. Only `label`
   is copy. The navbar's desktop row, its mobile menu and the footer all read
