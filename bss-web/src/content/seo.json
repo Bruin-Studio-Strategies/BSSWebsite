@@ -1,28 +1,33 @@
 {
   "siteUrl": "https://www.bruinstudiostrategies.com",
   "siteName": "Bruin Studio Strategies",
-  "routes": {
-    "/": {
+  "routes": [
+    {
+      "path": "/",
       "title": "Bruin Studio Strategies | UCLA Entertainment Consulting Club",
       "description": "UCLA's first and premier entertainment consulting group. Student consultants deliver market research, growth strategy and data analytics for studios, production companies and creative ventures."
     },
-    "/clients": {
+    {
+      "path": "/clients",
       "title": "Work With BSS — Entertainment Consulting for Studios | Bruin Studio Strategies",
       "description": "Market research, growth strategy, data analytics, brand strategy, competitive analysis and market entry, delivered over an eight-week engagement by two project managers and four to five UCLA consultants."
     },
-    "/recruitment": {
+    {
+      "path": "/recruitment",
       "title": "Join BSS — UCLA Recruitment Timeline & Application | Bruin Studio Strategies",
       "description": "Five stages from applications opening to final interviews, open to any UCLA student from any major with no prior consulting experience required. Dates, dress code and the application link."
     },
-    "/team": {
+    {
+      "path": "/team",
       "title": "Our Team — UCLA Consultants & Executives | Bruin Studio Strategies",
       "description": "The students behind Bruin Studio Strategies: executives, advisory board and consultants studying everything from film and music industry to statistics, engineering and public affairs."
     },
-    "/contact": {
+    {
+      "path": "/contact",
       "title": "Contact Bruin Studio Strategies | UCLA Entertainment Consulting",
       "description": "Get in touch with Bruin Studio Strategies about a client project, a partnership or joining the club. Email the team directly or send a message from the contact form."
     }
-  },
+  ],
   "notFound": {
     "title": "Page not found",
     "description": "That page has moved or never existed."

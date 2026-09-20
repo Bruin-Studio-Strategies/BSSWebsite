@@ -31,7 +31,11 @@ const seo = JSON.parse(await readFile(join(root, "src", "content", "seo.json"), 
 const SITE_URL = seo.siteUrl;
 const SITE_NAME = seo.siteName;
 const OG_IMAGE = `${SITE_URL}/og-image.jpg`;
-const ROUTE_META = seo.routes;
+// Authored as a list (the CMS renders it as rows); keyed by path here, exactly
+// as src/seo/siteMeta.js does for the app.
+const ROUTE_META = Object.fromEntries(
+  seo.routes.map(({ path, title, description }) => [path, { title, description }]),
+);
 
 const escapeAttribute = (value) =>
   value.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;");

@@ -35,7 +35,11 @@ export const SITE_NAME = seo.siteName;
 // identical club names. Descriptions carry the concrete facts the page owns —
 // dates, stage count, engagement shape — since those are what a student or a
 // studio is actually searching for.
-export const ROUTE_META = seo.routes;
+// Authored as a list so the CMS can render it as rows with the path as a fixed
+// dropdown; keyed by path here because that is how the app looks one up.
+export const ROUTE_META = Object.fromEntries(
+  seo.routes.map(({ path, title, description }) => [path, { title, description }]),
+);
 
 // Not in the map above on purpose: an unknown path is not a page, and telling a
 // crawler to index it is how a site ends up with a thousand indexed 404s. The
