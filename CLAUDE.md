@@ -343,10 +343,14 @@ the editing rules (plain strings, no HTML; keep the typographic punctuation;
 headlines set in measured columns).
 
 Done so far: `/recruitment` (`recruitment.json`), `/clients` (`clients.json`),
-`/contact` (`contact.json`), `/` (`landing.json`) and the two cross-page values
-in `site.json` (application URL, club address). Still inline: nav and footer,
-`siteMeta.js`, and the team roster (`people.js`, which is its own problem — see
-the roster import note below).
+`/contact` (`contact.json`), `/` (`landing.json`), `/team` (`team.json`) and the
+two cross-page values in `site.json` (application URL, club address). Still
+inline: nav and footer, and `siteMeta.js`.
+
+The team page's *copy* moved; its roster did not. `people.js` is bulk-replaced
+once a year from a spreadsheet rather than edited a field at a time, and each
+person carries a headshot that has to be resized before the browser sees it, so
+it is on its own track.
 
 **`Hero.jsx` takes its copy as a prop.** It lives in `components/` and the copy
 lives in `pages/Landing/`, so importing it directly would have pointed a shared

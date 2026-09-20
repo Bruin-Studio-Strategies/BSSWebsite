@@ -16,6 +16,7 @@ these values lives here instead.
 | `clients.json` | `/clients` — header, the six services, the process phases' copy, the closing ask. |
 | `contact.json` | `/contact` — header, the officer list by role, the form's labels and its outcome messages. |
 | `landing.json` | `/` — the hero's four lines, "What is BSS?", the Paramount testimonial, the team block. |
+| `team.json` | `/team` — header, the three band headings, the closing ask. The roster itself is `people.js`, not here. |
 
 ## Rules for editing
 
@@ -44,6 +45,12 @@ Two values look like content and are not:
   in `components/ProcessTimeline/phases.js`. The ruler is layout, not content —
   editing "Weeks 1 to 4" changes the label, not the bar. Removing a phase's
   entry fails the build with a named error rather than drawing a blank bar.
+- **`bands` on the team page is keyed, not a list.** Renaming "Advisory Board"
+  is a content edit; adding a fourth group is not — which groups exist and which
+  people feed them is structure in `TeamPage.jsx`.
+- **The team header hides a non-breaking space** before its em dash, which is
+  invisible in an editor. Without it the phone line breaks before the dash and
+  the next line opens on "— and". Retyping that sentence loses it.
 - **The hero headline is two fields**, `headlineLead` and `headlineAccent`.
   They are set at different sizes and animate as separate words, so the split is
   typography rather than a sentence cut in half. A headline that needs three
