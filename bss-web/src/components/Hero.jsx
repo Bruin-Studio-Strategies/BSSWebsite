@@ -38,10 +38,15 @@ export default function Hero({ scrollYProgress, copy }) {
   // (-25px total) so the fade can stretch across most of the scroll range
   // without ever reading as climbing toward the navbar the way it used to.
   const y = useTransform(scrollYProgress, [0, 1], reduced ? [0, 0] : [0, -25]);
-  // Holds at full opacity for most of the pin and only then fades, so the headline
-  // is read solid rather than already dimming from the first tick. The fade ends at
-  // 0.98, just before the copy unpins, so nothing is left to scroll away half-lit.
-  const opacity = useTransform(scrollYProgress, [0.7, 0.98], [1, 0]);
+  // Holds at full opacity while the headline is being read and only then fades, so
+  // it is read solid rather than dimming from the first tick. The fade ends before
+  // the copy unpins, so nothing is left to scroll away half-lit.
+  //
+  // It used to hold to 0.7 of the pin and fade over the last 0.28 of it. On a track
+  // this long that put the headline's exit at the very end of the pin, and the
+  // section below was still climbing — the reader spent the tail of the hero on a
+  // screen with the copy already gone.
+  const opacity = useTransform(scrollYProgress, [0.45, 0.9], [1, 0]);
 
   const wv = reduced ? reducedWordVariant : wordVariant;
 
