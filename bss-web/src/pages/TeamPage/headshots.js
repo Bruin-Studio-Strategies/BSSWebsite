@@ -6,8 +6,8 @@
  * `vite-imagetools` derives everything the browser sees from them at build time,
  * so nothing resized is committed and adding a headshot cannot be half-done.
  *
- * The directives below are the same operations the old `optimize-headshots.mjs`
- * performed with sharp: a 4:5 cover crop at 320 and 640, a JPEG of the 2x size
+ * The directives below are the operations a committed sharp script used to
+ * perform ahead of time: a 4:5 cover crop at 320 and 640, a JPEG of the 2x size
  * for browsers without WebP, and a 20px version for the blur-up. EXIF
  * orientation is applied by imagetools, which matters because the club uploads
  * photographs straight off a phone.

@@ -6,14 +6,19 @@
  * The roster turns over once a year, all at once. Retyping 37 people through a
  * CMS form is exactly the job nobody does, so this takes the two things the club
  * already produces — a Google Sheet and a Drive folder of headshots from the
- * photoshoot — and turns them into `src/content/people.json` plus the resized
- * derivatives the browser actually loads.
+ * photoshoot — and turns them into `src/content/people.json` and a filed set of
+ * originals.
  *
  * Inputs, both at the repo root so they can be dropped in through github.com's
  * upload button without anyone touching git:
  *
  *   roster-import/roster.csv      one row per person
  *   roster-import/photos/         the headshots, named however they came
+ *
+ * It files the photographs in the archive under each person's slug and writes
+ * the roster. Nothing here resizes anything: headshots.js asks vite-imagetools
+ * for the sizes the browser needs and the build derives them, so a headshot
+ * cannot be added without its derivatives following.
  *
  * The CSV carries a `photoFile` column holding the filename exactly as it came
  * out of the shoot ("IMG_4821.JPG"). That is what removes the real manual
@@ -371,7 +376,7 @@ async function main() {
     console.log(`\n${warnings.length} thing${warnings.length === 1 ? "" : "s"} to know:`);
     for (const warning of warnings) console.log(`  • ${warning}`);
   }
-  console.log(`\nNext: node scripts/optimize-headshots.mjs`);
+  console.log(`\nThe build derives the resized headshots from these originals.`);
 }
 
 main().catch((error) => {

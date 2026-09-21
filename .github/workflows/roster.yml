@@ -52,12 +52,9 @@ jobs:
         working-directory: bss-web
         run: node scripts/import-roster.mjs
 
-      - name: Resize the headshots
-        working-directory: bss-web
-        run: node scripts/optimize-headshots.mjs
-
-      # Proves the site still builds before the change is committed, rather than
-      # letting Vercel discover it afterwards.
+      # Also where the headshots are resized: vite-imagetools derives every size
+      # the browser needs from the originals the step above just filed. Proving
+      # the build here means a bad photograph fails the job rather than Vercel.
       - name: Build
         working-directory: bss-web
         run: npm run build

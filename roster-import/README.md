@@ -74,6 +74,8 @@ photoshoot.
 - The `photos` folder is emptied after a successful import. That is deliberate:
   otherwise the next import would run against a mix of this year's photographs
   and last year's.
+- Photographs are resized when the site is built, not when they are uploaded, so
+  there is no separate step to remember and nothing resized is stored here.
 - Originals are kept forever in `bss-web/src/pages/TeamPage/Headshots/`. Nothing
   is ever deleted from there, even when somebody leaves the club.
 - Everything else about the team page — the heading over each group, the closing

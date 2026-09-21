@@ -507,14 +507,37 @@ visible instead of hidden behind the old black hover overlay, ruled band heading
 with counts, responsive 2→3→4→5 columns, and a closing Apply Now CTA (which is
 the shared `ApplyButton`, like every other one on the site).
 
-**Headshots are never imported directly.** The 37 originals in
-`src/pages/TeamPage/Headshots/` total ~55 MB and are archive only. Everything the
-browser sees is derived by `bss-web/scripts/optimize-headshots.mjs` (sharp,
-devDependency) into `HeadshotsOptimized/` — 320/640px WebP, a 640px JPEG fallback,
-and a 20px inline blur-up placeholder — all committed so Vercel never runs the
-conversion. `people.js` stores a `slug`; `headshots.js` resolves it via
-`import.meta.glob`. **After adding or replacing a headshot, re-run the script and
-commit its output**, or that member renders as initials.
+**Headshots are derived at build time by `vite-imagetools`.** The originals in
+`src/pages/TeamPage/Headshots/` total ~55 MB; `headshots.js` globs them with
+query directives (320/640px WebP, a 640px JPEG fallback, and a 20px blur-up) and
+the build emits the rest. `people.js` stores a `slug` and that is the join key.
+Nothing resized is committed, so the old failure — add a headshot, forget to
+re-run the script, ship a member rendered as initials — cannot happen.
+
+Four things learned wiring it up, all of which bite again if changed:
+
+- **`import.meta.glob` takes literals only.** Building the query from constants
+  fails the build with "Could only use literals", so the four globs repeat
+  themselves on purpose.
+- **imagetools' default file filter is case-sensitive**, and six of the archive's
+  originals are `.JPG`/`.JPEG` as camera exports usually are. `vite.config.js`
+  passes a case-insensitive `include` or the build fails outright.
+- **`assetsInclude: ['**/*.JPG', '**/*.JPEG']` used to sit in `vite.config.js`**
+  from when the landing page imported camera exports directly. With imagetools
+  added it claimed those extensions first and six headshots shipped as untouched
+  originals — one of them 6.9 MB, 19 MB of images in total. It is gone; nothing
+  imports a raw `.JPG` any more.
+- **The blur-up needs `&inline`.** imagetools emits its own assets, so Vite's
+  `assetsInlineLimit` never sees them and 38 ~350-byte placeholders became 38
+  extra requests on the page most often opened on a phone.
+
+Known limit: imagetools will not upscale and `withoutEnlargement=false` is
+ignored, so three members whose source photographs are 400x400 get that size in
+the 640 slot rather than an enlargement. The `srcSet` descriptor overstates
+them; `object-cover` still fills the cell. Better source photographs are the fix.
+
+Pinned to `vite-imagetools@9` because v10 requires Vite >= 7 and v11+ Vite >= 8,
+and this project is on Vite 5. Upgrading Vite frees that.
 
 **The rest of the site's photographs follow the same rule.** `src/assets/IMG_9814.JPG`,
 `group.JPG`, `board.jpg`, `paramount.png` and `waves.png` are originals and are never

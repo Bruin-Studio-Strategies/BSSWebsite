@@ -8,7 +8,7 @@
     "build": "vite build && node scripts/prerender-meta.mjs",
     "lint": "eslint .",
     "preview": "vite preview",
-    "roster": "node scripts/import-roster.mjs && node scripts/optimize-headshots.mjs"
+    "roster": "node scripts/import-roster.mjs"
   },
   "dependencies": {
     "@react-spring/parallax": "^9.7.4",
