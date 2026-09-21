@@ -428,6 +428,12 @@ stays in `components/ProcessTimeline/phases.js`, which merges the two by `id`.
 Editing "Weeks 1 to 4" must not be able to move a bar. Same reasoning makes
 `motif` a fixed dropdown of the six drawings rather than a text field.
 
+**`EDITING.md` at the repo root is the club's guide**, written for an officer
+rather than for a developer: how to get into the CMS, the yearly cycle setup, the
+punctuation rules, and a checklist. `roster-import/README.md` is its counterpart
+for the roster. Both are the handover — if a change makes one of them wrong, that
+is a shipped bug for the people who use this site, not a stale comment.
+
 **`.pages.yml` at the repo root is the CMS.** Officers sign in at pagescms.org
 with GitHub, pick this repo, and that file renders as a labelled form; saving
 writes the JSON back and Vercel deploys it. Two rules when editing it: declare
