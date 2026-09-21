@@ -17,14 +17,19 @@ import { useMotionValue } from "framer-motion";
 // with the copy pinned inside it via position:sticky, so the copy holds still for
 // (TEXT_TRACK_VH - 1) viewports while it fades. It did not shrink with the sunset,
 // because tying the fade to the faster sunset cleared the headline off the screen
-// before anyone had read it, and it was then lengthened — 1.6, 1.9, now 2.8 — at
-// the request of the person running the project so the headline holds longer.
-// Must match the track's height in Landing.jsx.
+// before anyone had read it, and it was then lengthened — 1.6, 1.9, 2.8 — at the
+// request of the person running the project so the headline holds longer, and cut
+// back to 2.6 when that hold read as too long. Must match the track's height in
+// Landing.jsx.
 //
-// At 2.8 the copy's track outruns the descent, which forced the exit window below
-// to move (see EXIT_START_VH).
+// The copy's track outruns the descent, which forced the exit window below to move
+// (see EXIT_START_VH). 2.56 is the floor: the descent ends where the copy unpins,
+// at (TEXT_TRACK_VH - 1), and its start cannot precede the sunset's end at
+// SUNSET_VH, so a shorter track clamps the exit window short of EXIT_WINDOW_VH —
+// and that window's length is the rate match between the dune and the copy printed
+// on it, not a preference.
 const SUNSET_VH = 0.4;
-const TEXT_TRACK_VH = 2.8;
+const TEXT_TRACK_VH = 2.6;
 
 // One viewport height, in the same unit the layout uses: CSS `100vh`, measured.
 //

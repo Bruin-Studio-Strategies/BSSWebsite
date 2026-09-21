@@ -29,10 +29,12 @@ export default function Landing() {
         <div className="relative z-10 -mt-[100vh] pt-24">
           {/* Hero track: taller than one viewport so the sticky hero copy stays
               pinned while the sunset plays out. Height here (as a multiple of
-              100vh) must match TEXT_TRACK_VH in useHeroScrollProgress. It is the
+              100vh) must match TEXT_TRACK_VH in useHeroScrollProgress, and cannot
+              go below 256vh without clamping the descent's window short (the
+              reasoning is on TEXT_TRACK_VH). It is the
               copy's track, not the sunset's: the scene plays faster than the copy
               is allowed to leave. */}
-          <div style={{ height: "280vh" }}>
+          <div style={{ height: "260vh" }}>
             <div className="sticky top-24 h-screen">
               <Title />
             </div>
@@ -43,10 +45,10 @@ export default function Landing() {
 
               A sticky element releases when its bottom reaches its container's
               bottom, so this stage's height sets that moment: 100vh of canvas plus
-              280vh of hero track plus this, minus the 100vh the canvas occupies,
-              releases at (180 + this)vh. It is 0 now: the hero copy's track grew
+              260vh of hero track plus this, minus the 100vh the canvas occupies,
+              releases at (160 + this)vh. It is 0 now: the hero copy's track grew
               long enough to carry the release on its own, and the descent's window
-              was moved to land at 180vh instead (EXIT_END_VH is derived from the
+              was moved to land at 160vh instead (EXIT_END_VH is derived from the
               track in useHeroScrollProgress). Kept, at zero, because shortening
               the hero track again means this has to take the difference back.
 
@@ -69,15 +71,23 @@ export default function Landing() {
           py-28 on top of that. The canvas has already released by here, so both
           scroll at the same rate and the copy stays fixed to the face it is on.
 
-          The limit on this number: Info's top enters the viewport at (180 - this)vh
-          and its copy about 11vh after that, while the canvas does not release until
-          180vh. Past roughly -11 the copy is therefore on screen before the release,
-          sliding over a dune still pinned to the viewport. At -45 that overlap is
-          about a third of a screen. It is tolerable because the descent has all but
-          landed by then and the face is flat and barely moving, but it is the thing
-          that breaks if this is pushed much further — the copy starts sliding across
-          a frozen backdrop again, which is the detachment this was fixing. */}
-      <div className="relative -mt-[45vh]">
+          How much of the canvas this covers is arithmetic, not taste. The canvas
+          is one viewport tall and, once released, sits with its bottom on the
+          stage's bottom — which is where Info's top would be at a pull of 0. So
+          the band of released canvas above Info is (100 - this)vh whatever the
+          hero track's length is, since lengthening the track moves the release
+          point and Info's top by the same amount. At -45 that band was 55vh of
+          landed, cleared, unlit dune with nothing printed on it, arriving just as
+          the headline finished fading — the blank block between the hero and the
+          section.
+
+          The other limit is the one this used to be written against: Info's copy
+          must not arrive before the descent does, or it slides across a dune that
+          is pinned and no longer moving. Its copy enters the viewport at
+          (260 - this + 11 - 100)vh and the descent runs from 44vh to 160vh, so
+          anything up to about -110 keeps that arrival inside the descent. At -80
+          it enters at 91vh, two fifths of the way through. */}
+      <div className="relative -mt-[80vh]">
         <Info />
       </div>
       <SectionDivider className="my-4" />
