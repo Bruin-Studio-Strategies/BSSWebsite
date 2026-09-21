@@ -456,13 +456,23 @@ results card fade to a grey smudge. Anything dropped in `public/` beats the
 rewrite, so shipping real files is the whole fix for the first half.
 
 `scripts/generate-favicons.mjs` (sharp, run by hand like the other two image
-scripts, output committed) renders `public/logo.svg` onto an opaque `#0F172E`
-tile — opaque because Google's white card and Chrome's near-black tab strip would
-each wash out one end of the blue-to-magenta gradient — trims it out of its
+scripts, output committed) renders `public/logo.svg`, trims it out of its
 oversized viewBox so the padding means the same on every edge, and writes
 `favicon.ico` (16/32/48 as PNG-in-ICO, packed by hand since sharp cannot write
 the format), `favicon-96.png`, `icon-192/512`, a maskable 512 and
 `apple-touch-icon.png`, plus `public/site.webmanifest`.
+
+**The browser icons are transparent; only the home-screen ones carry a tile.**
+They were all composited onto an opaque `#0F172E` square, on the reasoning that
+Google's white card and Chrome's near-black strip would each wash out one end of
+the blue-to-magenta gradient. In the tab strip that square reads as a black box,
+which is a shape the brand does not have — and the gradient's two ends
+(`#5288C7`, `#B73593`) are mid-tone and hold against white and near-black alike.
+Thin ink was the real problem, and the stroke ladder below is what answers it.
+`apple-touch-icon.png` and the maskable 512 keep the navy tile, because neither
+platform honours transparency: iOS composites an alpha icon onto black, and a
+maskable icon is cropped to the launcher's shape and needs ink to the crop's
+edge. Left transparent, those two trade a tile you chose for one you didn't.
 
 **Stroke weight rides the output size, and that trade is the interesting part.**
 The mark is an outline drawing, so downscaling puts each ribbon on a fraction of

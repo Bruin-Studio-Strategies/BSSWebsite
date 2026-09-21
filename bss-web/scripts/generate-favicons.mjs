@@ -35,11 +35,23 @@ const PUBLIC_DIR = path.join(HERE, "..", "public");
 const SOURCE = path.join(PUBLIC_DIR, "logo.svg");
 
 // Brand navy, the same token Tailwind exposes as `navy` and index.html carries as
-// theme-color. The tile is opaque on purpose: a transparent icon inherits whatever
-// surface it lands on, and the two surfaces that matter here — Google's white
-// results card and Chrome's near-black tab strip — would each wash out one end of
-// the mark's blue-to-magenta gradient.
+// theme-color.
+//
+// Only the home-screen icons sit on it now. Every browser icon is transparent:
+// the navy square read as a black box in the tab strip, which is a shape the brand
+// does not have. The worry it was there to answer — that the blue-to-magenta
+// gradient washes out on Chrome's near-black strip or Google's white card — does
+// not survive contact with the mark: both ends of that gradient are mid-tone
+// (#5288C7, #B73593) and carry contrast against white and near-black alike. What
+// genuinely needed the tile was thin ink, and the stroke weights below are what
+// fixed that.
+//
+// iOS and Android keep it, because neither platform honours transparency in a
+// home-screen icon: iOS composites an alpha icon onto black, and a maskable icon
+// is cropped to the launcher's shape, which needs ink to the edge of the crop.
+// Leaving those transparent trades a tile you chose for one you didn't.
 const TILE = { r: 0x0f, g: 0x17, b: 0x2e, alpha: 1 };
+const NO_TILE = { r: 0, g: 0, b: 0, alpha: 0 };
 
 // Fraction of the tile left empty around the mark. Favicons are read at 16px, so
 // the mark takes nearly the whole tile; iOS crops a rounded rectangle out of the
@@ -94,13 +106,16 @@ const ICO_SIZES = [16, 32, 48];
 const PNG_OUTPUTS = [
   // Google recommends a multiple of 48. This is the one its crawler is pointed at
   // by the rel="icon" tag.
-  { file: "favicon-96.png", size: 96, pad: PAD },
-  // Android home screen / the web app manifest's two required entries.
-  { file: "icon-192.png", size: 192, pad: PAD },
-  { file: "icon-512.png", size: 512, pad: PAD },
-  { file: "icon-maskable-512.png", size: 512, pad: PAD_MASKABLE },
-  // iOS home screen. No manifest involved — iOS reads the link tag only.
-  { file: "apple-touch-icon.png", size: 180, pad: PAD_APPLE },
+  { file: "favicon-96.png", size: 96, pad: PAD, tile: NO_TILE },
+  // The manifest's two required entries. Chrome draws these in the install prompt
+  // and the app list, both of which supply their own surface.
+  { file: "icon-192.png", size: 192, pad: PAD, tile: NO_TILE },
+  { file: "icon-512.png", size: 512, pad: PAD, tile: NO_TILE },
+  // Cropped to the launcher's shape, so this one keeps its tile.
+  { file: "icon-maskable-512.png", size: 512, pad: PAD_MASKABLE, tile: TILE },
+  // iOS home screen. No manifest involved — iOS reads the link tag only, and
+  // composites anything transparent onto black.
+  { file: "apple-touch-icon.png", size: 180, pad: PAD_APPLE, tile: TILE },
 ];
 
 const force = process.argv.includes("--force");
@@ -151,15 +166,15 @@ async function renderMark(stroke) {
   return trimmed;
 }
 
-/** Composites the trimmed mark, centred, onto an opaque navy tile of `size`. */
-async function tile(mark, size, pad) {
+/** Composites the trimmed mark, centred, onto a `size` square of `background`. */
+async function tile(mark, size, pad, background = TILE) {
   const inner = Math.round(size * (1 - pad * 2));
   const fitted = await sharp(mark)
     .resize(inner, inner, { fit: "contain", background: { r: 0, g: 0, b: 0, alpha: 0 } })
     .toBuffer();
 
   return sharp({
-    create: { width: size, height: size, channels: 4, background: TILE },
+    create: { width: size, height: size, channels: 4, background },
   })
     .composite([{ input: fitted, gravity: "centre" }])
     .png({ compressionLevel: 9 })
@@ -209,7 +224,7 @@ async function main() {
     const pngs = [];
     for (const size of ICO_SIZES) {
       const mark = await renderMark(strokeFor(size));
-      pngs.push({ size, data: await tile(mark, size, PAD) });
+      pngs.push({ size, data: await tile(mark, size, PAD, NO_TILE) });
     }
     await writeFile(ico, packIco(pngs));
     console.log(`favicon.ico  ${ICO_SIZES.join("/")}px`);
@@ -217,14 +232,14 @@ async function main() {
     console.log("favicon.ico  (exists, --force to rebuild)");
   }
 
-  for (const { file, size, pad } of PNG_OUTPUTS) {
+  for (const { file, size, pad, tile: background } of PNG_OUTPUTS) {
     const out = path.join(PUBLIC_DIR, file);
     if (!force && (await exists(out))) {
       console.log(`${file}  (exists, --force to rebuild)`);
       continue;
     }
     const mark = await renderMark(strokeFor(size));
-    await writeFile(out, await tile(mark, size, pad));
+    await writeFile(out, await tile(mark, size, pad, background));
     console.log(`${file}  ${size}px`);
   }
 }
