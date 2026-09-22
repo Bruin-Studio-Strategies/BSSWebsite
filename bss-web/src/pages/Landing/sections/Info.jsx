@@ -5,7 +5,13 @@ import { FaQuoteLeft } from "react-icons/fa";
 // group photo was 1.1 MB and the Paramount mark 1.8 MB for a logo drawn 36px tall.
 import group from "../../../assets/optimized/IMG_9814-1280.webp";
 import paramountLogo from "../../../assets/optimized/paramount-320.webp"; // transparent Paramount logo
-import { OPENER_ALIGN, OPENER_BALANCE, OPENER_MEASURE } from "../../../components/openerAlignment.js";
+import {
+  OPENER_ALIGN,
+  OPENER_BALANCE,
+  OPENER_MEASURE,
+  TITLE_SCALE,
+  LEDE_SCALE,
+} from "../../../components/openerAlignment.js";
 import { info, testimonial } from "../content.js";
 
 const EASE = [0.16, 1, 0.3, 1];
@@ -46,12 +52,12 @@ export default function Info() {
             {/* h2, under the hero's h1: this is a section of the landing page,
                 and the outline is what a crawler reads the page's shape from. */}
             <motion.h2
-              className={`font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-white mt-4 mb-6 leading-[1.1] ${OPENER_BALANCE}`}
+              className={`font-display ${TITLE_SCALE.section} text-white mt-4 mb-6 ${OPENER_BALANCE}`}
             >
               {info.title}
             </motion.h2>
             <motion.p
-              className={`font-sans text-sm sm:text-base lg:text-lg text-white/70 leading-relaxed max-w-xl ${OPENER_MEASURE} ${OPENER_BALANCE}`}
+              className={`font-sans ${LEDE_SCALE} text-white/70 max-w-xl ${OPENER_MEASURE} ${OPENER_BALANCE}`}
             >
               {info.body}
             </motion.p>

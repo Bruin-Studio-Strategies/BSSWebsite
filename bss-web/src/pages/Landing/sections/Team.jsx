@@ -7,6 +7,8 @@ import {
   OPENER_ALIGN,
   OPENER_BALANCE,
   OPENER_MEASURE,
+  TITLE_SCALE,
+  LEDE_SCALE,
 } from "../../../components/openerAlignment.js";
 import { team } from "../content.js";
 
@@ -89,19 +91,19 @@ export default function Team() {
           {/* h2, under the hero's h1 — see Info.jsx. */}
           <motion.h2
             variants={fadeUp}
-            className={`font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-white mt-4 mb-6 leading-[1.1] ${OPENER_BALANCE}`}
+            className={`font-display ${TITLE_SCALE.section} text-white mt-4 mb-6 ${OPENER_BALANCE}`}
           >
             {team.title}
           </motion.h2>
           <motion.p
             variants={fadeUp}
-            className={`font-sans text-sm sm:text-base lg:text-lg text-white/70 leading-relaxed max-w-xl ${OPENER_MEASURE} ${OPENER_BALANCE}`}
+            className={`font-sans ${LEDE_SCALE} text-white/70 max-w-xl ${OPENER_MEASURE} ${OPENER_BALANCE}`}
           >
             {team.body}
           </motion.p>
           <motion.p
             variants={fadeUp}
-            className="mt-4 font-sans text-sm sm:text-base lg:text-lg text-white/70 leading-relaxed max-w-xl mx-auto md:mx-0"
+            className={`mt-4 font-sans ${LEDE_SCALE} text-white/70 max-w-xl mx-auto md:mx-0`}
           >
             {team.bodySecond}
           </motion.p>

@@ -186,6 +186,16 @@ daylight, and scrolling back up from below the hero runs it backwards.
 
 ## Mobile
 
+**One type scale, in `openerAlignment.js`.** `TITLE_SCALE` and `LEDE_SCALE`
+live beside the alignment constants and are read by `SectionOpener` *and* by the
+landing's copy blocks, which animate their children and so write their own
+markup. The landing used to run its own larger scale — deliberately — and it
+stepped up one at `lg`: its section headings were 60px, exactly the size of an
+interior page's h1, so "What is BSS?" was set at the scale of the *title* of the
+clients page. The site also carried three body sizes (18/16/14px). Measured in
+the browser, not guessed. Changing the site's type scale now means editing those
+two constants.
+
 **Openers centre below `md`; content stays left** (The Opener Rule in
 DESIGN.md). `md` is 960px in this project, not Tailwind's 768. Every page header
 and section heading on the interior pages renders through
