@@ -11,27 +11,28 @@
     "stages": [
       {
         "title": "Applications Open",
-        "date": "9/30",
+        "date": "9/24",
+        "inviteOnly": false,
         "description": "Submit your application and take the first step toward joining BSS, where you’ll gain hands-on consulting experience in the entertainment industry."
       },
       {
         "title": "Information Session",
-        "date": "10/6",
+        "date": "10/1",
         "time": "7:00 PM",
-        "location": "Pauley Pavilion Club M10A",
-        "attire": "Casual",
+        "location": "Zoom",
+        "inviteOnly": false,
         "description": "Learn more about BSS, meet current members, and get an inside look at what we do and how you can be part of the team."
       },
       {
         "title": "Applications Due",
-        "date": "10/10",
+        "date": "10/04",
         "time": "11:59 PM",
+        "inviteOnly": false,
         "description": "Be sure to complete and submit your application by this date to be considered for the next round of recruitment."
       },
       {
         "title": "Coffee Chats",
-        "date": "10/15",
-        "location": "Kerckhoff Patio",
+        "date": "10/06",
         "attire": "Business Casual",
         "inviteOnly": true,
         "description": "An informal opportunity to chat with BSS members, learn about their experiences, and see if BSS is the right fit for you."
