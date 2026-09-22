@@ -1,0 +1,32 @@
+{
+  "applyUrl": "https://docs.google.com/forms/d/e/1FAIpQLScwAxZaKPtgV5V0rwdGm7Op3ucGgAN6Y9lbEVz4jcbEQCZ_aQ/viewform",
+  "contactEmail": "bruinstudiostrategies@gmail.com",
+  "cycle": "Fall 2026",
+  "navigation": [
+    {
+      "path": "/",
+      "label": "Home"
+    },
+    {
+      "path": "/clients",
+      "label": "For Clients"
+    },
+    {
+      "path": "/recruitment",
+      "label": "For Students"
+    },
+    {
+      "path": "/team",
+      "label": "Our Team"
+    },
+    {
+      "path": "/contact",
+      "label": "Contact"
+    }
+  ],
+  "social": {
+    "instagram": "https://www.instagram.com/bruinstudiostrategies/",
+    "linkedin": "https://www.linkedin.com/company/bruin-studio-strategies"
+  },
+  "organizationName": "Bruin Studio Strategies"
+}

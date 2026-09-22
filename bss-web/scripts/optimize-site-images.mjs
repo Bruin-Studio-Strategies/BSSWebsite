@@ -12,7 +12,7 @@
  *
  * Output lands in src/assets/optimized/ and is committed, so a clean checkout
  * builds without sharp and Vercel never pays the conversion cost — the same
- * arrangement as scripts/optimize-headshots.mjs. Re-run after replacing any
+ * arrangement as scripts/generate-favicons.mjs. Re-run after replacing any
  * source image; --force re-encodes what is already there.
  */
 

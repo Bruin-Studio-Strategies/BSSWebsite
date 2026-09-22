@@ -1,5 +1,5 @@
 import CtaButton from "./CtaButton.jsx";
-import { APPLICATION_URL } from "../applyLink.js";
+import { APPLICATION_URL } from "../content/site.js";
 
 // Every "Apply Now" on the site renders through here: one treatment, one
 // destination. Before this there were five call sites carrying four different

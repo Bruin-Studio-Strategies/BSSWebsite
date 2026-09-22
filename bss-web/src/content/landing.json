@@ -1,0 +1,26 @@
+{
+  "hero": {
+    "label": "Work with the Best",
+    "headlineLead": "Cut to",
+    "headlineAccent": "Success",
+    "subline": "Providing strategic consulting for the entertainment industry"
+  },
+  "info": {
+    "eyebrow": "Who We Are",
+    "title": "What is BSS?",
+    "body": "Bruin Studio Strategies, UCLA’s first and premier entertainment consulting group, unites technical consulting fundamentals, technology, and Gen-Z insights to deliver actionable insights amidst the fast-paced and malleable entertainment ecosystems."
+  },
+  "testimonial": {
+    "quote": "“Partnering with the Bruin Studios Strategies group was a fantastic experience. Their teams brought creativity, professionalism, and real passion to our case prompt, delivering thoughtful and compelling presentations that reflected both hard work and fresh ideas.”",
+    "name": "Jonathon Kane",
+    "role": "Manager, Business Development, Paramount Pictures",
+    "caption": "Paramount x BSS Spring 2025 Case Competition"
+  },
+  "team": {
+    "eyebrow": "Meet the Team",
+    "title": "Our Team",
+    "body": "At Bruin Studio Strategies, we are more than UCLA students; we are a community of innovators reshaping entertainment consulting. With diverse backgrounds in fields including data science, economics, policy, film, business, and computer science, our members bring diverse perspectives that blend analytical rigor with creative insight.",
+    "bodySecond": "We pride ourselves on fostering a free-flowing and creative environment where innovative ideas flourish, turning market research and unique ideas into actionable strategies. Driven through innovation, our team delivers bold solutions that push the boundaries of the entertainment industry.",
+    "applyNote": "Applications for {cycle} are live."
+  }
+}

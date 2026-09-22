@@ -31,7 +31,7 @@ function fadeUpProps(delay, reduced) {
   };
 }
 
-export default function Hero({ scrollYProgress }) {
+export default function Hero({ scrollYProgress, copy }) {
   const reduced = !!useReducedMotion();
 
   // Whole block moves and fades together. The drift itself is capped small
@@ -67,7 +67,7 @@ export default function Hero({ scrollYProgress }) {
         // 128px, and at desktop the label read as a caption stranded above it.
         className="font-sans text-base sm:text-lg md:text-xl lg:text-2xl text-white/60 font-medium md:ml-2 tracking-wide"
       >
-        Work with the Best
+        {copy.label}
       </motion.p>
 
       <motion.h1
@@ -79,10 +79,10 @@ export default function Hero({ scrollYProgress }) {
         className="font-display text-4xl md:text-6xl lg:text-8xl text-white [perspective:1000px]"
       >
         <motion.span variants={wv} className="inline-block">
-          Cut to
+          {copy.headlineLead}
         </motion.span>{" "}
         <motion.span variants={wv} className="inline-block text-6xl md:text-8xl lg:text-9xl font-medium">
-          Success
+          {copy.headlineAccent}
         </motion.span>
       </motion.h1>
 
@@ -93,7 +93,7 @@ export default function Hero({ scrollYProgress }) {
         // there pushed it past the edge.
         className="w-5/6 sm:w-auto lg:whitespace-nowrap md:ml-2 mt-8 sm:mt-5 md:mt-6 text-base sm:text-lg md:text-xl lg:text-2xl text-white/70"
       >
-        Providing strategic consulting for the entertainment industry
+        {copy.subline}
       </motion.p>
     </motion.div>
   );

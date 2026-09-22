@@ -21,7 +21,7 @@
  * out of its oversized viewBox and re-centred, and written at the raster sizes
  * search engines, browsers and iOS actually ask for. Output lands in public/ and
  * is committed, so Vercel never runs sharp — the same arrangement as
- * optimize-headshots.mjs and optimize-site-images.mjs. Re-run after replacing
+ * optimize-site-images.mjs. Re-run after replacing
  * logo.svg; --force re-encodes what is already there.
  */
 

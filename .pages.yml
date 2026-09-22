@@ -1,0 +1,690 @@
+# Pages CMS — what the club can edit, and how it is shown to them.
+#
+# This file is the whole CMS. Officers sign in at pagescms.org with GitHub, pick
+# this repo, and everything below renders as a labelled form. Saving writes the
+# JSON back to the repo, which Vercel deploys.
+#
+# Two rules when adding to this file:
+#
+#   1. Only declare fields the club should actually change. A field that is not
+#      declared is not shown — and a CMS save rewrites the file, so anything left
+#      out of a declared object can be dropped. That is why structural values
+#      (a phase's position on the week ruler, which people feed a team band) live
+#      in code and not in these JSON files at all.
+#
+#   2. Anything with a fixed set of valid values is a `select`, never a string.
+#      A free-text `motif` renders an empty cell; a free-text route path
+#      404s. See src/content/README.md.
+#
+# Paths are relative to the repo root, so they carry the bss-web/ prefix.
+
+settings:
+  content:
+    merge: true
+
+content:
+  # --- Recruitment -------------------------------------------------------
+  # The page the club edits most: dates change every cycle.
+  - name: recruitment
+    label: For Students page
+    type: file
+    path: bss-web/src/content/recruitment.json
+    format: json
+    fields:
+      - name: header
+        label: Page header
+        type: object
+        fields:
+          - name: eyebrow
+            label: Eyebrow
+            type: string
+            description: The small sky label above the headline.
+          - name: title
+            label: Headline
+            type: string
+            required: true
+          - name: body
+            label: Introduction
+            type: text
+            required: true
+            description: >-
+              Write {cycle} rather than typing the year — it comes from
+              "Current recruitment cycle" under Site-wide.
+
+      - name: timeline
+        label: Recruitment timeline
+        type: object
+        fields:
+          - name: eyebrow
+            label: Eyebrow
+            type: string
+          - name: title
+            label: Section heading
+            type: string
+            required: true
+          - name: body
+            label: Introduction
+            type: text
+          - name: stages
+            label: Stages
+            type: object
+            list: true
+            description: >-
+              One row per stage, in order. Only the title is required — leave a
+              field blank and its line simply does not render, so a stage with
+              no venue booked yet still works.
+            fields:
+              - name: title
+                label: Stage
+                type: string
+                required: true
+              - name: date
+                label: Date
+                type: string
+                description: As it should read on the page, e.g. "10/17 + 10/18".
+              - name: time
+                label: Time
+                type: string
+              - name: location
+                label: Location
+                type: string
+              - name: attire
+                label: Attire
+                type: string
+              - name: inviteOnly
+                label: Invitation only
+                type: boolean
+              - name: description
+                label: Description
+                type: text
+
+      - name: faq
+        label: Frequently asked questions
+        type: object
+        fields:
+          - name: eyebrow
+            label: Eyebrow
+            type: string
+          - name: title
+            label: Section heading
+            type: string
+            required: true
+          - name: body
+            label: Introduction
+            type: text
+          - name: items
+            label: Questions
+            type: object
+            list: true
+            fields:
+              - name: question
+                label: Question
+                type: string
+                required: true
+              - name: answer
+                label: Answer
+                type: text
+                required: true
+
+      - name: closing
+        label: Closing ask
+        type: object
+        description: >-
+          This sentence wraps two links — the application form and the club's
+          address. The four fields are the words around them; the links
+          themselves cannot be moved or removed here.
+        fields:
+          - name: eyebrow
+            label: Eyebrow
+            type: string
+          - name: title
+            label: Heading
+            type: string
+            required: true
+          - name: lead
+            label: Before the application link
+            type: string
+          - name: applyLinkText
+            label: The application link's words
+            type: string
+          - name: betweenLinks
+            label: Between the two links
+            type: string
+          - name: tail
+            label: After the email address
+            type: string
+
+  # --- Clients -----------------------------------------------------------
+  - name: clients
+    label: For Clients page
+    type: file
+    path: bss-web/src/content/clients.json
+    format: json
+    fields:
+      - name: header
+        label: Page header
+        type: object
+        fields:
+          - name: eyebrow
+            label: Eyebrow
+            type: string
+          - name: title
+            label: Headline
+            type: string
+            required: true
+          - name: body
+            label: Introduction
+            type: text
+
+      - name: services
+        label: Services
+        type: object
+        fields:
+          - name: eyebrow
+            label: Eyebrow
+            type: string
+          - name: title
+            label: Section heading
+            type: string
+            required: true
+          - name: items
+            label: Service cells
+            type: object
+            list: true
+            fields:
+              - name: motif
+                label: Drawing
+                type: select
+                required: true
+                description: >-
+                  Which line drawing animates in this cell. These six are the
+                  ones that exist — a cell set to anything else draws nothing.
+                options:
+                  values:
+                    - name: market-research
+                      label: Market research
+                    - name: growth-strategy
+                      label: Growth strategy
+                    - name: data-analytics
+                      label: Data analytics
+                    - name: brand-strategy
+                      label: Brand strategy
+                    - name: competitive-analysis
+                      label: Competitive analysis
+                    - name: market-entry
+                      label: Market entry
+              - name: title
+                label: Service
+                type: string
+                required: true
+              - name: description
+                label: Description
+                type: text
+                required: true
+
+      - name: process
+        label: Project process
+        type: object
+        fields:
+          - name: eyebrow
+            label: Eyebrow
+            type: string
+          - name: title
+            label: Section heading
+            type: string
+            required: true
+          - name: body
+            label: Introduction
+            type: text
+          - name: phases
+            label: Phases
+            type: object
+            list: true
+            description: >-
+              The wording of each phase on the schedule. Where its bar sits on
+              the week ruler is set in code — editing "Weeks 1 to 4" changes the
+              label, not the bar. Do not delete a row or change an ID: the build
+              will fail until the five IDs below are all present.
+            fields:
+              - name: id
+                label: ID
+                type: select
+                required: true
+                options:
+                  values:
+                    - name: kickoff
+                      label: kickoff
+                    - name: research
+                      label: research
+                    - name: midterm
+                      label: midterm
+                    - name: refinement
+                      label: refinement
+                    - name: final
+                      label: final
+              - name: title
+                label: Phase
+                type: string
+                required: true
+              - name: period
+                label: Period
+                type: string
+                description: e.g. "Weeks 1 to 4". Wording only.
+              - name: description
+                label: Description
+                type: text
+
+      - name: closing
+        label: Closing ask
+        type: object
+        description: >-
+          The sentence wraps the club's address; the two fields are the words
+          around it.
+        fields:
+          - name: eyebrow
+            label: Eyebrow
+            type: string
+          - name: title
+            label: Heading
+            type: string
+            required: true
+          - name: lead
+            label: Before the email address
+            type: string
+          - name: tail
+            label: After the email address
+            type: string
+          - name: buttonLabel
+            label: Button
+            type: string
+
+  # --- Landing -----------------------------------------------------------
+  - name: landing
+    label: Home page
+    type: file
+    path: bss-web/src/content/landing.json
+    format: json
+    fields:
+      - name: hero
+        label: Hero
+        type: object
+        description: The four lines over the 3D landscape.
+        fields:
+          - name: label
+            label: Label above the headline
+            type: string
+          - name: headlineLead
+            label: Headline, first part
+            type: string
+            required: true
+            description: >-
+              Set smaller than the second part. The headline is two fields
+              because the two halves are set at different sizes — it is not a
+              sentence cut in half.
+          - name: headlineAccent
+            label: Headline, second part
+            type: string
+            required: true
+            description: The large word. Keep it short — it sets very big.
+          - name: subline
+            label: Subline
+            type: string
+
+      - name: info
+        label: "What is BSS?"
+        type: object
+        fields:
+          - name: eyebrow
+            label: Eyebrow
+            type: string
+          - name: title
+            label: Heading
+            type: string
+            required: true
+          - name: body
+            label: Body
+            type: text
+            required: true
+
+      - name: testimonial
+        label: Client testimonial
+        type: object
+        fields:
+          - name: quote
+            label: Quote
+            type: text
+            required: true
+            description: Include the curly quote marks — “ and ” — as part of the text.
+          - name: name
+            label: Name
+            type: string
+          - name: role
+            label: Role and company
+            type: string
+          - name: caption
+            label: Caption underneath
+            type: string
+
+      - name: team
+        label: Team block
+        type: object
+        fields:
+          - name: eyebrow
+            label: Eyebrow
+            type: string
+          - name: title
+            label: Heading
+            type: string
+            required: true
+          - name: body
+            label: First paragraph
+            type: text
+          - name: bodySecond
+            label: Second paragraph
+            type: text
+          - name: applyNote
+            label: Note beside the Apply button
+            type: string
+            description: >-
+              Write {cycle} rather than typing the year — it comes from
+              "Current recruitment cycle" under Site-wide.
+
+  # --- Team --------------------------------------------------------------
+  - name: team
+    label: Our Team page
+    type: file
+    path: bss-web/src/content/team.json
+    format: json
+    description: >-
+      The page's wording only. The roster itself is replaced in bulk from a
+      spreadsheet, not edited here.
+    fields:
+      - name: header
+        label: Page header
+        type: object
+        fields:
+          - name: title
+            label: Headline
+            type: string
+            required: true
+          - name: body
+            label: Introduction
+            type: text
+            description: >-
+              Contains an invisible non-breaking space before the dash, which
+              keeps the dash off the start of a line on phones. Retyping this
+              sentence from scratch loses it.
+
+      - name: bands
+        label: Roster headings
+        type: object
+        description: >-
+          What each group of people is called. Adding a fourth group is a code
+          change, not an edit here.
+        fields:
+          - name: executives
+            label: First group
+            type: string
+            required: true
+          - name: advisoryBoard
+            label: Second group
+            type: string
+            required: true
+          - name: consultants
+            label: Third group
+            type: string
+            required: true
+
+      - name: closing
+        label: Closing ask
+        type: object
+        fields:
+          - name: eyebrow
+            label: Eyebrow
+            type: string
+          - name: title
+            label: Heading
+            type: string
+            required: true
+          - name: body
+            label: Body
+            type: text
+
+  # --- Contact -----------------------------------------------------------
+  - name: contact
+    label: Contact page
+    type: file
+    path: bss-web/src/content/contact.json
+    format: json
+    fields:
+      - name: header
+        label: Page header
+        type: object
+        fields:
+          - name: eyebrow
+            label: Eyebrow
+            type: string
+          - name: title
+            label: Headline
+            type: string
+            required: true
+          - name: body
+            label: Introduction
+            type: text
+
+      - name: addresses
+        label: Email addresses
+        type: object
+        fields:
+          - name: lead
+            label: Line above the general address
+            type: string
+          - name: rolesLabel
+            label: Heading over the role list
+            type: string
+          - name: officers
+            label: Officers
+            type: object
+            list: true
+            description: >-
+              Listed by role, not by name, because the roster turns over every
+              year and a name list goes stale one line at a time. A role held by
+              two people keeps both addresses on one row.
+            fields:
+              - name: role
+                label: Role
+                type: string
+                required: true
+              - name: emails
+                label: Addresses
+                type: string
+                list: true
+                required: true
+
+      - name: form
+        label: Message form
+        type: object
+        description: >-
+          The words on the form. The fields themselves, and where a message is
+          delivered, are set in code.
+        fields:
+          - name: heading
+            label: Heading
+            type: string
+            required: true
+          - name: nameLabel
+            label: "Label: name field"
+            type: string
+          - name: emailLabel
+            label: "Label: email field"
+            type: string
+          - name: messageLabel
+            label: "Label: message field"
+            type: string
+          - name: submitIdle
+            label: "Button: ready"
+            type: string
+          - name: submitSending
+            label: "Button: sending"
+            type: string
+          - name: submitSent
+            label: "Button: sent"
+            type: string
+          - name: sentMessage
+            label: Message on success
+            type: text
+          - name: errorLead
+            label: Message on failure, before the address
+            type: string
+          - name: errorTail
+            label: Message on failure, after the address
+            type: string
+
+  # --- Site-wide ---------------------------------------------------------
+  - name: site
+    label: Site-wide
+    type: file
+    path: bss-web/src/content/site.json
+    format: json
+    fields:
+      - name: applyUrl
+        label: Application form link
+        type: string
+        required: true
+        description: >-
+          Every "Apply Now" on the site points here. Check it at the start of
+          each cycle — the site once carried three different form links.
+      - name: contactEmail
+        label: Club email address
+        type: string
+        required: true
+      - name: cycle
+        label: Current recruitment cycle
+        type: string
+        required: true
+        description: >-
+          e.g. "Fall 2027". Write this once here and it updates everywhere the
+          site names the cycle. Type {cycle} into any other text box to print
+          it. It used to be spelled out on two pages separately, and the site
+          shipped one saying Fall 2025 while the other said Fall 2026.
+      - name: organizationName
+        label: Club name
+        type: string
+        required: true
+      - name: navigation
+        label: Navigation links
+        type: object
+        list: true
+        description: >-
+          One list, used by the navbar, the phone menu and the footer. The page
+          is a fixed choice; only its wording is editable.
+        fields:
+          - name: path
+            label: Page
+            type: select
+            required: true
+            options:
+              values:
+                - name: /
+                  label: Home
+                - name: /clients
+                  label: For Clients
+                - name: /recruitment
+                  label: For Students
+                - name: /team
+                  label: Our Team
+                - name: /contact
+                  label: Contact
+          - name: label
+            label: Wording
+            type: string
+            required: true
+      - name: social
+        label: Social links
+        type: object
+        fields:
+          - name: instagram
+            label: Instagram
+            type: string
+          - name: linkedin
+            label: LinkedIn
+            type: string
+
+  # --- Search engines ----------------------------------------------------
+  - name: seo
+    label: Search engines and link previews
+    type: file
+    path: bss-web/src/content/seo.json
+    format: json
+    description: >-
+      What each page tells Google, and what shows when someone pastes a link
+      into Instagram or iMessage.
+    fields:
+      - name: siteUrl
+        label: Site address
+        type: string
+        required: true
+        description: >-
+          Changing this is a move to a new domain, which also means changing
+          index.html, robots.txt and sitemap.xml. Not a routine edit.
+      - name: siteName
+        label: Site name
+        type: string
+        required: true
+      - name: routes
+        label: Pages
+        type: object
+        list: true
+        fields:
+          - name: path
+            label: Page
+            type: select
+            required: true
+            options:
+              values:
+                - name: /
+                  label: Home
+                - name: /clients
+                  label: For Clients
+                - name: /recruitment
+                  label: For Students
+                - name: /team
+                  label: Our Team
+                - name: /contact
+                  label: Contact
+          - name: title
+            label: Title
+            type: string
+            required: true
+            description: >-
+              Shown as the blue link in search results. Lead with the page, not
+              the club — around 60 characters before Google truncates it.
+          - name: description
+            label: Description
+            type: text
+            required: true
+            description: Around 155 characters. Concrete facts beat adjectives here.
+      - name: notFound
+        label: "\"Page not found\" page"
+        type: object
+        description: >-
+          Used for both the browser tab and the words on the page, so the two
+          cannot disagree.
+        fields:
+          - name: eyebrow
+            label: Eyebrow
+            type: string
+          - name: title
+            label: Heading
+            type: string
+            required: true
+          - name: body
+            label: Body
+            type: text
+            required: true
+            description: >-
+              Shown on the page and used as the search-result description, so
+              keep it under about 155 characters.
+          - name: buttonLabel
+            label: Button
+            type: string

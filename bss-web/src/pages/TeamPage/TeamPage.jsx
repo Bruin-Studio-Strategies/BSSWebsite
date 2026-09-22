@@ -5,14 +5,18 @@ import TeamCard from "../../components/TeamCard.jsx";
 import TeamContainer from "../../components/TeamContainer.jsx";
 import ApplyButton from "../../components/ApplyButton.jsx";
 import SectionOpener from "../../components/SectionOpener.jsx";
+import { header, bands, closing } from "./content.js";
 
 // `priority` marks the team that is on screen when the page opens. Its
 // headshots are fetched immediately rather than lazily, so the first thing a
 // visitor sees is photographs and not a grid of blurred placeholders.
+//
+// Which groups exist and which array feeds each one is structure; only the
+// heading each one prints is copy, so the titles come from `bands` by key.
 const TEAMS = [
-  { title: "Executives", people: EXECUTIVES, priority: true },
-  { title: "Advisory Board", people: ADVISORYBOARD },
-  { title: "Consultants", people: CONSULTANTS },
+  { title: bands.executives, people: EXECUTIVES, priority: true },
+  { title: bands.advisoryBoard, people: ADVISORYBOARD },
+  { title: bands.consultants, people: CONSULTANTS },
 ];
 
 export default function TeamPage() {
@@ -21,13 +25,8 @@ export default function TeamPage() {
       {/* Same measure and opener as the Clients page header, so the two
           interior pages open the same way. */}
       <header className="mx-auto mt-10 w-4/5 max-w-6xl sm:mt-16">
-        <SectionOpener size="page" title="Meet Our Team">
-          {/* The non-breaking space keeps the dash on the end of its line: balanced
-              on a phone, the break otherwise lands before it and a line opens on
-              "— and". */}
-          Diverse, passionate, and innovative. Our members study everything from
-          film and music industry to statistics, engineering, and public
-          affairs&nbsp;— and bring all of it to the work.
+        <SectionOpener size="page" title={header.title}>
+          {header.body}
         </SectionOpener>
       </header>
 
@@ -60,15 +59,14 @@ export default function TeamPage() {
       <section className="mx-auto mb-72 mt-28 w-4/5 max-w-6xl sm:mb-44">
         <div className="border-t border-white/15 pt-10">
           <SectionOpener
-            eyebrow="Join Us"
-            title="Become a Bruin Studio Strategies Consultant"
+            eyebrow={closing.eyebrow}
+            title={closing.title}
             titleClassName="text-balance"
             measure="max-w-[29rem] lg:max-w-none"
             ledeClassName="text-pretty"
             action={<ApplyButton className="mt-7" />}
           >
-            We recruit UCLA students from every major and every year — no prior
-            consulting experience required.
+            {closing.body}
           </SectionOpener>
         </div>
       </section>

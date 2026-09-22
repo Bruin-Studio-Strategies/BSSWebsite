@@ -18,10 +18,24 @@ import { mkdir, readFile, writeFile } from "node:fs/promises";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
-import { OG_IMAGE, ROUTE_META, SITE_NAME, SITE_URL } from "../src/seo/siteMeta.js";
-
 const root = join(dirname(fileURLToPath(import.meta.url)), "..");
 const dist = join(root, "dist");
+
+// Read rather than imported. src/seo/siteMeta.js now pulls these values from
+// src/content/seo.json so the club can edit a title through the CMS, and a JSON
+// import inside a module Node runs directly would need an import attribute and a
+// Node version that honours it. Reading the same JSON here keeps one source of
+// truth without betting the build on that.
+const seo = JSON.parse(await readFile(join(root, "src", "content", "seo.json"), "utf8"));
+
+const SITE_URL = seo.siteUrl;
+const SITE_NAME = seo.siteName;
+const OG_IMAGE = `${SITE_URL}/og-image.jpg`;
+// Authored as a list (the CMS renders it as rows); keyed by path here, exactly
+// as src/seo/siteMeta.js does for the app.
+const ROUTE_META = Object.fromEntries(
+  seo.routes.map(({ path, title, description }) => [path, { title, description }]),
+);
 
 const escapeAttribute = (value) =>
   value.replace(/&/g, "&amp;").replace(/"/g, "&quot;").replace(/</g, "&lt;").replace(/>/g, "&gt;");

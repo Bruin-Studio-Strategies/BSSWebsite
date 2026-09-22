@@ -186,6 +186,16 @@ daylight, and scrolling back up from below the hero runs it backwards.
 
 ## Mobile
 
+**One type scale, in `openerAlignment.js`.** `TITLE_SCALE` and `LEDE_SCALE`
+live beside the alignment constants and are read by `SectionOpener` *and* by the
+landing's copy blocks, which animate their children and so write their own
+markup. The landing used to run its own larger scale — deliberately — and it
+stepped up one at `lg`: its section headings were 60px, exactly the size of an
+interior page's h1, so "What is BSS?" was set at the scale of the *title* of the
+clients page. The site also carried three body sizes (18/16/14px). Measured in
+the browser, not guessed. Changing the site's type scale now means editing those
+two constants.
+
 **Openers centre below `md`; content stays left** (The Opener Rule in
 DESIGN.md). `md` is 960px in this project, not Tailwind's 768. Every page header
 and section heading on the interior pages renders through
@@ -280,7 +290,8 @@ timeline's axis) was explored and rejected: it made the reader decode a metaphor
 before finding a date, and dates plus dress code are the whole reason a student
 opens the page.
 
-The cycle lives in `pages/Recruitment/stages.js`. **The page is deliberately not
+The cycle lives in `src/content/recruitment.json`, read through
+`pages/Recruitment/content.js`. **The page is deliberately not
 cycle-aware** — it describes how recruitment works, and a date is an attribute of
 a stage rather than the thing the page is organised around. Every field except
 `title` is optional and a missing one drops its row, so a stage with no venue
@@ -319,16 +330,140 @@ which is why the closing block asks with a text link instead of a second button.
 block into a ruled row; both were used only by this page.
 
 **Every "Apply Now" on the site renders through `components/ApplyButton.jsx`, and
-the link lives in `src/applyLink.js`.** Before that there were four call sites
+the link lives in `src/content/site.json`.** Before that there were four call sites
 (navbar desktop, navbar mobile, the landing team block, the recruitment header,
 and the team page's closing band) carrying four different treatments and, worse,
 three different Google Form URLs.
 The component's two variants are hierarchy rather than taste: `solid` is the
 page's one call to action, `outline` is the navbar's standing link, which has to
 stay available on every page without competing with whatever solid button is
-below it. `applyLink.js` sits at the src root, not in `pages/Recruitment/`,
-because the navbar and the landing page both need it. Its URL is still last
-cycle's and needs confirming.
+below it. The URL sits in `content/site.json`, not in `pages/Recruitment/`,
+because the navbar and the landing page both need it; `content/site.js` is what
+components import, so nothing has to know the value comes from JSON. It is still
+last cycle's and needs confirming.
+
+## Content files (`src/content/`)
+
+**Every string the club should be able to change without opening a component
+lives here, and components own layout only.** This is the groundwork for a CMS —
+the club edits these files through a form rather than through code. The JSON is
+the source of truth; the sibling `.js` modules exist to give the reasoning
+somewhere to live, since JSON carries no comments. `src/content/README.md` holds
+the editing rules (plain strings, no HTML; keep the typographic punctuation;
+headlines set in measured columns).
+
+Done so far: `/recruitment` (`recruitment.json`), `/clients` (`clients.json`),
+`/contact` (`contact.json`), `/` (`landing.json`), `/team` (`team.json`) and the
+cross-page values in `site.json` (application URL, club address, the nav links,
+the footer's social links, and each route's SEO title and description in
+`seo.json`). Every page's copy is now out of its components.
+
+**`seo.json` has two readers, on purpose.** `src/seo/siteMeta.js` imports it the
+way Vite imports any JSON, for the app; `scripts/prerender-meta.mjs` reads the
+same file with `readFile` instead of importing `siteMeta.js`, because a JSON
+import inside a module Node runs directly needs an import attribute and a Node
+version that honours it. One source of truth, two readers — and the script's
+guard still fails the build with a named error if a tag it rewrites is missing
+from `index.html`.
+
+**One fact lives in one place, and tokens carry it.** `{cycle}` in any content
+string is filled from `site.json` by `content/tokens.js`, which every page's
+content module runs its file through at import. The recruitment introduction and
+the landing page's apply note both name the cycle; as independent strings the
+live site shipped "Fall 2026" against "Fall 2025". An unknown token is left
+verbatim rather than blanked — a typo should print itself, not open a hole in a
+sentence.
+
+The 404 is the same shape: `seo.json`'s `notFound.body` is both the meta
+description and the sentence `ErrorPage.jsx` renders, where before the head tag
+and the page held separate copies of the same opening clause.
+
+`index.html`'s landing-page head tags look like a third instance and are not
+one — `prerender-meta.mjs` rewrites `dist/index.html` from `seo.json` like every
+other route, so the built output cannot drift. Only the source file's values are
+redundant.
+
+**The five nav links are written once.** The navbar's desktop row, the navbar's
+mobile menu and the footer all render `NAVIGATION` from `site.json`; they used
+to write the same list out by hand three times, which is three places to forget
+when a route changes. `path` stays a fixed choice of the routes `App.jsx`
+defines — only `label` is copy.
+
+## Roster imports (`roster-import/`)
+
+**The roster is replaced in bulk, not edited a person at a time.** It turns over
+all at once every year, and retyping 37 people through a CMS form is the job
+nobody does. The club drops `roster.csv` and a folder of photographs into
+`roster-import/` through github.com's upload button; the *Import roster* Action
+runs `scripts/import-roster.mjs` then `scripts/optimize-headshots.mjs`, builds,
+and commits the result. Locally that is `npm run roster`.
+
+**`slug` is a column, not something derived.** The existing slugs follow no rule
+anyone could rederive — "Allison McCabe" is filed as `Alli_Mccabe`,
+"Jesse Acosta-Huerta" as `Jesse_Acosta_Huerta` — so deriving them from names
+silently detached three people from their photographs on the first test run. The
+sheet's value wins; a derived one is only the fallback for somebody new. The
+CSV also carries `photoFile`, the filename exactly as it came out of the
+photoshoot Drive, which is what saves anyone renaming 37 files by hand. A
+returning member leaves it blank and keeps the headshot they have.
+
+**Nothing is written until every row is checked.** The failure this replaces was
+silent: a slug that did not match its photograph rendered that person as their
+initials and nobody noticed. It now refuses the whole import and names each
+problem by spreadsheet row. LinkedIn URLs are normalised on the way through —
+that caught a live deep link into someone's education subpage.
+
+**`optimize-headshots.mjs` takes the roster as its authority, not the folder.**
+`Headshots/` is an archive and keeps everyone the club has ever photographed;
+deriving from all of it kept departed members in the bundle, because
+`headshots.js` globs eagerly. Derivatives with no matching person are removed —
+the first real run dropped one. The originals are never deleted.
+
+The team page's *copy* is in `team.json` and moves through the CMS like any
+other page; only the roster goes through this path.
+
+**`Hero.jsx` takes its copy as a prop.** It lives in `components/` and the copy
+lives in `pages/Landing/`, so importing it directly would have pointed a shared
+component at a page folder — the same inversion `site.json` exists to avoid.
+`Title.jsx` passes it down.
+
+The contact form's labels are copy and moved; its `name` attributes did not —
+those are the keys the EmailJS template reads. The club's general address had
+been declared a third and fourth time as a local `const EMAIL` in `Contact.jsx`
+and `Form.jsx`; both now read `site.js`.
+
+**Copy and geometry stay apart.** A process phase's title, period and
+description are content; where its bar sits on the week ruler is layout and
+stays in `components/ProcessTimeline/phases.js`, which merges the two by `id`.
+Editing "Weeks 1 to 4" must not be able to move a bar. Same reasoning makes
+`motif` a fixed dropdown of the six drawings rather than a text field.
+
+**No em dashes in anything a visitor reads.** Content files, page titles and
+rendered separators all avoid them; `·` is the site's separator (a stage's
+eyebrow reads `01 · 10/6 · 7:00 PM`). The en dash in "4–5 consultants" is a
+numeric range and is a different character. This is the club's call and it
+reversed an earlier rule, so `src/content/README.md` says so explicitly — code
+comments and these notes are unaffected.
+
+**`EDITING.md` at the repo root is the club's guide**, written for an officer
+rather than for a developer: how to get into the CMS, the yearly cycle setup, the
+punctuation rules, and a checklist. `roster-import/README.md` is its counterpart
+for the roster. Both are the handover — if a change makes one of them wrong, that
+is a shipped bug for the people who use this site, not a stale comment.
+
+**`.pages.yml` at the repo root is the CMS.** Officers sign in at pagescms.org
+with GitHub, pick this repo, and that file renders as a labelled form; saving
+writes the JSON back and Vercel deploys it. Two rules when editing it: declare
+only what the club should change, because **a field left undeclared can be
+dropped when the CMS rewrites the file**; and anything with a fixed set of valid
+values is a `select`, never a string. That is why a service's `motif`, a process
+phase's `id` and a nav link's `path` are dropdowns — a free-text motif draws an
+empty cell and a free-text path 404s.
+
+The recruitment closing ask is split into `lead` / `applyLinkText` /
+`betweenLinks` / `tail` because that sentence wraps two links and the links are
+structure rather than content — the fragments change the words around them, not
+the shape.
 
 Not yet touched in this pass: navbar styling (only its mobile breakpoint moved, to
 `md`), most copy. The Paramount testimonial is set in Agatho Light at body scale — the one sanctioned
@@ -395,14 +530,37 @@ visible instead of hidden behind the old black hover overlay, ruled band heading
 with counts, responsive 2→3→4→5 columns, and a closing Apply Now CTA (which is
 the shared `ApplyButton`, like every other one on the site).
 
-**Headshots are never imported directly.** The 37 originals in
-`src/pages/TeamPage/Headshots/` total ~55 MB and are archive only. Everything the
-browser sees is derived by `bss-web/scripts/optimize-headshots.mjs` (sharp,
-devDependency) into `HeadshotsOptimized/` — 320/640px WebP, a 640px JPEG fallback,
-and a 20px inline blur-up placeholder — all committed so Vercel never runs the
-conversion. `people.js` stores a `slug`; `headshots.js` resolves it via
-`import.meta.glob`. **After adding or replacing a headshot, re-run the script and
-commit its output**, or that member renders as initials.
+**Headshots are derived at build time by `vite-imagetools`.** The originals in
+`src/pages/TeamPage/Headshots/` total ~55 MB; `headshots.js` globs them with
+query directives (320/640px WebP, a 640px JPEG fallback, and a 20px blur-up) and
+the build emits the rest. `people.js` stores a `slug` and that is the join key.
+Nothing resized is committed, so the old failure — add a headshot, forget to
+re-run the script, ship a member rendered as initials — cannot happen.
+
+Four things learned wiring it up, all of which bite again if changed:
+
+- **`import.meta.glob` takes literals only.** Building the query from constants
+  fails the build with "Could only use literals", so the four globs repeat
+  themselves on purpose.
+- **imagetools' default file filter is case-sensitive**, and six of the archive's
+  originals are `.JPG`/`.JPEG` as camera exports usually are. `vite.config.js`
+  passes a case-insensitive `include` or the build fails outright.
+- **`assetsInclude: ['**/*.JPG', '**/*.JPEG']` used to sit in `vite.config.js`**
+  from when the landing page imported camera exports directly. With imagetools
+  added it claimed those extensions first and six headshots shipped as untouched
+  originals — one of them 6.9 MB, 19 MB of images in total. It is gone; nothing
+  imports a raw `.JPG` any more.
+- **The blur-up needs `&inline`.** imagetools emits its own assets, so Vite's
+  `assetsInlineLimit` never sees them and 38 ~350-byte placeholders became 38
+  extra requests on the page most often opened on a phone.
+
+Known limit: imagetools will not upscale and `withoutEnlargement=false` is
+ignored, so three members whose source photographs are 400x400 get that size in
+the 640 slot rather than an enlargement. The `srcSet` descriptor overstates
+them; `object-cover` still fills the cell. Better source photographs are the fix.
+
+Pinned to `vite-imagetools@9` because v10 requires Vite >= 7 and v11+ Vite >= 8,
+and this project is on Vite 5. Upgrading Vite frees that.
 
 **The rest of the site's photographs follow the same rule.** `src/assets/IMG_9814.JPG`,
 `group.JPG`, `board.jpg`, `paramount.png` and `waves.png` are originals and are never

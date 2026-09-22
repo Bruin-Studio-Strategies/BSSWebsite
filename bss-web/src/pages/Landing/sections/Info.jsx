@@ -5,7 +5,14 @@ import { FaQuoteLeft } from "react-icons/fa";
 // group photo was 1.1 MB and the Paramount mark 1.8 MB for a logo drawn 36px tall.
 import group from "../../../assets/optimized/IMG_9814-1280.webp";
 import paramountLogo from "../../../assets/optimized/paramount-320.webp"; // transparent Paramount logo
-import { OPENER_ALIGN, OPENER_BALANCE, OPENER_MEASURE } from "../../../components/openerAlignment.js";
+import {
+  OPENER_ALIGN,
+  OPENER_BALANCE,
+  OPENER_MEASURE,
+  TITLE_SCALE,
+  LEDE_SCALE,
+} from "../../../components/openerAlignment.js";
+import { info, testimonial } from "../content.js";
 
 const EASE = [0.16, 1, 0.3, 1];
 
@@ -40,21 +47,19 @@ export default function Info() {
             <motion.span
               className="inline-block font-sans text-xs sm:text-sm font-semibold uppercase tracking-[0.2em] text-sky"
             >
-              Who We Are
+              {info.eyebrow}
             </motion.span>
             {/* h2, under the hero's h1: this is a section of the landing page,
                 and the outline is what a crawler reads the page's shape from. */}
             <motion.h2
-              className={`font-display text-3xl sm:text-4xl md:text-5xl lg:text-6xl text-white mt-4 mb-6 leading-[1.1] ${OPENER_BALANCE}`}
+              className={`font-display ${TITLE_SCALE.section} text-white mt-4 mb-6 ${OPENER_BALANCE}`}
             >
-              What is BSS?
+              {info.title}
             </motion.h2>
             <motion.p
-              className={`font-sans text-sm sm:text-base lg:text-lg text-white/70 leading-relaxed max-w-xl ${OPENER_MEASURE} ${OPENER_BALANCE}`}
+              className={`font-sans ${LEDE_SCALE} text-white/70 max-w-xl ${OPENER_MEASURE} ${OPENER_BALANCE}`}
             >
-              Bruin Studio Strategies, UCLA's first and premier entertainment consulting group,
-              unites technical consulting fundamentals, technology, and Gen-Z insights to deliver
-              actionable insights amidst the fast-paced and malleable entertainment ecosystems.
+              {info.body}
             </motion.p>
           </motion.div>
 
@@ -110,10 +115,7 @@ export default function Info() {
             // larger this quote filled the screen on its own.
             className="font-display font-light text-base leading-relaxed text-white/90 sm:text-lg md:text-xl md:leading-relaxed lg:text-2xl"
           >
-            "Partnering with the Bruin Studios Strategies group was a fantastic experience.
-            Their teams brought creativity, professionalism, and real passion to our case prompt,
-            delivering thoughtful and compelling presentations that reflected both hard work and
-            fresh ideas."
+            {testimonial.quote}
           </motion.blockquote>
 
           <motion.div
@@ -128,15 +130,15 @@ export default function Info() {
             <div className="hidden h-8 w-px bg-white/20 sm:block" />
             <div>
               <p className="text-white font-semibold text-sm sm:text-base">
-                Jonathon Kane
+                {testimonial.name}
               </p>
               <p className="text-white/50 text-xs sm:text-sm">
-                Manager, Business Development, Paramount Pictures
+                {testimonial.role}
               </p>
             </div>
           </motion.div>
           <motion.p variants={fadeUp} className="mt-4 text-white/30 text-xs sm:text-sm">
-            Paramount x BSS Spring 2025 Case Competition
+            {testimonial.caption}
           </motion.p>
         </motion.div>
       </section>

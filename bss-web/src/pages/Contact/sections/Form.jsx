@@ -2,8 +2,8 @@ import { useState } from "react";
 import emailjs from "emailjs-com";
 
 import CtaButton from "../../../components/CtaButton.jsx";
-
-const EMAIL = "bruinstudiostrategies@gmail.com";
+import { CONTACT_EMAIL } from "../../../content/site.js";
+import { form } from "../content.js";
 
 // Ruled fields, not boxes. A bordered input is the one shape this design system
 // does not have anywhere else — the timeline spine, the service cells and the
@@ -56,13 +56,17 @@ export default function Form() {
   };
 
   const label =
-    status === "sending" ? "Sending" : status === "sent" ? "Sent" : "Send message";
+    status === "sending"
+      ? form.submitSending
+      : status === "sent"
+        ? form.submitSent
+        : form.submitIdle;
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-8">
       <div>
         <label htmlFor="name" className={LABEL}>
-          Name
+          {form.nameLabel}
         </label>
         <input
           type="text"
@@ -77,7 +81,7 @@ export default function Form() {
 
       <div>
         <label htmlFor="email" className={LABEL}>
-          Email
+          {form.emailLabel}
         </label>
         <input
           type="email"
@@ -92,7 +96,7 @@ export default function Form() {
 
       <div>
         <label htmlFor="message" className={LABEL}>
-          Message
+          {form.messageLabel}
         </label>
         <textarea
           id="message"
@@ -114,20 +118,18 @@ export default function Form() {
             what to do instead rather than only that something went wrong. */}
         <p className="mt-4 min-h-[1.25rem] font-sans text-sm" role="status" aria-live="polite">
           {status === "sent" && (
-            <span className="text-white/70">
-              Thanks — we&apos;ll get back to you shortly.
-            </span>
+            <span className="text-white/70">{form.sentMessage}</span>
           )}
           {status === "error" && (
             <span className="text-white/70">
-              That didn&apos;t send. Email us at{" "}
+              {form.errorLead}{" "}
               <a
-                href={`mailto:${EMAIL}`}
+                href={`mailto:${CONTACT_EMAIL}`}
                 className="text-sky underline decoration-sky/40 underline-offset-4 transition-colors duration-200 hover:decoration-sky"
               >
-                {EMAIL}
+                {CONTACT_EMAIL}
               </a>{" "}
-              instead.
+              {form.errorTail}
             </span>
           )}
         </p>

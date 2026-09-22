@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from "react";
 import { animate, motion, useInView, useMotionValue, useReducedMotion } from "framer-motion";
 
 import useHoverCapable from "../../../hooks/useHoverCapable.js";
+import { SERVICES, services } from "../content.js";
 
 import ServiceMotif from "../../../components/ServiceMotifs/Motifs.jsx";
 import SectionOpener from "../../../components/SectionOpener.jsx";
@@ -17,44 +18,6 @@ const EASE = [0.16, 1, 0.3, 1];
 //
 // The motifs supply the visual material the services never had, drawn from the
 // hero's own noise field rather than an icon set.
-const SERVICES = [
-  {
-    motif: "market-research",
-    title: "Market Research",
-    description:
-      "Our team conducts thorough research to understand market trends, audience behaviors, and potential opportunities, enabling clients to make informed, data-driven decisions.",
-  },
-  {
-    motif: "growth-strategy",
-    title: "Growth Strategy",
-    description:
-      "We collaborate with clients to develop and implement tailored strategies for scaling their businesses effectively and sustainably within the entertainment industry.",
-  },
-  {
-    motif: "data-analytics",
-    title: "Data Analytics",
-    description:
-      "Leveraging advanced data tools, we analyze key business metrics and trends to offer insights that drive smarter, evidence-based decisions.",
-  },
-  {
-    motif: "brand-strategy",
-    title: "Brand Strategy",
-    description:
-      "We develop compelling brand strategies that establish and reinforce a company's unique identity, ensuring long-term brand recognition and loyalty.",
-  },
-  {
-    motif: "competitive-analysis",
-    title: "Competitive Analysis",
-    description:
-      "We provide in-depth analysis of competitors' strategies, identifying opportunities and gaps to give our clients an advantage in a crowded market.",
-  },
-  {
-    motif: "market-entry",
-    title: "Market Entry",
-    description:
-      "We help companies navigate new markets by providing detailed assessments and strategies for successful entry into new segments, maximizing growth opportunities.",
-  },
-];
 
 function ServiceCell({ service, index, reduced }) {
   const progress = useMotionValue(reduced ? 1 : 0);
@@ -174,7 +137,7 @@ export default function Services() {
         aria-hidden="true"
         className="pointer-events-none absolute -inset-x-16 -top-10 bottom-0 -z-10 bg-[radial-gradient(60%_50%_at_50%_40%,rgba(82,55,148,0.32),transparent_70%)] blur-2xl"
       />
-      <SectionOpener eyebrow="What We Do" title="Our Services" />
+      <SectionOpener eyebrow={services.eyebrow} title={services.title} />
 
       {/* Column gap only. A row gap would break every cell's top rule away from
           the cell above it and the grid would come apart into stacked cards. */}

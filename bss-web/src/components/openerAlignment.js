@@ -26,6 +26,26 @@ export const OPENER_MEASURE = "mx-auto md:mx-0";
 // A row of actions — a button, or a button beside a line of text.
 export const OPENER_ACTIONS = "justify-center md:justify-start";
 
+// The heading scale, and the lede under it. These live here rather than in
+// SectionOpener.jsx for the same reason the alignment does: the landing's copy
+// blocks animate their children with framer-motion, so they write their own
+// markup and cannot call the component — but they must not therefore run their
+// own type scale.
+//
+// They used to. The landing stepped up one at `lg`, which put its section
+// headings at 60px: exactly the size of an interior page's h1, so "What is BSS?"
+// was set at the scale of the *title* of the clients page. The site also carried
+// three body sizes — 18px here, 16px on interior ledes, 14px in service cells.
+// One scale, one place, and a section heading is smaller than a page heading
+// everywhere.
+export const TITLE_SCALE = {
+  page: "text-4xl leading-[1.05] sm:text-5xl md:text-6xl",
+  section: "text-3xl leading-[1.1] sm:text-4xl md:text-5xl",
+};
+
+// Body copy under an opener.
+export const LEDE_SCALE = "text-sm leading-relaxed sm:text-base";
+
 // Uneven centred lines are what make centred type look careless. Below md only:
 // from md up the text is left-aligned, and several measures there were tuned to
 // break on a particular word.

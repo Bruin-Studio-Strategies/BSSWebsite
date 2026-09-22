@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "vite build && node scripts/prerender-meta.mjs",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "roster": "node scripts/import-roster.mjs"
   },
   "dependencies": {
     "@react-spring/parallax": "^9.7.4",
@@ -37,6 +38,7 @@
     "postcss": "^8.4.42",
     "sharp": "^0.35.4",
     "tailwindcss": "^3.4.10",
-    "vite": "^5.4.1"
+    "vite": "^5.4.1",
+    "vite-imagetools": "^9.0.3"
   }
 }
