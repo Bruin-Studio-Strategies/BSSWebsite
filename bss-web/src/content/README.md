@@ -23,9 +23,13 @@ these values lives here instead.
 
 - **Plain strings, no HTML.** The design system controls the type. A `<b>` or a
   `<span class="...">` in here either renders literally or breaks the measure.
-- **Typographic punctuation.** Curly quotes (`’`), em dashes (`—`) and `·`
-  are used throughout and should stay — this is a type-driven site and straight
-  quotes read as a mistake next to Agatho.
+- **No em dashes.** The site does not use them anywhere a visitor can read.
+  Use a comma, a semicolon, a colon, a full stop, or `·` where a separator is
+  wanted. (`·` is the site's separator: a stage's eyebrow reads `01 · 10/6 ·
+  7:00 PM`.) The en dash in a numeric range, as in "4–5 consultants", is a
+  different character and stays.
+- **Curly quotes.** `’` rather than `'`, throughout. A straight quote reads as a
+  mistake next to Agatho.
 - **Headlines are measured.** The columns they set in are bounded (34rem on the
   closing ask, 46rem on FAQ answers). A headline three times longer than the one
   it replaces will not break the page, but it will break the composition.
@@ -77,9 +81,6 @@ Two values look like content and are not:
 - **`bands` on the team page is keyed, not a list.** Renaming "Advisory Board"
   is a content edit; adding a fourth group is not — which groups exist and which
   people feed them is structure in `TeamPage.jsx`.
-- **The team header hides a non-breaking space** before its em dash, which is
-  invisible in an editor. Without it the phone line breaks before the dash and
-  the next line opens on "— and". Retyping that sentence loses it.
 - **The hero headline is two fields**, `headlineLead` and `headlineAccent`.
   They are set at different sizes and animate as separate words, so the split is
   typography rather than a sentence cut in half. A headline that needs three

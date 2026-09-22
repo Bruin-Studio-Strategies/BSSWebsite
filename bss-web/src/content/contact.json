@@ -10,15 +10,23 @@
     "officers": [
       {
         "role": "Co-Presidents",
-        "emails": ["awahab1@g.ucla.edu", "Kiankazr@gmail.com"]
+        "emails": [
+          "awahab1@g.ucla.edu",
+          "Kiankazr@gmail.com"
+        ]
       },
       {
         "role": "VP of External Affairs",
-        "emails": ["rianne.ke06@gmail.com"]
+        "emails": [
+          "rianne.ke06@gmail.com"
+        ]
       },
       {
         "role": "VPs of Internal Relations",
-        "emails": ["carlieharwood@g.ucla.edu", "jyinghe07@g.ucla.edu"]
+        "emails": [
+          "carlieharwood@g.ucla.edu",
+          "jyinghe07@g.ucla.edu"
+        ]
       }
     ]
   },
@@ -30,7 +38,7 @@
     "submitIdle": "Send message",
     "submitSending": "Sending",
     "submitSent": "Sent",
-    "sentMessage": "Thanks — we’ll get back to you shortly.",
+    "sentMessage": "Thanks, we’ll get back to you shortly.",
     "errorLead": "That didn’t send. Email us at",
     "errorTail": "instead."
   }

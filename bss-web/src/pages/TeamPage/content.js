@@ -10,10 +10,6 @@
  * groups exist and which array feeds each one is structure and stays in
  * `TeamPage.jsx`. Renaming "Advisory Board" is a content edit; adding a fourth
  * group is not.
- *
- * The header's body carries a non-breaking space before its em dash. It is
- * deliberate and invisible in an editor: balanced on a phone the line otherwise
- * breaks before the dash and the next line opens on "— and".
  */
 
 import team from "../../content/team.json";

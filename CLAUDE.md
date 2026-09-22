@@ -438,6 +438,13 @@ stays in `components/ProcessTimeline/phases.js`, which merges the two by `id`.
 Editing "Weeks 1 to 4" must not be able to move a bar. Same reasoning makes
 `motif` a fixed dropdown of the six drawings rather than a text field.
 
+**No em dashes in anything a visitor reads.** Content files, page titles and
+rendered separators all avoid them; `·` is the site's separator (a stage's
+eyebrow reads `01 · 10/6 · 7:00 PM`). The en dash in "4–5 consultants" is a
+numeric range and is a different character. This is the club's call and it
+reversed an earlier rule, so `src/content/README.md` says so explicitly — code
+comments and these notes are unaffected.
+
 **`EDITING.md` at the repo root is the club's guide**, written for an officer
 rather than for a developer: how to get into the CMS, the yearly cycle setup, the
 punctuation rules, and a checklist. `roster-import/README.md` is its counterpart

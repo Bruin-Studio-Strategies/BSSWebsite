@@ -110,9 +110,12 @@ If you want one of these changed, it needs a developer:
 **Do not paste formatted text.** Copying out of Google Docs or Word can bring
 invisible formatting with it. If something looks wrong after a paste, retype it.
 
-**Keep the punctuation style.** The site uses curly apostrophes (`don’t`, not
-`don't`) and long dashes (`—`). If you retype a sentence from scratch you will
-probably lose them; it is easier to edit around what is already there.
+**No em dashes.** The site does not use them. Where you want a pause, use a
+comma, a semicolon or a full stop; where you want a separator, use `·`.
+
+**Keep the curly apostrophes.** `don’t`, not `don't`. If you retype a sentence
+from scratch you will probably lose them, so it is easier to edit around what is
+already there.
 
 **Headlines have room, but not unlimited room.** A headline three times longer
 than the one it replaces will still work, but it will look wrong. Keep roughly

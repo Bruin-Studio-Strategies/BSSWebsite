@@ -88,7 +88,7 @@ function Stage({ stage, index, isLast, state, fill, reduced, rowRef }) {
           <span className={`${smooth} ${state === "upcoming" ? "" : "text-white/70"}`}>
             {String(index + 1).padStart(2, "0")}
           </span>
-          {stage.date && <span className="text-white/40"> — {stage.date}</span>}
+          {stage.date && <span className="text-white/40"> · {stage.date}</span>}
           {stage.time && <span className="text-white/40"> · {stage.time}</span>}
         </p>
 

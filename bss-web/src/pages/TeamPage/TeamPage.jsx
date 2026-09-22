@@ -25,8 +25,6 @@ export default function TeamPage() {
       {/* Same measure and opener as the Clients page header, so the two
           interior pages open the same way. */}
       <header className="mx-auto mt-10 w-4/5 max-w-6xl sm:mt-16">
-        {/* The body carries a non-breaking space before its em dash — see the
-            note in content.js. */}
         <SectionOpener size="page" title={header.title}>
           {header.body}
         </SectionOpener>
