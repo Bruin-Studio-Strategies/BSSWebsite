@@ -403,6 +403,18 @@ collided with it and became `roster-1.csv` (silently republishing the stale
 one), and deleting it first fired a run with nothing to read. None of those can
 happen to a file that is never there between imports.
 
+**The workflow watches `people.json` as well as `roster-import/`.** It did not
+at first, so a person added through the CMS form was committed and then nothing
+ran: their photograph stayed in the inbox, their slug was never filled in, the
+export went stale and nobody who had left was retired — silently, because the
+edit itself succeeded. The Action's own commit does not retrigger it, since a
+push made with `GITHUB_TOKEN` starts no workflows.
+
+**"Photo name" and "New photo" get swapped, and the error says so.** Putting the
+upload's filename in `photoName` is the first mistake a real user made. It would
+otherwise fail as a punctuation complaint about a dot; it now names both fields
+and the fix.
+
 **A drastic cut is stopped.** Replacing removes everyone absent from the sheet,
 so a half-finished file would quietly destroy the roster. Cutting it by more
 than half needs `--replace-all`, written in the band column of a row that is

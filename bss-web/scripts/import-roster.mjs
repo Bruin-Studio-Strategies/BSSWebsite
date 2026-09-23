@@ -464,7 +464,16 @@ async function main() {
     // The sheet's value wins. A slug is the join key to a file on disk, not a
     // formatting of the name, and renaming one orphans that person's headshot.
     const slug = get("photoName") || slugFor(first, last);
-    if (!/^[A-Za-z0-9_-]+$/.test(slug)) {
+    if (IMAGE_PATTERN.test(slug)) {
+      // The two fields are easy to swap: one holds a filename, the other holds
+      // what that file will be renamed to. Putting the upload's name in
+      // "Photo name" is the mistake this catches, and it is worth naming
+      // precisely rather than complaining about punctuation.
+      fail(
+        `${who}'s "Photo name" is set to a filename ("${slug}"). That belongs in ` +
+          `"New photo". Leave "Photo name" blank and it will be filled in.`,
+      );
+    } else if (!/^[A-Za-z0-9_-]+$/.test(slug)) {
       fail(`${who}'s photoName "${slug}" may only contain letters, numbers, _ and -.`);
     }
     if (seenSlugs.has(slug)) {

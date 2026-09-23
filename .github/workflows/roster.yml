@@ -14,6 +14,12 @@ on:
   push:
     paths:
       - "roster-import/**"
+      # The roster itself, because the CMS edits it directly now. Without this
+      # a person added through the form was never processed: their photograph
+      # stayed in the inbox, their slug was never filled in, nobody who left
+      # was retired, and the downloadable export went stale — all silently,
+      # because the edit committed successfully and nothing else ran.
+      - "bss-web/src/content/people.json"
   # Also runnable by hand: from the Actions tab, or from the "Rebuild roster"
   # button the CMS shows (see `actions:` in .pages.yml).
   #
