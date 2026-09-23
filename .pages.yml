@@ -32,6 +32,14 @@ actions:
     ref: current
 
 # Where the roster's two uploads go, so the club never has to open github.com.
+#
+# Both are inboxes, not albums, and the labels say "Upload" for that reason: the
+# importer consumes what it finds and empties `photos/` on success, so the next
+# import cannot run against a mix of this year's photographs and last year's. An
+# empty folder here means the last import ran cleanly. The 37 headshots
+# themselves live in `bss-web/src/pages/TeamPage/Headshots/`, which is the
+# permanent archive, is never deleted from, and is deliberately not exposed to
+# the CMS.
 # Each has its own directory and neither contains the other: rooted at
 # `roster-import/`, the sheet's browser listed `photos/` as a subfolder, so the
 # same folder showed up twice in the sidebar and it was not obvious which one a
@@ -51,13 +59,13 @@ actions:
 # under 640x800 cannot fill the 2x slot and will look soft on a retina screen.
 media:
   - name: roster-photos
-    label: Roster photos
+    label: Upload new headshots
     input: roster-import/photos
     output: /roster-import/photos
     rename: false
     extensions: [jpg, jpeg, png, JPG, JPEG, PNG]
   - name: roster-sheet
-    label: Roster spreadsheet
+    label: Upload the roster sheet
     input: roster-import/sheet
     output: /roster-import/sheet
     rename: false

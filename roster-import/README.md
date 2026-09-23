@@ -16,8 +16,13 @@ need to install anything, and you do not need to know git.
 
 In the CMS, in the sidebar:
 
-1. **Roster spreadsheet** — upload your new `roster.csv`. It replaces the old one.
-2. **Roster photos** — drag the headshots in.
+1. **Upload the roster sheet** — your new `roster.csv`. It replaces the old one.
+2. **Upload new headshots** — drag the photographs in.
+
+Both of those folders will look empty, and that is correct. They are drop
+boxes: once the import has run, it clears them out so that next year's upload
+cannot get mixed up with this year's. The headshots themselves are kept
+elsewhere and are never deleted.
 
 That is it. (You can also do this on github.com, in this folder, with
 **Add file → Upload files** — it is the same thing, and useful if the CMS is
