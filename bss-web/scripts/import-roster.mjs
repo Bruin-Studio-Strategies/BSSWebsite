@@ -522,9 +522,18 @@ async function main() {
     .digest("hex")
     .slice(0, 12);
 
-  // The uploads have been consumed. Leaving them would mean the next import ran
-  // against a mix of this year's photographs and last year's.
-  await rm(PHOTO_DIR, { recursive: true, force: true });
+  // Only the photographs that were actually filed are cleared. Leaving those
+  // would mean the next import ran against a mix of this year's and last
+  // year's.
+  //
+  // Anything unmatched stays put, because the two uploads are two commits and
+  // the first one starts a run on its own. Uploading the photograph before the
+  // sheet used to destroy it: the run fired, found no row naming it, and the
+  // inbox was emptied wholesale. The club then had to re-upload a file they had
+  // already sent, with nothing saying why. Now it simply waits for its row.
+  for (const file of photosUsed) {
+    await rm(path.join(PHOTO_DIR, file), { force: true });
+  }
   await mkdir(PHOTO_DIR, { recursive: true });
   await writeFile(path.join(PHOTO_DIR, ".gitkeep"), "", "utf8");
 

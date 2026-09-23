@@ -108,7 +108,12 @@ photoshoot.
 
 ## Notes
 
-- The `photos` folder is emptied after a successful import. That is deliberate:
+- **Order does not matter.** The sheet and the photographs are two separate
+  uploads, and each one starts a run. A photograph nobody's row refers to yet
+  simply waits until you upload the sheet that names it.
+- You do not need to delete the old `roster.csv` first. Uploading a file with
+  the same name replaces it.
+- The `photos` folder is emptied of the photographs that were used. That is deliberate:
   otherwise the next import would run against a mix of this year's photographs
   and last year's.
 - Photographs are resized when the site is built, not when they are uploaded, so

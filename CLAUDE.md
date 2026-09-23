@@ -462,6 +462,14 @@ looks right, but the Action's runner would leave *both* in `Headshots/`, where
 images depending on directory order. Found by testing a photo swap, which is
 exactly the case that produces it.
 
+**Only the photographs that were used are cleared from the inbox.** The two
+uploads are two commits and the first one starts a run on its own, so uploading
+the photograph before the sheet used to destroy it: the run fired, found no row
+naming the file, and `photos/` was emptied wholesale. Observed in the club's
+first real upload — the photograph was committed by the CMS and deleted by the
+Action ninety seconds later, with nothing saying why. An unmatched photograph
+now waits for its row.
+
 **Nothing is written until every row is checked.** The failure this replaces was
 silent: a slug that did not match its photograph rendered that person as their
 initials and nobody noticed. It now refuses the whole import and names each
