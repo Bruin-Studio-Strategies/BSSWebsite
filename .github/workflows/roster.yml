@@ -14,9 +14,19 @@ on:
   push:
     paths:
       - "roster-import/**"
-  # Also runnable from the Actions tab, for re-running the resize after a change
-  # to the optimizer itself.
+  # Also runnable by hand: from the Actions tab, or from the "Rebuild roster"
+  # button the CMS shows (see `actions:` in .pages.yml).
+  #
+  # `payload` is declared because Pages CMS sends one with every dispatch,
+  # carrying which repository, user and page the button was pressed from. A
+  # workflow that declares no inputs rejects the whole call —
+  # "Unexpected inputs provided: [\"payload\"]" — so the button fails before the
+  # job starts. Nothing here reads it; it exists so the dispatch is accepted.
   workflow_dispatch:
+    inputs:
+      payload:
+        description: Context sent by Pages CMS. Unused.
+        required: false
 
 permissions:
   contents: write
