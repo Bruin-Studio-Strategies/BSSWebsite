@@ -506,6 +506,16 @@ punctuation rules, and a checklist. `roster-import/README.md` is its counterpart
 for the roster. Both are the handover — if a change makes one of them wrong, that
 is a shipped bug for the people who use this site, not a stale comment.
 
+**No `actions:` block in `.pages.yml`, deliberately.** A "Rebuild roster"
+button lived there and was removed: the CMS polls the dispatch endpoint to show
+a button's run status, and the poll loops for as long as the tab is open. Each
+poll is a GitHub API call, so a single open tab exhausted the authenticated
+5,000/hour limit and locked the club out of uploading for twenty minutes —
+`GitHub rate limit reached. Please wait 1283 seconds`. The button bought
+nothing: uploading a file already fires the workflow. `roster.yml` keeps its
+`workflow_dispatch` trigger, so a manual run is still possible from the Actions
+tab.
+
 **`.pages.yml` at the repo root is the CMS.** Officers sign in at pagescms.org
 with GitHub, pick this repo, and that file renders as a labelled form; saving
 writes the JSON back and Vercel deploys it. Two rules when editing it: declare

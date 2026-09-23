@@ -22,14 +22,15 @@ settings:
   content:
     merge: true
 
-# A manual re-run of the roster import. Not needed for a normal upload, which
-# fires the workflow by itself — this is for re-deriving after a change to the
-# pipeline, or for retrying a run that failed.
-actions:
-  - name: rebuild-roster
-    label: Rebuild roster
-    workflow: roster.yml
-    ref: current
+# No `actions:` block, deliberately. A "Rebuild roster" button lived here and
+# was removed: the CMS polls the dispatch endpoint to show a button's run
+# status, and that poll loops for as long as the tab is open. Each poll is a
+# GitHub API call, so one open tab exhausted the 5,000/hour limit and locked
+# uploads out for twenty minutes — for a button nothing needed, since uploading
+# a file fires the workflow on its own.
+#
+# The workflow still accepts a manual run from the repository's Actions tab, and
+# `roster.yml` keeps its `workflow_dispatch` trigger for that.
 
 # Where the roster's two uploads go, so the club never has to open github.com.
 #
