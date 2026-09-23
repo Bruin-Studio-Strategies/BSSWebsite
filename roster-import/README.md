@@ -111,8 +111,10 @@ photoshoot.
 - **Order does not matter.** The sheet and the photographs are two separate
   uploads, and each one starts a run. A photograph nobody's row refers to yet
   simply waits until you upload the sheet that names it.
-- You do not need to delete the old `roster.csv` first. Uploading a file with
-  the same name replaces it.
+- **Delete the old `roster.csv` before uploading a new one.** Uploading does
+  not replace it — you end up with `roster.csv` and `roster-1.csv`, and the
+  import refuses to run until only one is left. Use the `⋮` menu on the old
+  file to delete it.
 - The `photos` folder is emptied of the photographs that were used. That is deliberate:
   otherwise the next import would run against a mix of this year's photographs
   and last year's.

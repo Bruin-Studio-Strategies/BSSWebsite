@@ -462,6 +462,12 @@ looks right, but the Action's runner would leave *both* in `Headshots/`, where
 images depending on directory order. Found by testing a photo swap, which is
 exactly the case that produces it.
 
+**Uploading a sheet does not replace the old one.** The CMS keeps both and
+names the second `roster-1.csv`, and the importer reads `roster.csv` — so an
+edit uploaded that way is ignored and the previous roster is republished, with
+every step reporting success. The importer now refuses to run when it finds more
+than one CSV rather than guessing which was meant.
+
 **Only the photographs that were used are cleared from the inbox.** The two
 uploads are two commits and the first one starts a run on its own, so uploading
 the photograph before the sheet used to destroy it: the run fired, found no row

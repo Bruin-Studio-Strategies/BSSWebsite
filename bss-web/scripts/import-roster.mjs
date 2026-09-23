@@ -277,9 +277,29 @@ async function main() {
   const problems = [];
   const warnings = [];
 
+  // Uploading a sheet that already exists does not replace it: the CMS keeps
+  // both and names the new one roster-1.csv. This script reads roster.csv, so
+  // an edit uploaded that way is ignored and the *old* roster is what gets
+  // published — the worst kind of failure, because every step reports success.
+  // Refuse to guess which one was meant.
+  const sheets = (await readdir(path.dirname(CSV_PATH)).catch(() => [])).filter((file) =>
+    file.toLowerCase().endsWith(".csv"),
+  );
+
+  if (sheets.length > 1) {
+    throw new Error(
+      `There is more than one spreadsheet in roster-import/sheet/:\n\n` +
+        sheets.map((file) => `  • ${file}`).join("\n") +
+        `\n\nUploading a sheet adds a second copy rather than replacing the one\n` +
+        `already there. Delete the ones you do not want, keep a single file\n` +
+        `named roster.csv, and upload again.`,
+    );
+  }
+
   const csvText = await readFile(CSV_PATH, "utf8").catch(() => {
     throw new Error(
       `No roster at roster-import/sheet/roster.csv.\n` +
+        (sheets.length ? `Found ${sheets[0]} instead — it must be named roster.csv.\n` : ``) +
         `Export the roster sheet as CSV (File > Download > Comma-separated values) ` +
         `and upload it there.`,
     );
