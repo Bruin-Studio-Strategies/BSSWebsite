@@ -389,107 +389,58 @@ to write the same list out by hand three times, which is three places to forget
 when a route changes. `path` stays a fixed choice of the routes `App.jsx`
 defines — only `label` is copy.
 
-## Roster imports (`roster-import/`)
+## The roster (`people.json`, `roster-import/`)
 
-**The roster is replaced in bulk, not edited a person at a time.** It turns over
-all at once every year, and retyping 37 people through a CMS form is the job
-nobody does. The club uploads `roster.csv` and the photographs into
-`roster-import/` — through the CMS's own **Roster spreadsheet** and **Roster
-photos** media folders, or github.com's upload button, which are the same commit
-— and the *Import roster* Action runs `scripts/import-roster.mjs`, builds, and
-commits the result. Locally that is `npm run roster`.
+**`people.json` is the roster and the CMS edits it as a form.** Adding a person,
+fixing a major, changing a role: all of it happens in *Team roster*, which is
+the everyday path and involves no files, no uploads and no Action.
 
-**`rename: false` on both media folders is load-bearing.** The sheet's
-`photoFile` column names each photograph by the filename it arrived with, so
-letting the CMS slugify an upload breaks the match between a person and their
-picture. The importer does the renaming, to the slug, on the way into the
-archive.
+**A spreadsheet is a one-shot instruction, not a second copy.** Dropped into
+`roster-import/sheet/`, it replaces the whole roster and is then deleted, so
+nothing named `roster.csv` lives in the repository. That is what fixes the
+original design: a resident sheet was a second source of truth, an upload
+collided with it and became `roster-1.csv` (silently republishing the stale
+one), and deleting it first fired a run with nothing to read. None of those can
+happen to a file that is never there between imports.
 
-**The sheet is the single master for the roster.** `people.json` is generated
-and must not also become CMS-editable: an import rewrites it wholesale, so a
-person added through a form would be silently wiped by the next upload.
+**A drastic cut is stopped.** Replacing removes everyone absent from the sheet,
+so a half-finished file would quietly destroy the roster. Cutting it by more
+than half needs `--replace-all`, written in the band column of a row that is
+otherwise empty. A flag rather than a prompt because the Action runs unattended.
 
-**The sheet's two photo columns are named for the club, not for us.**
-`photoName` is what a photograph is stored as and must never change; `newPhoto`
-is what it arrived as and is filled in only when replacing one. They were `slug`
-and `photoFile`, which were developer words and easy to mistake for each other.
-`COLUMN_ALIASES` in `import-roster.mjs` still accepts the old spellings, so a
-sheet downloaded before the rename imports, and the write-back migrates its
-header.
+**`photoName` and `newPhoto` are named for the club**, not for us. `photoName`
+is what a photograph is stored as and must never change; `newPhoto` is what it
+arrived as and is only filled in when replacing one. They were `slug` and
+`photoFile`. `COLUMN_ALIASES` still accepts the old spellings. In `people.json`
+the field is still `slug` — the CMS label does the explaining, which avoids
+renaming it through `TeamCard` and `headshots.js` for no functional gain.
 
-**`photoName` is a column, not something derived.** The existing slugs follow no rule
-anyone could rederive — "Allison McCabe" is filed as `Alli_Mccabe`,
-"Jesse Acosta-Huerta" as `Jesse_Acosta_Huerta` — so deriving them from names
-silently detached three people from their photographs on the first test run. The
-sheet's value wins; a derived one is only the fallback for somebody new. The
-CSV also carries `photoFile`, the filename exactly as it came out of the
-photoshoot Drive, which is what saves anyone renaming 37 files by hand. A
-returning member leaves it blank and keeps the headshot they have.
+**The importer maintains the archive, not just the roster.** On each run it
+files any `newPhoto` and clears the field; moves anyone no longer on the roster
+into `Headshots/former/` so the build stops deriving them; and moves them back
+if they return. `headshots.js` globs `Headshots/*`, which does not descend, so
+that subfolder is what makes retirement work. Originals are never deleted.
 
-**The importer maintains the sheet and the archive, not just `people.json`.**
-Three things it does on a successful run, each fixing a trap that only appears a
-year later:
+**Only the photographs that were used are cleared from the inbox.** Uploading a
+photograph before the sheet that names it used to destroy it: the upload fired a
+run, no row referred to the file, and the inbox was emptied wholesale. Observed
+on the club's first real upload.
 
-- **Writes each person's slug back.** A new member's slug is derived from their
-  name and was previously recorded nowhere, so correcting a spelling in the
-  sheet the following year would derive a different slug and quietly detach them
-  from their photograph.
-- **Clears `photoFile`.** It names a file that has just been consumed — `photos/`
-  is emptied on success — so leaving the value in place makes the *next* import
-  fail on a photograph that no longer exists. Reproduced: it errors with
-  `Row 34: … photo "STALE.JPG" is not in roster-import/photos/`. Clearing it is
-  what makes "returning members leave it blank" true without anyone tidying up.
-- **Restores anyone who comes back.** Retirement is reversible: add the row
-  again and their photograph moves out of `former/` before the retirement sweep
-  runs. A member who takes a quarter off should not need re-photographing, and
-  nobody should have to know that folder exists.
-- **Retires anyone no longer on the roster**, moving their original into
-  `Headshots/former/`. `headshots.js` globs `Headshots/*`, which does not
-  descend, so this is what stops the build deriving them. It is a move and not a
-  delete: the photographs are the club's. Without it a departed member was still
-  being shipped as three files in `dist/` — found by asking what happens when
-  someone leaves.
+**A replacement clears the slug's old file first.** Camera exports are often
+`.JPG` where the archive holds `.jpg`; Windows treats those as one filename and
+Linux does not, so the Action would otherwise leave two files resolving to the
+same person.
 
-Rows are edited in place rather than the file regenerated, so a column the club
-added for its own use survives. The round trip is byte-identical when nothing
-needs changing.
+**`slug` is authoritative, never derived for an existing person.** The existing
+ones follow no rule anyone could rederive — "Allison McCabe" is filed as
+`Alli_Mccabe` — so deriving them from names silently detached three people from
+their photographs on the first test run. A derived slug is only the fallback for
+somebody new, and is written back so it is pinned from then on.
 
-**A replacement photograph clears the slug's old file first.** Camera exports
-are frequently `.JPG` where the archive holds `.jpg`, and Windows treats those
-as one filename while Linux does not: locally the copy overwrites and everything
-looks right, but the Action's runner would leave *both* in `Headshots/`, where
-`headshots.js` keys on the basename and the slug would resolve to two different
-images depending on directory order. Found by testing a photo swap, which is
-exactly the case that produces it.
-
-**Uploading a sheet does not replace the old one.** The CMS keeps both and
-names the second `roster-1.csv`, and the importer reads `roster.csv` — so an
-edit uploaded that way is ignored and the previous roster is republished, with
-every step reporting success. The importer now refuses to run when it finds more
-than one CSV rather than guessing which was meant.
-
-**Only the photographs that were used are cleared from the inbox.** The two
-uploads are two commits and the first one starts a run on its own, so uploading
-the photograph before the sheet used to destroy it: the run fired, found no row
-naming the file, and `photos/` was emptied wholesale. Observed in the club's
-first real upload — the photograph was committed by the CMS and deleted by the
-Action ninety seconds later, with nothing saying why. An unmatched photograph
-now waits for its row.
-
-**Nothing is written until every row is checked.** The failure this replaces was
-silent: a slug that did not match its photograph rendered that person as their
-initials and nobody noticed. It now refuses the whole import and names each
-problem by spreadsheet row. LinkedIn URLs are normalised on the way through —
-that caught a live deep link into someone's education subpage.
-
-**`optimize-headshots.mjs` takes the roster as its authority, not the folder.**
-`Headshots/` is an archive and keeps everyone the club has ever photographed;
-deriving from all of it kept departed members in the bundle, because
-`headshots.js` globs eagerly. Derivatives with no matching person are removed —
-the first real run dropped one. The originals are never deleted.
-
-The team page's *copy* is in `team.json` and moves through the CMS like any
-other page; only the roster goes through this path.
+**Nothing is written until every person has been checked**, and problems are
+named by spreadsheet row or position in the roster. The failure this replaces
+was silent: a slug that did not match its photograph rendered that person as
+their initials and nobody noticed.
 
 **`Hero.jsx` takes its copy as a prop.** It lives in `components/` and the copy
 lives in `pages/Landing/`, so importing it directly would have pointed a shared

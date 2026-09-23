@@ -76,6 +76,72 @@ media:
     extensions: [csv]
 
 content:
+  # --- The team roster ---------------------------------------------------
+  # The roster itself, edited as a list. This is the master: a spreadsheet is a
+  # one-shot import that replaces it and is then deleted, not a second copy to
+  # keep in step.
+  - name: roster
+    label: Team roster
+    type: file
+    path: bss-web/src/content/people.json
+    format: json
+    list: true
+    fields:
+      - name: band
+        label: Group
+        type: select
+        required: true
+        description: Which heading on the team page they appear under.
+        options:
+          values:
+            - name: executives
+              label: Executives
+            - name: advisoryBoard
+              label: Advisory Board
+            - name: consultants
+              label: Consultants
+      - name: first
+        label: First name
+        type: string
+        required: true
+      - name: last
+        label: Last name
+        type: string
+        required: true
+      - name: role
+        label: Role
+        type: string
+        required: true
+        description: e.g. Co-President, Consultant.
+      - name: major
+        label: Major
+        type: string
+      - name: grad
+        label: Graduation year
+        type: string
+        description: e.g. 2027. Shown as '27.
+      - name: linkedIn
+        label: LinkedIn
+        type: string
+        description: Their profile URL. Tidied up automatically.
+      - name: email
+        label: Email
+        type: string
+      - name: slug
+        label: Photo name
+        type: string
+        description: >-
+          The name their photograph is saved under. Filled in automatically for
+          somebody new. Never change it for someone already on the site: it is
+          the only thing linking them to their picture.
+      - name: newPhoto
+        label: New photo
+        type: string
+        description: >-
+          Only when replacing their photograph. Upload it under "Upload new
+          headshots" first, then put its filename here exactly. It is cleared
+          once the photo has been filed.
+
   # --- Recruitment -------------------------------------------------------
   # The page the club edits most: dates change every cycle.
   - name: recruitment

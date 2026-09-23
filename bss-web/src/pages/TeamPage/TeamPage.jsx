@@ -36,7 +36,7 @@ export default function TeamPage() {
       {TEAMS.map(({ title, people, priority }) => (
         <TeamContainer key={title} title={title} count={people.length}>
           {people.map((person) => (
-            <TeamCard key={person.id} {...person} priority={priority} />
+            <TeamCard key={person.slug} {...person} priority={priority} />
           ))}
         </TeamContainer>
       ))}

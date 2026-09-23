@@ -46,7 +46,9 @@ const ROOT = path.join(HERE, "..");
 const REPO = path.join(ROOT, "..");
 
 const IMPORT_DIR = path.join(REPO, "roster-import");
-const CSV_PATH = path.join(IMPORT_DIR, "sheet", "roster.csv");
+// A spreadsheet is dropped in here to replace the whole roster, and is deleted
+// once it has been applied. Nothing lives here between imports.
+const SHEET_DIR = path.join(IMPORT_DIR, "sheet");
 const PHOTO_DIR = path.join(IMPORT_DIR, "photos");
 
 const ARCHIVE_DIR = path.join(ROOT, "src", "pages", "TeamPage", "Headshots");
@@ -229,95 +231,133 @@ function normalizeGrad(value) {
   return { grad: match[1] };
 }
 
-/** A CSV field needs quoting if it carries a comma, a quote or a newline. */
-function csvField(value) {
-  const text = value ?? "";
-  const special = [",", '"', "\n", "\r"];
-  const needsQuotes = special.some((character) => text.includes(character));
-  return needsQuotes ? `"${text.replace(/"/g, '""')}"` : text;
+/** A path as the club sees it in the repository, for error messages. */
+function rel(target) {
+  return path.relative(REPO, target).split(path.sep).join("/");
 }
 
 /**
- * Writes the sheet back with each person's slug recorded and `photoFile`
- * cleared. Rows are edited in place rather than regenerated, so a column the
- * club added for its own use survives even though this script ignores it.
+ * The roster as it stands, turned into the same shape a spreadsheet row
+ * produces so one validation pass can serve both. `slug` is called `photoName`
+ * everywhere the club sees it.
  */
-async function writeRoster(csvText, header, people) {
-  // Preserve whatever the sheet arrived with: Sheets exports CRLF, and
-  // rewriting the file with LF would show every row as changed in the diff.
-  const eol = csvText.includes("\r\n") ? "\r\n" : "\n";
-  const rows = parseCsv(csvText);
-
-  let slugColumn = columnIndex(header, "photoName");
-  if (slugColumn === -1) {
-    // A sheet that never had the column gets one, appended so existing
-    // columns keep their positions.
-    slugColumn = header.length;
-    rows[0].push("photoName");
-  }
-  const photoColumn = columnIndex(header, "newPhoto");
-
-  // Migrate a sheet still using the old headings.
-  rows[0][slugColumn] = "photoName";
-  if (photoColumn !== -1) rows[0][photoColumn] = "newPhoto";
-
-  for (const person of people) {
-    const row = rows[person.row];
-    if (!row) continue;
-    while (row.length <= Math.max(slugColumn, photoColumn)) row.push("");
-    row[slugColumn] = person.slug;
-    if (photoColumn !== -1) row[photoColumn] = "";
-  }
-
-  const out = rows.map((row) => row.map(csvField).join(",")).join(eol);
-  await writeFile(CSV_PATH, out + eol, "utf8");
+async function recordsFromRoster() {
+  const people = JSON.parse(await readFile(PEOPLE_JSON, "utf8").catch(() => "[]"));
+  return people.map((person) => ({
+    band: person.band ?? "",
+    first: person.first ?? "",
+    last: person.last ?? "",
+    role: person.role ?? "",
+    photoName: person.slug ?? "",
+    major: person.major ?? "",
+    grad: person.grad ?? "",
+    linkedIn: person.linkedIn ?? "",
+    email: person.email ?? "",
+    newPhoto: person.newPhoto ?? "",
+  }));
 }
 
-async function main() {
-  const problems = [];
-  const warnings = [];
-
-  // Uploading a sheet that already exists does not replace it: the CMS keeps
-  // both and names the new one roster-1.csv. This script reads roster.csv, so
-  // an edit uploaded that way is ignored and the *old* roster is what gets
-  // published — the worst kind of failure, because every step reports success.
-  // Refuse to guess which one was meant.
-  const sheets = (await readdir(path.dirname(CSV_PATH)).catch(() => [])).filter((file) =>
-    file.toLowerCase().endsWith(".csv"),
-  );
-
-  if (sheets.length > 1) {
-    throw new Error(
-      `There is more than one spreadsheet in roster-import/sheet/:\n\n` +
-        sheets.map((file) => `  • ${file}`).join("\n") +
-        `\n\nUploading a sheet adds a second copy rather than replacing the one\n` +
-        `already there. Delete the ones you do not want, keep a single file\n` +
-        `named roster.csv, and upload again.`,
-    );
-  }
-
-  const csvText = await readFile(CSV_PATH, "utf8").catch(() => {
-    throw new Error(
-      `No roster at roster-import/sheet/roster.csv.\n` +
-        (sheets.length ? `Found ${sheets[0]} instead — it must be named roster.csv.\n` : ``) +
-        `Export the roster sheet as CSV (File > Download > Comma-separated values) ` +
-        `and upload it there.`,
-    );
-  });
-
-  const rows = parseCsv(csvText).filter((r) => r.some((cell) => cell.trim() !== ""));
-  if (rows.length < 2) throw new Error("roster.csv has a header but no people in it.");
+/** The same shape, read out of an uploaded spreadsheet. */
+async function recordsFromSheet(file, problems, warnings) {
+  const text = await readFile(file, "utf8");
+  const rows = parseCsv(text).filter((row) => row.some((cell) => cell.trim() !== ""));
+  if (rows.length < 2) return [];
 
   const header = rows[0].map((h) => h.trim());
   for (const column of REQUIRED_COLUMNS) {
-    if (!header.includes(column)) problems.push(`roster.csv has no "${column}" column.`);
+    if (!header.includes(column)) {
+      problems.push(`${path.basename(file)} has no "${column}" column.`);
+    }
   }
   for (const column of header) {
     if (!KNOWN_COLUMNS.includes(column)) {
       warnings.push(`Column "${column}" is not one this script reads — it is ignored.`);
     }
   }
+
+  return rows.slice(1).map((cells, i) => {
+    const record = { line: i + 2 };
+    for (const field of ["band", "first", "last", "role", "major", "grad", "linkedIn", "email"]) {
+      record[field] = cells[header.indexOf(field)] ?? "";
+    }
+    record.photoName = cells[columnIndex(header, "photoName")] ?? "";
+    record.newPhoto = cells[columnIndex(header, "newPhoto")] ?? "";
+    return record;
+  });
+}
+
+async function main() {
+  const problems = [];
+  const warnings = [];
+
+  // The roster is `people.json`, and the club edits it as a form in the CMS.
+  // A spreadsheet is not a second copy of it that has to be kept in step — it
+  // is a one-shot instruction that replaces the whole roster and is then
+  // deleted. Nothing named roster.csv lives in the repository, which is what
+  // stops an upload colliding with a resident file, and what stops deleting one
+  // firing a run with nothing to read.
+  const sheets = (await readdir(SHEET_DIR).catch(() => [])).filter((file) =>
+    file.toLowerCase().endsWith(".csv"),
+  );
+
+  if (sheets.length > 1) {
+    throw new Error(
+      `There is more than one spreadsheet in ${rel(SHEET_DIR)}:\n\n` +
+        sheets.map((file) => `  • ${file}`).join("\n") +
+        `\n\nA spreadsheet replaces the entire roster, so it is not obvious which\n` +
+        `of these was meant. Delete the ones you do not want and try again.`,
+    );
+  }
+
+  const replacing = sheets.length === 1;
+  const all = replacing
+    ? await recordsFromSheet(path.join(SHEET_DIR, sheets[0]), problems, warnings)
+    : await recordsFromRoster();
+
+  // A sheet can carry one row that is not a person: `--replace-all` in the band
+  // column, which confirms a drastic cut. It is removed before anything looks
+  // at the roster, so it never reaches validation as a person with no name.
+  const CONFIRM = "--replace-all";
+  const confirmed =
+    process.argv.includes(CONFIRM) || all.some((r) => (r.band ?? "").trim() === CONFIRM);
+  const records = all.filter((r) => (r.band ?? "").trim() !== CONFIRM);
+
+  if (!records.length) {
+    throw new Error(
+      replacing
+        ? `${sheets[0]} has a header but no people in it.`
+        : `${rel(PEOPLE_JSON)} has no people in it. Upload a spreadsheet to ` +
+          `rebuild the roster, or add people in the CMS.`,
+    );
+  }
   if (problems.length) throw new Error(problems.join("\n"));
+
+  // A spreadsheet replaces everything, which is the one operation here that can
+  // quietly destroy the roster: a half-finished sheet, or the wrong file, and
+  // the site is left with three people and no warning that anything was lost.
+  // A yearly turnover replaces most of the roster, so the threshold cannot be
+  // strict — but going from 37 people to 2 is not a turnover, it is a mistake.
+  //
+  // Named `--replace-all` rather than a yes/no prompt because nothing here is
+  // interactive: the Action runs it unattended, so the confirmation has to be
+  // something the club can put in the file itself.
+  if (replacing) {
+    const existing = await recordsFromRoster();
+    const keeping = new Set(records.map((r) => (r.photoName || "").trim()).filter(Boolean));
+    const losing = existing.filter((person) => !keeping.has(person.photoName)).length;
+
+    const drastic = existing.length >= 10 && records.length < existing.length / 2;
+    if (drastic && !confirmed) {
+      throw new Error(
+        `${sheets[0]} would cut the roster from ${existing.length} people to ` +
+          `${records.length}, removing ${losing}.\n\n` +
+          `That is a bigger change than a normal year, so it has been stopped in\n` +
+          `case the wrong file was uploaded or the sheet was not finished.\n\n` +
+          `If it is correct, add a row to the sheet with "--replace-all" in the\n` +
+          `band column, or run the import locally with that flag.`,
+      );
+    }
+  }
 
   // Who already has an original on file. A returning member leaves `photoFile`
   // blank and keeps the headshot they have; only somebody with neither is worth
@@ -345,13 +385,14 @@ async function main() {
   const people = [];
   const seenSlugs = new Map();
 
-  for (let i = 1; i < rows.length; i += 1) {
-    // The row number a person would see in the spreadsheet, so a complaint about
-    // "row 14" can be acted on without counting.
-    const line = i + 1;
-    const cells = rows[i];
-    const get = (column) => (cells[columnIndex(header, column)] ?? "").trim();
-    const fail = (message) => problems.push(`Row ${line}: ${message}`);
+  for (let i = 0; i < records.length; i += 1) {
+    const record = records[i];
+    // Named the way the person reading the complaint sees it: a spreadsheet row
+    // number they can scroll to, or a position in the roster they can count to
+    // in the CMS.
+    const where = replacing ? `Row ${record.line}` : `Person ${i + 1}`;
+    const get = (field) => (record[field] ?? "").trim();
+    const fail = (message) => problems.push(`${where}: ${message}`);
 
     const first = get("first");
     const last = get("last");
@@ -376,9 +417,9 @@ async function main() {
       fail(`${who}'s photoName "${slug}" may only contain letters, numbers, _ and -.`);
     }
     if (seenSlugs.has(slug)) {
-      fail(`${who} collides with row ${seenSlugs.get(slug)} — both resolve to "${slug}".`);
+      fail(`${who} collides with ${seenSlugs.get(slug)} — both resolve to "${slug}".`);
     }
-    seenSlugs.set(slug, line);
+    seenSlugs.set(slug, where.toLowerCase());
 
     const linkedIn = normalizeLinkedIn(get("linkedIn"));
     if (linkedIn.error) fail(`${who}'s LinkedIn ${linkedIn.error}`);
@@ -413,9 +454,7 @@ async function main() {
     }
 
     people.push({
-      row: i,
       band,
-      id: slug,
       first,
       last,
       major: get("major") || null,
@@ -514,20 +553,22 @@ async function main() {
     );
   }
 
-  // The sheet is written back, for two reasons that both bite a year later.
-  //
-  // A new person's slug is derived from their name, and nothing recorded it —
-  // so correcting a spelling in the sheet next year would silently derive a
-  // different slug and detach them from their photograph. Writing it down pins
-  // it the first time.
-  //
-  // And `photoFile` names a file that has just been consumed: `photos/` is
-  // emptied on success, so leaving the value in place means the next import
-  // fails on a photograph that is no longer there. Clearing it is what makes
-  // "returning members leave it blank" true without anyone having to tidy up.
-  await writeRoster(csvText, header, people);
+  // The spreadsheet has done its job and is removed. It is an instruction, not
+  // a record: leaving it would make it a second copy of the roster that has to
+  // be kept in step with the one the CMS edits, and the next upload would
+  // collide with it rather than replacing it.
+  if (replacing) {
+    await rm(path.join(SHEET_DIR, sheets[0]), { force: true });
+    warnings.push(
+      `${sheets[0]} replaced the whole roster and has been removed. From here the ` +
+        `roster is edited in the CMS.`,
+    );
+  }
 
-  const record = people.map(({ photo, row, ...fields }) => fields);
+  // `newPhoto` is not carried into the roster: it names a file that has just
+  // been filed, so keeping it would make the next run look for a photograph
+  // that is no longer in the inbox.
+  const record = people.map(({ photo, ...fields }) => fields);
   await writeFile(PEOPLE_JSON, `${JSON.stringify(record, null, 2)}\n`, "utf8");
 
   // A fingerprint of the roster, so a stale manifest can be told from a current

@@ -1,126 +1,92 @@
-# Updating the team roster
+# The team roster
 
-This is how the whole roster gets replaced at the start of a year. You do not
-need to install anything, and you do not need to know git.
+The roster is edited **in the CMS**, under **Team roster**. Click a person,
+change a field, save. Use the buttons to add or remove someone. That is the
+normal way to change it, and nothing here is involved.
 
-## What you need
+This folder exists for one job: **replacing the whole roster at the start of a
+year**, when it is faster to paste a spreadsheet than to click through forty
+forms.
 
-1. **The roster as a spreadsheet.** Start from `sheet/roster.csv` —
-   it already has everyone currently on the site. Open it in Google Sheets,
-   edit it there, then **File → Download → Comma-separated values (.csv)**.
-2. **The headshots**, downloaded from the photoshoot's Drive folder. Leave the
-   filenames exactly as they are — `IMG_4821.JPG` is fine. You never have to
-   rename anything.
+## Replacing the whole roster
 
-## What you do
+1. Build the new roster as a spreadsheet. The easiest start is to copy the
+   current one out of the CMS, or ask whoever runs the site for an export.
+2. **File → Download → Comma-separated values (.csv)**
+3. In the CMS, **Upload the roster sheet**, and drop it in.
 
-In the CMS, in the sidebar:
+A robot reads it, replaces every person, files the photographs, and then
+**deletes the spreadsheet**. It is an instruction, not a file that lives here,
+which is why this folder is normally empty.
 
-1. **Upload the roster sheet** — your new `roster.csv`. It replaces the old one.
-2. **Upload new headshots** — drag the photographs in.
+Give it two or three minutes, then open **Team roster** in the CMS — everybody
+from your sheet is there, ready to edit.
 
-Both of those folders will look empty, and that is correct. They are drop
-boxes: once the import has run, it clears them out so that next year's upload
-cannot get mixed up with this year's. The headshots themselves are kept
-elsewhere and are never deleted.
-
-That is it. (You can also do this on github.com, in this folder, with
-**Add file → Upload files** — it is the same thing, and useful if the CMS is
-having a bad day.)
-
-**Upload the original photographs**, straight off the camera or the phone. Do
-not crop or shrink them first: the site makes its own small versions, and a
-photo under about 640x800 will look soft on a good screen. A 7 MB file is fine.
-
-A robot takes it from there: it checks the spreadsheet, resizes every
-photograph, and updates the site. Give it two or three minutes.
-
-## The columns
+### The columns
 
 | Column | Required | Notes |
 | --- | --- | --- |
-| `band` | yes | `executives`, `advisoryBoard` or `consultants`. Nothing else. |
+| `band` | yes | `executives`, `advisoryBoard` or `consultants`. |
 | `first`, `last` | yes | |
 | `role` | yes | e.g. "Co-President", "Consultant". |
-| `photoName` | no | Filled in for you. **Never change it for someone already on the site.** |
+| `photoName` | no | Leave blank for new people. **Never change it for someone already on the site.** |
 | `major` | no | |
 | `grad` | no | Graduation year. |
-| `linkedIn` | no | Paste the profile URL. It gets tidied up automatically. |
+| `linkedIn` | no | Profile URL. Tidied up automatically. |
 | `email` | no | |
-| `newPhoto` | no | Only when their photo is new. The filename as it came out of Drive. |
+| `newPhoto` | no | The filename of a photograph you are uploading. |
 
-### `photoName`
+### A big cut is stopped
 
-The name their photograph is **saved** under on the website. Kian's photo is
-stored as `Kian_Kazranian.jpg`, so his `photoName` is `Kian_Kazranian`.
+Replacing the roster removes everyone who is not in your sheet. If the sheet
+would cut the roster by more than half, the import stops and says so, in case
+the wrong file was uploaded or the sheet was not finished:
 
-**Never change this for someone already on the site.** It is the only thing
-linking them to their picture, so editing it makes their photo disappear.
+```
+oops.csv would cut the roster from 37 people to 2, removing 35.
+```
 
-For somebody new, leave it blank. One is made from their name and filled in for
-you, and from then on it stays put.
+If that is genuinely what you meant, add one row to the sheet with
+`--replace-all` in the **band** column and nothing else filled in, then upload
+again.
 
-### `newPhoto`
+## Photographs
 
-The name the photograph you are **uploading** arrived with, like
-`IMG_4821.JPG`. Only fill it in when somebody's photo is new or has changed.
+Upload them under **Upload new headshots**, then name the file in that person's
+**New photo** field — either in the CMS form or in the `newPhoto` column of a
+sheet.
 
-Leave it blank and that person keeps the headshot they already have. That is why
-almost every row is blank.
+Order does not matter. A photograph nobody refers to yet simply waits until
+somebody does.
 
-The difference between this and `photoName`: `newPhoto` is what the file is
-called *now*, on your computer. `photoName` is what the website will call it
-*forever*. The import does the renaming.
+**Upload the originals**, straight off the camera or phone. Do not crop or
+shrink them: the site makes its own small versions, and anything under about
+640x800 will look soft. A 7 MB file is fine.
 
-You do not have to clear it afterwards: the import empties it for you, so the
-sheet you download next time is already clean.
+Accepted: `.jpg`, `.jpeg`, `.png`. **Not `.heic`**, which is what iPhones shoot
+by default — set the camera to "Most Compatible", or convert first.
 
-### When somebody leaves
+## When somebody leaves
 
-Delete their row. Their photograph is moved out of the way so the site stops
-loading it, but it is never deleted.
+Remove them in the CMS. Their photograph is moved out of the way so the site
+stops loading it, but it is never deleted.
 
-### When somebody comes back
+## When somebody comes back
 
-Add their row again, with the same `photoName` they had before. Their photograph
-comes back with them — you do not need to upload it a second time.
+Add them again with the same **Photo name** they had before. Their photograph
+comes back with them.
 
-## If it goes wrong
+## If something goes wrong
 
-The robot checks everything *before* it changes anything, so a mistake never
-leaves the site half-updated. If something is off it stops and says exactly
-what, by row number:
+Nothing is changed until every person has been checked, so a bad import leaves
+the live roster exactly as it was. The failure names what is wrong:
 
 ```
 2 problems in the roster — nothing was changed:
 
-  • Row 14: Jane Smith's photo "IMG_5501.JPG" is not in roster-import/photos/.
+  • Row 14: Jane Smith's newPhoto "IMG_5501.JPG" is not in the uploaded headshots.
   • Row 22: Alex Lee has band "consultant" — must be one of executives, advisoryBoard, consultants.
 ```
 
-Fix the sheet, upload it again. To see these messages: the **Actions** tab at
-the top of the repository, then the most recent "Import roster" run.
-
-It will also mention things that are not errors, and carry on regardless — for
-example that somebody has no photograph yet, and so will show their initials
-until one arrives. That is fine and is how a roster can go up before the
-photoshoot.
-
-## Notes
-
-- **Order does not matter.** The sheet and the photographs are two separate
-  uploads, and each one starts a run. A photograph nobody's row refers to yet
-  simply waits until you upload the sheet that names it.
-- **Delete the old `roster.csv` before uploading a new one.** Uploading does
-  not replace it — you end up with `roster.csv` and `roster-1.csv`, and the
-  import refuses to run until only one is left. Use the `⋮` menu on the old
-  file to delete it.
-- The `photos` folder is emptied of the photographs that were used. That is deliberate:
-  otherwise the next import would run against a mix of this year's photographs
-  and last year's.
-- Photographs are resized when the site is built, not when they are uploaded, so
-  there is no separate step to remember and nothing resized is stored here.
-- Originals are kept forever in `bss-web/src/pages/TeamPage/Headshots/`. Nothing
-  is ever deleted from there, even when somebody leaves the club.
-- Everything else about the team page — the heading over each group, the closing
-  "Become a consultant" block — is edited in the CMS, not here.
+To see these: the **Actions** tab at the top of the repository, then the most
+recent "Import roster" run.

@@ -1,7 +1,6 @@
 [
   {
     "band": "executives",
-    "id": "Kian_Kazranian",
     "first": "Kian",
     "last": "Kazranian",
     "major": "Mathematics Economics",
@@ -13,7 +12,6 @@
   },
   {
     "band": "executives",
-    "id": "Ammar_Wahab",
     "first": "Ammar",
     "last": "Wahab",
     "major": "Business Economics",
@@ -25,7 +23,6 @@
   },
   {
     "band": "executives",
-    "id": "Rianne_Ke",
     "first": "Rianne",
     "last": "Ke",
     "major": "Environmental Science",
@@ -37,7 +34,6 @@
   },
   {
     "band": "executives",
-    "id": "Carlie_Harwood",
     "first": "Carlie",
     "last": "Harwood",
     "major": "Business Economics",
@@ -49,7 +45,6 @@
   },
   {
     "band": "executives",
-    "id": "Kit_He",
     "first": "Kit",
     "last": "He",
     "major": "Film & Television",
@@ -61,7 +56,6 @@
   },
   {
     "band": "executives",
-    "id": "Ryan_Kobayashi",
     "first": "Ryan",
     "last": "Kobayashi",
     "major": "Economics & Communications",
@@ -73,7 +67,6 @@
   },
   {
     "band": "executives",
-    "id": "Liam_Holmes",
     "first": "Liam",
     "last": "Holmes",
     "major": "Mathematics Economics",
@@ -85,7 +78,6 @@
   },
   {
     "band": "executives",
-    "id": "Jai_Raman",
     "first": "Jai",
     "last": "Raman",
     "major": "Music Industry & Economics",
@@ -97,7 +89,6 @@
   },
   {
     "band": "executives",
-    "id": "Sebastine_Chun",
     "first": "Sebastine",
     "last": "Chun",
     "major": "Political Science",
@@ -109,7 +100,6 @@
   },
   {
     "band": "executives",
-    "id": "Connor_Chung",
     "first": "Connor",
     "last": "Chung",
     "major": "Computer Science + Linguistics",
@@ -121,7 +111,6 @@
   },
   {
     "band": "advisoryBoard",
-    "id": "Adrienne_Lee",
     "first": "Adrienne",
     "last": "Lee",
     "major": "Public Affairs & Statistics and Data Science",
@@ -133,7 +122,6 @@
   },
   {
     "band": "advisoryBoard",
-    "id": "Giselle_Carlos",
     "first": "Giselle",
     "last": "Carlos",
     "major": "Political Science & Minor in Film and TV",
@@ -145,7 +133,6 @@
   },
   {
     "band": "advisoryBoard",
-    "id": "Caleb_Chor",
     "first": "Caleb",
     "last": "Chor",
     "major": "Cognitive Science & Philosophy",
@@ -157,7 +144,6 @@
   },
   {
     "band": "advisoryBoard",
-    "id": "Bek_Tan",
     "first": "Bek",
     "last": "Tan",
     "major": "Cognitive Science",
@@ -169,7 +155,6 @@
   },
   {
     "band": "advisoryBoard",
-    "id": "Kimberly_Cui",
     "first": "Kimberly",
     "last": "Cui",
     "major": "Statistics and Data Science & Economics",
@@ -181,7 +166,6 @@
   },
   {
     "band": "advisoryBoard",
-    "id": "Ethan_Huang",
     "first": "Ethan",
     "last": "Huang",
     "major": "Computer Science",
@@ -193,7 +177,6 @@
   },
   {
     "band": "advisoryBoard",
-    "id": "Alli_Mccabe",
     "first": "Allison",
     "last": "McCabe",
     "major": "Cognitive Science",
@@ -205,7 +188,6 @@
   },
   {
     "band": "advisoryBoard",
-    "id": "Dlency_Zheng",
     "first": "Dlency",
     "last": "Zheng",
     "major": "Economics & Music Industry",
@@ -217,7 +199,6 @@
   },
   {
     "band": "consultants",
-    "id": "Riya_Patel",
     "first": "Riya",
     "last": "Patel",
     "major": "Business Economics & Digital Humanities",
@@ -229,7 +210,6 @@
   },
   {
     "band": "consultants",
-    "id": "Heidi_Yu",
     "first": "Heidi",
     "last": "Yu",
     "major": "Statistics & Data Science",
@@ -241,7 +221,6 @@
   },
   {
     "band": "consultants",
-    "id": "Ashlyn_Chin",
     "first": "Ashlyn",
     "last": "Chin",
     "major": "Chemical Engineering",
@@ -253,7 +232,6 @@
   },
   {
     "band": "consultants",
-    "id": "Jesse_Acosta_Huerta",
     "first": "Jesse",
     "last": "Acosta-Huerta",
     "major": "Business Economics",
@@ -265,7 +243,6 @@
   },
   {
     "band": "consultants",
-    "id": "Aidan_Singh",
     "first": "Aidan",
     "last": "Singh",
     "major": "Economics & Psychology",
@@ -277,7 +254,6 @@
   },
   {
     "band": "consultants",
-    "id": "Luisa_Chen",
     "first": "Luisa",
     "last": "Chen",
     "major": "Business Economics & Cognitive Science",
@@ -289,7 +265,6 @@
   },
   {
     "band": "consultants",
-    "id": "Tia_Breaux",
     "first": "Tia",
     "last": "Breaux",
     "major": "Political Science",
@@ -301,7 +276,6 @@
   },
   {
     "band": "consultants",
-    "id": "Jack_Booher",
     "first": "Jack",
     "last": "Booher",
     "major": "Business Economics",
@@ -313,7 +287,6 @@
   },
   {
     "band": "consultants",
-    "id": "Anannya_Shah",
     "first": "Anannya",
     "last": "Shah",
     "major": "Cognitive Science",
@@ -325,7 +298,6 @@
   },
   {
     "band": "consultants",
-    "id": "Vivaan_Turakhia",
     "first": "Vivaan",
     "last": "Turakhia",
     "major": "Economics & Psychology",
@@ -337,7 +309,6 @@
   },
   {
     "band": "consultants",
-    "id": "Matthew_Ybarra",
     "first": "Matthew",
     "last": "Ybarra",
     "major": "Economics",
@@ -349,7 +320,6 @@
   },
   {
     "band": "consultants",
-    "id": "Gina_Decas",
     "first": "Gina",
     "last": "Decas",
     "major": "Business Economics",
@@ -361,7 +331,6 @@
   },
   {
     "band": "consultants",
-    "id": "Khushi_Tekriwal",
     "first": "Khushi",
     "last": "Tekriwal",
     "major": "Statistics and Data Science & Mathematics",
@@ -373,7 +342,6 @@
   },
   {
     "band": "consultants",
-    "id": "Piper_Tenney",
     "first": "Piper",
     "last": "Tenney",
     "major": "Business Economics",
@@ -385,7 +353,6 @@
   },
   {
     "band": "consultants",
-    "id": "Kalani_Caetano",
     "first": "Kalani",
     "last": "Caetano",
     "major": "Statistics and Data Science & Economics",
@@ -397,7 +364,6 @@
   },
   {
     "band": "consultants",
-    "id": "Kayla_Kinsey",
     "first": "Kayla",
     "last": "Kinsey",
     "major": "Cognitive Science & Minor in Film/Digital Media",
@@ -409,7 +375,6 @@
   },
   {
     "band": "consultants",
-    "id": "Priyal_Sharma",
     "first": "Priyal",
     "last": "Sharma",
     "major": "Statistics and Data Science",
@@ -421,7 +386,6 @@
   },
   {
     "band": "consultants",
-    "id": "Danny_Guo",
     "first": "Danny",
     "last": "Guo",
     "major": "Statistics and Data Science & Economics",
@@ -433,7 +397,6 @@
   },
   {
     "band": "consultants",
-    "id": "Irvin_Qi",
     "first": "Irvin",
     "last": "Qi",
     "major": "Computer Science",
