@@ -25,7 +25,7 @@
  * for the sizes the browser needs and the build derives them, so a headshot
  * cannot be added without its derivatives following.
  *
- * The CSV carries a `photoFile` column holding the filename exactly as it came
+ * The CSV carries a `newPhoto` column holding the filename exactly as it came
  * out of the shoot ("IMG_4821.JPG"). That is what removes the real manual
  * labour: nobody renames 37 files to match a slug, the sheet says which file
  * belongs to whom and this script does the renaming.
@@ -67,15 +67,37 @@ const PEOPLE_JSON = path.join(ROOT, "src", "content", "people.json");
 const BANDS = ["executives", "advisoryBoard", "consultants"];
 
 const REQUIRED_COLUMNS = ["band", "first", "last", "role"];
+
+// Two columns carry names that had to say what they do to somebody who does not
+// write software. "slug" and "photoFile" were developer words, and the pair were
+// easy to confuse with each other: one is the name a photograph is *stored*
+// under and must never change, the other is the name a photograph *arrives*
+// with and is only filled in when a new one is being uploaded.
+//
+// The old names still work. A sheet downloaded before the rename keeps
+// importing, and the write-back migrates its header to the new name.
+const COLUMN_ALIASES = {
+  photoName: ["photoName", "slug"],
+  newPhoto: ["newPhoto", "photoFile"],
+};
+
 const KNOWN_COLUMNS = [
   ...REQUIRED_COLUMNS,
-  "slug",
+  ...Object.values(COLUMN_ALIASES).flat(),
   "major",
   "grad",
   "linkedIn",
   "email",
-  "photoFile",
 ];
+
+/** The position of a column, accepting either its current or its former name. */
+function columnIndex(header, name) {
+  for (const alias of COLUMN_ALIASES[name] ?? [name]) {
+    const at = header.indexOf(alias);
+    if (at !== -1) return at;
+  }
+  return -1;
+}
 
 const IMAGE_PATTERN = /\.(jpe?g|png)$/i;
 
@@ -226,14 +248,18 @@ async function writeRoster(csvText, header, people) {
   const eol = csvText.includes("\r\n") ? "\r\n" : "\n";
   const rows = parseCsv(csvText);
 
-  let slugColumn = header.indexOf("slug");
+  let slugColumn = columnIndex(header, "photoName");
   if (slugColumn === -1) {
     // A sheet that never had the column gets one, appended so existing
     // columns keep their positions.
     slugColumn = header.length;
-    rows[0].push("slug");
+    rows[0].push("photoName");
   }
-  const photoColumn = header.indexOf("photoFile");
+  const photoColumn = columnIndex(header, "newPhoto");
+
+  // Migrate a sheet still using the old headings.
+  rows[0][slugColumn] = "photoName";
+  if (photoColumn !== -1) rows[0][photoColumn] = "newPhoto";
 
   for (const person of people) {
     const row = rows[person.row];
@@ -294,7 +320,7 @@ async function main() {
     // "row 14" can be acted on without counting.
     const line = i + 1;
     const cells = rows[i];
-    const get = (column) => (cells[header.indexOf(column)] ?? "").trim();
+    const get = (column) => (cells[columnIndex(header, column)] ?? "").trim();
     const fail = (message) => problems.push(`Row ${line}: ${message}`);
 
     const first = get("first");
@@ -315,9 +341,9 @@ async function main() {
 
     // The sheet's value wins. A slug is the join key to a file on disk, not a
     // formatting of the name, and renaming one orphans that person's headshot.
-    const slug = get("slug") || slugFor(first, last);
+    const slug = get("photoName") || slugFor(first, last);
     if (!/^[A-Za-z0-9_-]+$/.test(slug)) {
-      fail(`${who}'s slug "${slug}" may only contain letters, numbers, _ and -.`);
+      fail(`${who}'s photoName "${slug}" may only contain letters, numbers, _ and -.`);
     }
     if (seenSlugs.has(slug)) {
       fail(`${who} collides with row ${seenSlugs.get(slug)} — both resolve to "${slug}".`);
@@ -336,14 +362,14 @@ async function main() {
     const grad = normalizeGrad(get("grad"));
     if (grad.error) fail(`${who}'s grad year ${grad.error}`);
 
-    const photoFile = get("photoFile");
+    const photoFile = get("newPhoto");
     let photo = null;
     if (photoFile) {
       const found = photosByName.get(photoFile.toLowerCase());
       if (!found) {
-        fail(`${who}'s photo "${photoFile}" is not in roster-import/photos/.`);
+        fail(`${who}'s newPhoto "${photoFile}" is not in the uploaded headshots.`);
       } else if (!IMAGE_PATTERN.test(found)) {
-        fail(`${who}'s photo "${photoFile}" is not a .jpg or .png.`);
+        fail(`${who}'s newPhoto "${photoFile}" is not a .jpg or .png.`);
       } else {
         photo = found;
         photosUsed.add(found);

@@ -409,7 +409,15 @@ archive.
 and must not also become CMS-editable: an import rewrites it wholesale, so a
 person added through a form would be silently wiped by the next upload.
 
-**`slug` is a column, not something derived.** The existing slugs follow no rule
+**The sheet's two photo columns are named for the club, not for us.**
+`photoName` is what a photograph is stored as and must never change; `newPhoto`
+is what it arrived as and is filled in only when replacing one. They were `slug`
+and `photoFile`, which were developer words and easy to mistake for each other.
+`COLUMN_ALIASES` in `import-roster.mjs` still accepts the old spellings, so a
+sheet downloaded before the rename imports, and the write-back migrates its
+header.
+
+**`photoName` is a column, not something derived.** The existing slugs follow no rule
 anyone could rederive — "Allison McCabe" is filed as `Alli_Mccabe`,
 "Jesse Acosta-Huerta" as `Jesse_Acosta_Huerta` — so deriving them from names
 silently detached three people from their photographs on the first test run. The

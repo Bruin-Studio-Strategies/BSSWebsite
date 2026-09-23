@@ -42,23 +42,35 @@ photograph, and updates the site. Give it two or three minutes.
 | `band` | yes | `executives`, `advisoryBoard` or `consultants`. Nothing else. |
 | `first`, `last` | yes | |
 | `role` | yes | e.g. "Co-President", "Consultant". |
-| `slug` | no | **Don't change these for people already on the site.** See below. |
+| `photoName` | no | Filled in for you. **Never change it for someone already on the site.** |
 | `major` | no | |
 | `grad` | no | Graduation year. |
 | `linkedIn` | no | Paste the profile URL. It gets tidied up automatically. |
 | `email` | no | |
-| `photoFile` | no | The photo's filename, exactly as it came out of Drive. |
+| `newPhoto` | no | Only when their photo is new. The filename as it came out of Drive. |
 
-### `slug`
+### `photoName`
 
-This is how a person is matched to their photograph. For anyone already on the
-site, **leave it exactly as it is** — changing it disconnects them from their
-headshot. For somebody new, leave it blank and one is made from their name.
+The name their photograph is **saved** under on the website. Kian's photo is
+stored as `Kian_Kazranian.jpg`, so his `photoName` is `Kian_Kazranian`.
 
-### `photoFile`
+**Never change this for someone already on the site.** It is the only thing
+linking them to their picture, so editing it makes their photo disappear.
 
-Only needed when somebody's photograph is **new or changed**. People already on
-the site keep the headshot they have if you leave it blank.
+For somebody new, leave it blank. One is made from their name and filled in for
+you, and from then on it stays put.
+
+### `newPhoto`
+
+The name the photograph you are **uploading** arrived with, like
+`IMG_4821.JPG`. Only fill it in when somebody's photo is new or has changed.
+
+Leave it blank and that person keeps the headshot they already have. That is why
+almost every row is blank.
+
+The difference between this and `photoName`: `newPhoto` is what the file is
+called *now*, on your computer. `photoName` is what the website will call it
+*forever*. The import does the renaming.
 
 You do not have to clear it afterwards: the import empties it for you, so the
 sheet you download next time is already clean.
