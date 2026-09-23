@@ -439,6 +439,10 @@ year later:
   fail on a photograph that no longer exists. Reproduced: it errors with
   `Row 34: … photo "STALE.JPG" is not in roster-import/photos/`. Clearing it is
   what makes "returning members leave it blank" true without anyone tidying up.
+- **Restores anyone who comes back.** Retirement is reversible: add the row
+  again and their photograph moves out of `former/` before the retirement sweep
+  runs. A member who takes a quarter off should not need re-photographing, and
+  nobody should have to know that folder exists.
 - **Retires anyone no longer on the roster**, moving their original into
   `Headshots/former/`. `headshots.js` globs `Headshots/*`, which does not
   descend, so this is what stops the build deriving them. It is a move and not a

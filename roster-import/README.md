@@ -78,8 +78,12 @@ sheet you download next time is already clean.
 ### When somebody leaves
 
 Delete their row. Their photograph is moved out of the way so the site stops
-loading it, but it is never deleted — it goes to a `former` folder and stays
-there.
+loading it, but it is never deleted.
+
+### When somebody comes back
+
+Add their row again, with the same `photoName` they had before. Their photograph
+comes back with them — you do not need to upload it a second time.
 
 ## If it goes wrong
 

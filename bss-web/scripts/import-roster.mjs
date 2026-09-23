@@ -302,6 +302,16 @@ async function main() {
   // Who already has an original on file. A returning member leaves `photoFile`
   // blank and keeps the headshot they have; only somebody with neither is worth
   // mentioning.
+  // Anyone previously retired. Read before anything is written, because a
+  // member who comes back should be treated as already having a photograph —
+  // the warning about missing headshots would otherwise fire for them, and the
+  // file is sitting right there.
+  const retiredFiles = new Map(
+    (await readdir(RETIRED_DIR).catch(() => []))
+      .filter((f) => IMAGE_PATTERN.test(f))
+      .map((f) => [path.basename(f, path.extname(f)), f]),
+  );
+
   const archivedSlugs = new Set(
     (await readdir(ARCHIVE_DIR).catch(() => []))
       .filter((f) => IMAGE_PATTERN.test(f))
@@ -374,7 +384,7 @@ async function main() {
         photo = found;
         photosUsed.add(found);
       }
-    } else if (!archivedSlugs.has(slug)) {
+    } else if (!archivedSlugs.has(slug) && !retiredFiles.has(slug)) {
       // Not an error. A roster can be published before the photoshoot; the card
       // draws its own initials fallback for anyone without one. Someone already
       // in the archive needs no `photoFile` — leaving it blank keeps the
@@ -442,6 +452,26 @@ async function main() {
     }
 
     await copyFile(path.join(PHOTO_DIR, person.photo), path.join(ARCHIVE_DIR, replacing));
+  }
+
+  // Anyone who has come back gets their photograph moved out of `former/`
+  // first. Retiring is reversible for exactly this reason: a member who takes a
+  // quarter off should not have to be re-photographed, and nobody should have to
+  // know that a `former` folder exists.
+  const restored = [];
+  for (const person of people) {
+    if (person.photo) continue;
+    if (archivedSlugs.has(person.slug)) continue;
+    const file = retiredFiles.get(person.slug);
+    if (!file) continue;
+    await rename(path.join(RETIRED_DIR, file), path.join(ARCHIVE_DIR, file));
+    restored.push(person.slug);
+  }
+  if (restored.length) {
+    warnings.push(
+      `${restored.join(", ")} ${restored.length === 1 ? "is" : "are"} back on the ` +
+        `roster. Their photographs were restored from Headshots/former/.`,
+    );
   }
 
   // Anyone in the archive who is no longer on the roster is retired, so the
