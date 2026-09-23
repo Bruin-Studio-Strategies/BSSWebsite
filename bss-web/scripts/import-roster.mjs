@@ -37,7 +37,7 @@
  */
 
 import { createHash } from "node:crypto";
-import { copyFile, mkdir, readdir, readFile, rm, writeFile } from "node:fs/promises";
+import { copyFile, mkdir, readdir, readFile, rename, rm, writeFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -50,6 +50,15 @@ const CSV_PATH = path.join(IMPORT_DIR, "sheet", "roster.csv");
 const PHOTO_DIR = path.join(IMPORT_DIR, "photos");
 
 const ARCHIVE_DIR = path.join(ROOT, "src", "pages", "TeamPage", "Headshots");
+
+// Where a departed member's original goes. It is a subdirectory of the archive
+// rather than a deletion, because the club's photographs are theirs to keep —
+// but `headshots.js` globs `Headshots/*` and that pattern does not descend, so
+// moving a file in here is what stops the build deriving and shipping it.
+//
+// Without this the build kept serving people who had left: one of them was
+// still in `dist/` as three files with nobody to attach them to.
+const RETIRED_DIR = path.join(ARCHIVE_DIR, "former");
 const PEOPLE_JSON = path.join(ROOT, "src", "content", "people.json");
 
 // The three groups the team page renders, in the order it renders them. A band
@@ -198,6 +207,46 @@ function normalizeGrad(value) {
   return { grad: match[1] };
 }
 
+/** A CSV field needs quoting if it carries a comma, a quote or a newline. */
+function csvField(value) {
+  const text = value ?? "";
+  const special = [",", '"', "\n", "\r"];
+  const needsQuotes = special.some((character) => text.includes(character));
+  return needsQuotes ? `"${text.replace(/"/g, '""')}"` : text;
+}
+
+/**
+ * Writes the sheet back with each person's slug recorded and `photoFile`
+ * cleared. Rows are edited in place rather than regenerated, so a column the
+ * club added for its own use survives even though this script ignores it.
+ */
+async function writeRoster(csvText, header, people) {
+  // Preserve whatever the sheet arrived with: Sheets exports CRLF, and
+  // rewriting the file with LF would show every row as changed in the diff.
+  const eol = csvText.includes("\r\n") ? "\r\n" : "\n";
+  const rows = parseCsv(csvText);
+
+  let slugColumn = header.indexOf("slug");
+  if (slugColumn === -1) {
+    // A sheet that never had the column gets one, appended so existing
+    // columns keep their positions.
+    slugColumn = header.length;
+    rows[0].push("slug");
+  }
+  const photoColumn = header.indexOf("photoFile");
+
+  for (const person of people) {
+    const row = rows[person.row];
+    if (!row) continue;
+    while (row.length <= Math.max(slugColumn, photoColumn)) row.push("");
+    row[slugColumn] = person.slug;
+    if (photoColumn !== -1) row[photoColumn] = "";
+  }
+
+  const out = rows.map((row) => row.map(csvField).join(",")).join(eol);
+  await writeFile(CSV_PATH, out + eol, "utf8");
+}
+
 async function main() {
   const problems = [];
   const warnings = [];
@@ -308,6 +357,7 @@ async function main() {
     }
 
     people.push({
+      row: i,
       band,
       id: slug,
       first,
@@ -368,7 +418,40 @@ async function main() {
     await copyFile(path.join(PHOTO_DIR, person.photo), path.join(ARCHIVE_DIR, replacing));
   }
 
-  const record = people.map(({ photo, ...fields }) => fields);
+  // Anyone in the archive who is no longer on the roster is retired, so the
+  // build stops deriving them. `Placeholder` is not a person and always stays.
+  const retired = [];
+  const onRoster = new Set(people.map((person) => person.slug));
+  for (const file of await readdir(ARCHIVE_DIR)) {
+    if (!IMAGE_PATTERN.test(file)) continue;
+    const slug = path.basename(file, path.extname(file));
+    if (slug === "Placeholder" || onRoster.has(slug)) continue;
+    await mkdir(RETIRED_DIR, { recursive: true });
+    await rename(path.join(ARCHIVE_DIR, file), path.join(RETIRED_DIR, file));
+    retired.push(slug);
+  }
+  if (retired.length) {
+    warnings.push(
+      `${retired.join(", ")} ${retired.length === 1 ? "is" : "are"} no longer on the ` +
+        `roster. Their photographs moved to Headshots/former/ and the site stops ` +
+        `loading them.`,
+    );
+  }
+
+  // The sheet is written back, for two reasons that both bite a year later.
+  //
+  // A new person's slug is derived from their name, and nothing recorded it —
+  // so correcting a spelling in the sheet next year would silently derive a
+  // different slug and detach them from their photograph. Writing it down pins
+  // it the first time.
+  //
+  // And `photoFile` names a file that has just been consumed: `photos/` is
+  // emptied on success, so leaving the value in place means the next import
+  // fails on a photograph that is no longer there. Clearing it is what makes
+  // "returning members leave it blank" true without anyone having to tidy up.
+  await writeRoster(csvText, header, people);
+
+  const record = people.map(({ photo, row, ...fields }) => fields);
   await writeFile(PEOPLE_JSON, `${JSON.stringify(record, null, 2)}\n`, "utf8");
 
   // A fingerprint of the roster, so a stale manifest can be told from a current

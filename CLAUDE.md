@@ -418,6 +418,30 @@ CSV also carries `photoFile`, the filename exactly as it came out of the
 photoshoot Drive, which is what saves anyone renaming 37 files by hand. A
 returning member leaves it blank and keeps the headshot they have.
 
+**The importer maintains the sheet and the archive, not just `people.json`.**
+Three things it does on a successful run, each fixing a trap that only appears a
+year later:
+
+- **Writes each person's slug back.** A new member's slug is derived from their
+  name and was previously recorded nowhere, so correcting a spelling in the
+  sheet the following year would derive a different slug and quietly detach them
+  from their photograph.
+- **Clears `photoFile`.** It names a file that has just been consumed — `photos/`
+  is emptied on success — so leaving the value in place makes the *next* import
+  fail on a photograph that no longer exists. Reproduced: it errors with
+  `Row 34: … photo "STALE.JPG" is not in roster-import/photos/`. Clearing it is
+  what makes "returning members leave it blank" true without anyone tidying up.
+- **Retires anyone no longer on the roster**, moving their original into
+  `Headshots/former/`. `headshots.js` globs `Headshots/*`, which does not
+  descend, so this is what stops the build deriving them. It is a move and not a
+  delete: the photographs are the club's. Without it a departed member was still
+  being shipped as three files in `dist/` — found by asking what happens when
+  someone leaves.
+
+Rows are edited in place rather than the file regenerated, so a column the club
+added for its own use survives. The round trip is byte-identical when nothing
+needs changing.
+
 **A replacement photograph clears the slug's old file first.** Camera exports
 are frequently `.JPG` where the archive holds `.jpg`, and Windows treats those
 as one filename while Linux does not: locally the copy overwrites and everything

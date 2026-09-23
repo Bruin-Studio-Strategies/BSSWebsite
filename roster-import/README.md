@@ -60,6 +60,15 @@ headshot. For somebody new, leave it blank and one is made from their name.
 Only needed when somebody's photograph is **new or changed**. People already on
 the site keep the headshot they have if you leave it blank.
 
+You do not have to clear it afterwards: the import empties it for you, so the
+sheet you download next time is already clean.
+
+### When somebody leaves
+
+Delete their row. Their photograph is moved out of the way so the site stops
+loading it, but it is never deleted — it goes to a `former` folder and stays
+there.
+
 ## If it goes wrong
 
 The robot checks everything *before* it changes anything, so a mistake never
