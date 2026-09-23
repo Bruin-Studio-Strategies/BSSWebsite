@@ -18,6 +18,9 @@
 #
 # Paths are relative to the repo root, so they carry the bss-web/ prefix.
 
+# Config revision 2026-09-23a. Bumped to invalidate any cached copy: after the
+# `actions:` block was removed the CMS kept polling a dispatch endpoint for a
+# button that no longer exists in any branch.
 settings:
   content:
     merge: true
