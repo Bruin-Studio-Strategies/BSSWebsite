@@ -3,388 +3,418 @@
     "band": "executives",
     "first": "Kian",
     "last": "Kazranian",
-    "role": "Co-President",
     "major": "Mathematics Economics",
     "grad": "2026",
+    "role": "Co-President",
+    "slug": "Kian_Kazranian",
     "linkedIn": "https://www.linkedin.com/in/kiankazranian",
-    "slug": "Kian_Kazranian"
+    "email": null
   },
   {
     "band": "executives",
     "first": "Ammar",
     "last": "Wahab",
-    "role": "Co-President",
     "major": "Business Economics",
     "grad": "2026",
+    "role": "Co-President",
+    "slug": "Ammar_Wahab",
     "linkedIn": "https://www.linkedin.com/in/ammarwahab",
-    "slug": "Ammar_Wahab"
+    "email": null
   },
   {
     "band": "executives",
     "first": "Rianne",
     "last": "Ke",
-    "role": "VP of External Relations",
     "major": "Environmental Science",
     "grad": "2028",
+    "role": "VP of External Relations",
+    "slug": "Rianne_Ke",
     "linkedIn": "https://www.linkedin.com/in/rianne-ke-3b89192a5",
-    "slug": "Rianne_Ke"
+    "email": null
   },
   {
     "band": "executives",
     "first": "Carlie",
     "last": "Harwood",
-    "role": "VP of Internal Relations",
     "major": "Business Economics",
     "grad": "2028",
+    "role": "VP of Internal Relations",
+    "slug": "Carlie_Harwood",
     "linkedIn": "https://www.linkedin.com/in/carlie-harwood",
-    "slug": "Carlie_Harwood"
+    "email": null
   },
   {
     "band": "executives",
     "first": "Kit",
     "last": "He",
-    "role": "VP of Internal Relations",
     "major": "Film & Television",
     "grad": "2027",
+    "role": "VP of Internal Relations",
+    "slug": "Kit_He",
     "linkedIn": "https://www.linkedin.com/in/kit-jiaying-he-542260298",
-    "slug": "Kit_He"
+    "email": null
   },
   {
     "band": "executives",
     "first": "Ryan",
     "last": "Kobayashi",
-    "role": "Director of Membership",
     "major": "Economics & Communications",
     "grad": "2028",
+    "role": "Director of Membership",
+    "slug": "Ryan_Kobayashi",
     "linkedIn": "https://www.linkedin.com/in/ryan-kobayashi-ucla",
-    "slug": "Ryan_Kobayashi"
+    "email": null
   },
   {
     "band": "executives",
     "first": "Liam",
     "last": "Holmes",
-    "role": "Director of Consulting",
     "major": "Mathematics Economics",
     "grad": "2028",
+    "role": "Director of Consulting",
+    "slug": "Liam_Holmes",
     "linkedIn": "https://www.linkedin.com/in/liam-holmes-baa378251",
-    "slug": "Liam_Holmes"
+    "email": null
   },
   {
     "band": "executives",
     "first": "Jai",
     "last": "Raman",
-    "role": "Director of Finance",
     "major": "Music Industry & Economics",
     "grad": "2028",
+    "role": "Director of Finance",
+    "slug": "Jai_Raman",
     "linkedIn": "https://www.linkedin.com/in/jairaman06",
-    "slug": "Jai_Raman"
+    "email": null
   },
   {
     "band": "executives",
     "first": "Sebastine",
     "last": "Chun",
-    "role": "Director of Marketing",
     "major": "Political Science",
     "grad": "2028",
+    "role": "Director of Marketing",
+    "slug": "Sebastine_Chun",
     "linkedIn": "https://www.linkedin.com/in/sebastinechun",
-    "slug": "Sebastine_Chun"
+    "email": null
   },
   {
     "band": "executives",
     "first": "Connor",
     "last": "Chung",
-    "role": "Director of Tech",
     "major": "Computer Science + Linguistics",
     "grad": "2028",
+    "role": "Director of Tech",
+    "slug": "Connor_Chung",
     "linkedIn": "https://www.linkedin.com/in/connorjchung",
-    "slug": "Connor_Chung"
+    "email": null
   },
   {
     "band": "advisoryBoard",
     "first": "Adrienne",
     "last": "Lee",
-    "role": "Former President",
     "major": "Public Affairs & Statistics and Data Science",
     "grad": "2027",
+    "role": "Former President",
+    "slug": "Adrienne_Lee",
     "linkedIn": "https://www.linkedin.com/in/adrienne-lee-11457026b",
-    "email": "adrienneleehs@gmail.com",
-    "slug": "Adrienne_Lee"
+    "email": "adrienneleehs@gmail.com"
   },
   {
     "band": "advisoryBoard",
     "first": "Giselle",
     "last": "Carlos",
-    "role": "Former Vice President of Internal",
     "major": "Political Science & Minor in Film and TV",
     "grad": "2027",
+    "role": "Former Vice President of Internal",
+    "slug": "Giselle_Carlos",
     "linkedIn": "https://www.linkedin.com/in/giselle-carlos-03449b298",
-    "email": "gisellecarlos@ucla.edu",
-    "slug": "Giselle_Carlos"
+    "email": "gisellecarlos@ucla.edu"
   },
   {
     "band": "advisoryBoard",
     "first": "Caleb",
     "last": "Chor",
-    "role": "Former Vice President of Membership",
     "major": "Cognitive Science & Philosophy",
     "grad": "2027",
+    "role": "Former Vice President of Membership",
+    "slug": "Caleb_Chor",
     "linkedIn": "https://www.linkedin.com/in/caleb-chor",
-    "email": "calebchor27@ucla.edu",
-    "slug": "Caleb_Chor"
+    "email": "calebchor27@ucla.edu"
   },
   {
     "band": "advisoryBoard",
     "first": "Bek",
     "last": "Tan",
-    "role": "Former Vice President of Projects",
     "major": "Cognitive Science",
     "grad": "2027",
+    "role": "Former Vice President of Projects",
+    "slug": "Bek_Tan",
     "linkedIn": "https://www.linkedin.com/in/bektan",
-    "email": "bekytan13@ucla.edu",
-    "slug": "Bek_Tan"
+    "email": "bekytan13@ucla.edu"
   },
   {
     "band": "advisoryBoard",
     "first": "Kimberly",
     "last": "Cui",
-    "role": "Former Vice President of Finance",
     "major": "Statistics and Data Science & Economics",
     "grad": "2027",
+    "role": "Former Vice President of Finance",
+    "slug": "Kimberly_Cui",
     "linkedIn": "https://www.linkedin.com/in/kimberlycui",
-    "email": "kcui@ucla.edu",
-    "slug": "Kimberly_Cui"
+    "email": "kcui@ucla.edu"
   },
   {
     "band": "advisoryBoard",
     "first": "Ethan",
     "last": "Huang",
-    "role": "Former Vice President of Technology",
     "major": "Computer Science",
     "grad": "2027",
+    "role": "Former Vice President of Technology",
+    "slug": "Ethan_Huang",
     "linkedIn": "https://www.linkedin.com/in/ethanwhuang",
-    "email": "ewchuang@ucla.edu",
-    "slug": "Ethan_Huang"
+    "email": "ewchuang@ucla.edu"
   },
   {
     "band": "advisoryBoard",
     "first": "Allison",
     "last": "McCabe",
-    "role": "Former Vice President of Marketing",
     "major": "Cognitive Science",
     "grad": "2027",
+    "role": "Former Vice President of Marketing",
+    "slug": "Alli_Mccabe",
     "linkedIn": "https://www.linkedin.com/in/allison-mccabe-2b1aa420b",
-    "email": "alliymcc@ucla.edu",
-    "slug": "Alli_Mccabe"
+    "email": "alliymcc@ucla.edu"
   },
   {
     "band": "advisoryBoard",
     "first": "Dlency",
     "last": "Zheng",
-    "role": "Former Vice President of External Affairs",
     "major": "Economics & Music Industry",
     "grad": "2027",
+    "role": "Former Vice President of External Affairs",
+    "slug": "Dlency_Zheng",
     "linkedIn": "https://www.linkedin.com/in/dlencyzheng",
-    "email": "dlencyz@gmail.com",
-    "slug": "Dlency_Zheng"
+    "email": "dlencyz@gmail.com"
   },
   {
     "band": "consultants",
     "first": "Riya",
     "last": "Patel",
-    "role": "Consultant",
     "major": "Business Economics & Digital Humanities",
     "grad": "2027",
+    "role": "Consultant",
+    "slug": "Riya_Patel",
     "linkedIn": "https://www.linkedin.com/in/riya-patel-555977281",
-    "slug": "Riya_Patel"
+    "email": null
   },
   {
     "band": "consultants",
     "first": "Heidi",
     "last": "Yu",
-    "role": "Consultant",
     "major": "Statistics & Data Science",
     "grad": "2026",
+    "role": "Consultant",
+    "slug": "Heidi_Yu",
     "linkedIn": "https://www.linkedin.com/in/heidijyyu",
-    "slug": "Heidi_Yu"
+    "email": null
   },
   {
     "band": "consultants",
     "first": "Ashlyn",
     "last": "Chin",
-    "role": "Consultant",
     "major": "Chemical Engineering",
     "grad": "2027",
+    "role": "Consultant",
+    "slug": "Ashlyn_Chin",
     "linkedIn": "https://www.linkedin.com/in/ashlync128",
-    "slug": "Ashlyn_Chin"
+    "email": null
   },
   {
     "band": "consultants",
     "first": "Jesse",
     "last": "Acosta-Huerta",
-    "role": "Consultant",
     "major": "Business Economics",
     "grad": "2026",
+    "role": "Consultant",
+    "slug": "Jesse_Acosta_Huerta",
     "linkedIn": "https://www.linkedin.com/in/jesseacosta-huerta",
-    "slug": "Jesse_Acosta_Huerta"
+    "email": null
   },
   {
     "band": "consultants",
     "first": "Aidan",
     "last": "Singh",
-    "role": "Consultant",
     "major": "Economics & Psychology",
     "grad": "2026",
+    "role": "Consultant",
+    "slug": "Aidan_Singh",
     "linkedIn": "https://www.linkedin.com/in/aidansingh",
-    "slug": "Aidan_Singh"
+    "email": null
   },
   {
     "band": "consultants",
     "first": "Luisa",
     "last": "Chen",
-    "role": "Consultant",
     "major": "Business Economics & Cognitive Science",
     "grad": "2027",
+    "role": "Consultant",
+    "slug": "Luisa_Chen",
     "linkedIn": "https://www.linkedin.com/in/luisachen05",
-    "slug": "Luisa_Chen"
+    "email": null
   },
   {
     "band": "consultants",
     "first": "Tia",
     "last": "Breaux",
-    "role": "Consultant",
     "major": "Political Science",
     "grad": "2027",
+    "role": "Consultant",
+    "slug": "Tia_Breaux",
     "linkedIn": "https://www.linkedin.com/in/tia-breaux",
-    "slug": "Tia_Breaux"
+    "email": null
   },
   {
     "band": "consultants",
     "first": "Jack",
     "last": "Booher",
-    "role": "Consultant",
     "major": "Business Economics",
     "grad": "2028",
+    "role": "Consultant",
+    "slug": "Jack_Booher",
     "linkedIn": "https://www.linkedin.com/in/jack-booher-581aa1258",
-    "slug": "Jack_Booher"
+    "email": null
   },
   {
     "band": "consultants",
     "first": "Anannya",
     "last": "Shah",
-    "role": "Consultant",
     "major": "Cognitive Science",
     "grad": "2028",
+    "role": "Consultant",
+    "slug": "Anannya_Shah",
     "linkedIn": "https://www.linkedin.com/in/anannya-shah",
-    "slug": "Anannya_Shah"
+    "email": null
   },
   {
     "band": "consultants",
     "first": "Vivaan",
     "last": "Turakhia",
-    "role": "Consultant",
     "major": "Economics & Psychology",
     "grad": "2027",
+    "role": "Consultant",
+    "slug": "Vivaan_Turakhia",
     "linkedIn": "https://www.linkedin.com/in/vivaanturakhia",
-    "slug": "Vivaan_Turakhia"
+    "email": null
   },
   {
     "band": "consultants",
     "first": "Matthew",
     "last": "Ybarra",
-    "role": "Consultant",
     "major": "Economics",
     "grad": "2028",
+    "role": "Consultant",
+    "slug": "Matthew_Ybarra",
     "linkedIn": "https://www.linkedin.com/in/matthew-a-ybarra",
-    "slug": "Matthew_Ybarra"
+    "email": null
   },
   {
     "band": "consultants",
     "first": "Gina",
     "last": "Decas",
-    "role": "Consultant",
     "major": "Business Economics",
     "grad": "2027",
+    "role": "Consultant",
+    "slug": "Gina_Decas",
     "linkedIn": "https://www.linkedin.com/in/gina-decas-0428a8338",
-    "slug": "Gina_Decas"
+    "email": null
   },
   {
     "band": "consultants",
     "first": "Khushi",
     "last": "Tekriwal",
-    "role": "Consultant",
     "major": "Statistics and Data Science & Mathematics",
     "grad": "2027",
+    "role": "Consultant",
+    "slug": "Khushi_Tekriwal",
     "linkedIn": "https://www.linkedin.com/in/khushi-tekriwal",
-    "slug": "Khushi_Tekriwal"
+    "email": null
   },
   {
     "band": "consultants",
     "first": "Piper",
     "last": "Tenney",
-    "role": "Consultant",
     "major": "Business Economics",
     "grad": "2028",
+    "role": "Consultant",
+    "slug": "Piper_Tenney",
     "linkedIn": "https://www.linkedin.com/in/piper-tenney-b735b0276",
-    "slug": "Piper_Tenney"
+    "email": null
   },
   {
     "band": "consultants",
     "first": "Kalani",
     "last": "Caetano",
-    "role": "Consultant",
     "major": "Statistics and Data Science & Economics",
     "grad": "2027",
+    "role": "Consultant",
+    "slug": "Kalani_Caetano",
     "linkedIn": "https://www.linkedin.com/in/kalanicaetano",
-    "slug": "Kalani_Caetano"
+    "email": null
   },
   {
     "band": "consultants",
     "first": "Kayla",
     "last": "Kinsey",
-    "role": "Consultant",
     "major": "Cognitive Science & Minor in Film/Digital Media",
     "grad": "2028",
+    "role": "Consultant",
+    "slug": "Kayla_Kinsey",
     "linkedIn": "https://www.linkedin.com/in/kayla-kinsey-015343331",
-    "slug": "Kayla_Kinsey"
+    "email": null
   },
   {
     "band": "consultants",
     "first": "Priyal",
     "last": "Sharma",
-    "role": "Consultant",
     "major": "Statistics and Data Science",
     "grad": "2027",
+    "role": "Consultant",
+    "slug": "Priyal_Sharma",
     "linkedIn": "https://www.linkedin.com/in/priyalsh",
-    "slug": "Priyal_Sharma"
+    "email": null
   },
   {
     "band": "consultants",
     "first": "Danny",
     "last": "Guo",
-    "role": "Consultant",
     "major": "Statistics and Data Science & Economics",
     "grad": "2028",
+    "role": "Consultant",
+    "slug": "Danny_Guo",
     "linkedIn": "https://www.linkedin.com/in/bohan-guo-9078a8326",
-    "slug": "Danny_Guo"
+    "email": null
   },
   {
     "band": "consultants",
     "first": "Irvin",
     "last": "Qi",
-    "role": "Consultant",
     "major": "Computer Science",
     "grad": "2027",
+    "role": "Consultant",
+    "slug": "Irvin_Qi",
     "linkedIn": "https://www.linkedin.com/in/irvin-qi",
-    "slug": "Irvin_Qi"
+    "email": null
   },
   {
     "band": "consultants",
     "first": "Annika",
     "last": "Chatradhi",
-    "role": "Consultant",
     "major": "Statistics and Data Science",
     "grad": "2028",
+    "role": "Consultant",
+    "slug": "Annika_Chatradhi",
     "linkedIn": "https://www.linkedin.com/in/anika-chatradhi",
-    "newPhoto": "annika_headshot.jpg"
+    "email": null
   }
 ]
