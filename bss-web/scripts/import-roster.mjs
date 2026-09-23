@@ -1,37 +1,37 @@
 /**
- * Rebuilds the team roster from a spreadsheet and a folder of photographs.
+ * Keeps the team roster, the photograph archive and the spreadsheet export in
+ * agreement.
  *
  *   node scripts/import-roster.mjs
  *
- * The roster turns over once a year, all at once. Retyping 37 people through a
- * CMS form is exactly the job nobody does, so this takes the two things the club
- * already produces — a Google Sheet and a Drive folder of headshots from the
- * photoshoot — and turns them into `src/content/people.json` and a filed set of
- * originals.
+ * The roster itself is `src/content/people.json`, and the club edits it as a
+ * form in the CMS. This script runs after any change and does the work a form
+ * cannot: filing photographs, retiring people who have left, and writing the
+ * roster back out as a spreadsheet.
  *
- * Inputs, both at the repo root so they can be dropped in through github.com's
- * upload button without anyone touching git:
+ * It also accepts a spreadsheet as a one-shot replacement of the whole roster,
+ * for the yearly turnover where pasting a column beats clicking forty forms.
  *
- *   roster-import/sheet/roster.csv   one row per person
- *   roster-import/photos/            the headshots, named however they came
+ *   roster-import/sheet/*.csv        drop one here to replace everything
+ *   roster-import/photos/            headshots, named however they came
+ *   roster-import/current/roster.csv written by this script, never read
  *
- * Two directories, neither inside the other, because the CMS mounts each as its
- * own media browser: rooted at `roster-import/` the sheet's browser listed
- * `photos/` as a subfolder, so the same folder appeared twice in the sidebar and
- * it was not obvious which one a headshot belonged in.
+ * A spreadsheet is an instruction rather than a record: it is applied and then
+ * deleted, so nothing lives in the upload folder between imports. That is what
+ * stops an upload colliding with a resident file, and stops deleting one firing
+ * a run with nothing to read.
  *
- * It files the photographs in the archive under each person's slug and writes
- * the roster. Nothing here resizes anything: headshots.js asks vite-imagetools
- * for the sizes the browser needs and the build derives them, so a headshot
- * cannot be added without its derivatives following.
+ * The `newPhoto` field holds a filename exactly as it came out of the
+ * photoshoot ("IMG_4821.JPG"), which is what saves anyone renaming forty files:
+ * the roster says which file belongs to whom and this does the renaming, to the
+ * `slug`, on the way into the archive.
  *
- * The CSV carries a `newPhoto` column holding the filename exactly as it came
- * out of the shoot ("IMG_4821.JPG"). That is what removes the real manual
- * labour: nobody renames 37 files to match a slug, the sheet says which file
- * belongs to whom and this script does the renaming.
+ * Nothing resizes anything here. `headshots.js` asks vite-imagetools for the
+ * sizes the browser needs and the build derives them, so a headshot cannot be
+ * added without its derivatives following.
  *
- * Nothing is written until every row has been checked. A half-applied roster is
- * worse than none, and the failure this replaces was silent — a slug that did
+ * Nothing is written until every person has been checked. A half-applied roster
+ * is worse than none, and the failure this replaces was silent: a slug that did
  * not match its photograph rendered that person as their initials, and nobody
  * noticed until somebody scrolled the page.
  */
@@ -50,6 +50,31 @@ const IMPORT_DIR = path.join(REPO, "roster-import");
 // once it has been applied. Nothing lives here between imports.
 const SHEET_DIR = path.join(IMPORT_DIR, "sheet");
 const PHOTO_DIR = path.join(IMPORT_DIR, "photos");
+
+// The roster written back out as a spreadsheet, rewritten on every run so it is
+// never stale. Replacing the roster starts by editing a copy of what is already
+// there, and with the upload folder deliberately empty between imports there
+// was nothing to start from — the club would have had to retype forty people to
+// use the feature meant to save them from retyping forty people.
+//
+// A separate directory from the upload folder, because anything sitting in that
+// one is treated as an instruction to replace the roster.
+const EXPORT_DIR = path.join(IMPORT_DIR, "current");
+const EXPORT_PATH = path.join(EXPORT_DIR, "roster.csv");
+
+// The order the export writes, and the order the club sees in a spreadsheet.
+const EXPORT_COLUMNS = [
+  "band",
+  "first",
+  "last",
+  "photoName",
+  "major",
+  "grad",
+  "role",
+  "linkedIn",
+  "email",
+  "newPhoto",
+];
 
 const ARCHIVE_DIR = path.join(ROOT, "src", "pages", "TeamPage", "Headshots");
 
@@ -284,6 +309,32 @@ async function recordsFromSheet(file, problems, warnings) {
     record.newPhoto = cells[columnIndex(header, "newPhoto")] ?? "";
     return record;
   });
+}
+
+/** A CSV field, quoted only when it has to be. */
+function csvField(value) {
+  const text = String(value ?? "");
+  const special = [",", String.fromCharCode(34), "\n", "\r"];
+  const needsQuotes = special.some((character) => text.includes(character));
+  if (!needsQuotes) return text;
+  const quote = String.fromCharCode(34);
+  return quote + text.split(quote).join(quote + quote) + quote;
+}
+
+/**
+ * Writes the roster back out as a spreadsheet, so replacing it next year
+ * starts from what is already there rather than from a blank page.
+ */
+async function writeExport(people) {
+  const rows = [EXPORT_COLUMNS.join(',')];
+  for (const person of people) {
+    const value = (column) =>
+      column === "photoName" ? person.slug : column === "newPhoto" ? "" : person[column];
+    rows.push(EXPORT_COLUMNS.map((column) => csvField(value(column))).join(','));
+  }
+  await mkdir(EXPORT_DIR, { recursive: true });
+  // CRLF, because this is opened in Excel and Sheets more often than not.
+  await writeFile(EXPORT_PATH, rows.join("\r\n") + "\r\n", "utf8");
 }
 
 async function main() {
@@ -570,6 +621,7 @@ async function main() {
   // that is no longer in the inbox.
   const record = people.map(({ photo, ...fields }) => fields);
   await writeFile(PEOPLE_JSON, `${JSON.stringify(record, null, 2)}\n`, "utf8");
+  await writeExport(record);
 
   // A fingerprint of the roster, so a stale manifest can be told from a current
   // one without diffing 37 base64 strings.

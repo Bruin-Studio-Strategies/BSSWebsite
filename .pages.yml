@@ -35,7 +35,11 @@ settings:
 # The workflow still accepts a manual run from the repository's Actions tab, and
 # `roster.yml` keeps its `workflow_dispatch` trigger for that.
 
-# Where the roster's two uploads go, so the club never has to open github.com.
+# Three folders. Two are for uploading; the first is for getting a copy of the
+# roster to edit, rewritten by every import so it is never stale. Without it the
+# upload folder is empty between imports and there is nothing to start a
+# replacement from, which would mean retyping forty people to use the feature
+# that exists to save retyping forty people.
 #
 # Both are inboxes, not albums, and the labels say "Upload" for that reason: the
 # importer consumes what it finds and empties `photos/` on success, so the next
@@ -68,6 +72,13 @@ media:
     output: /roster-import/photos
     rename: false
     extensions: [jpg, jpeg, png, JPG, JPEG, PNG]
+  - name: roster-current
+    label: Download the current roster
+    input: roster-import/current
+    output: /roster-import/current
+    rename: false
+    extensions: [csv]
+
   - name: roster-sheet
     label: Upload the roster sheet
     input: roster-import/sheet
