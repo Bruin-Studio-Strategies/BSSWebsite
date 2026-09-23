@@ -9,7 +9,7 @@ There are two tools, for two different jobs:
 | What you want to change | Where |
 | --- | --- |
 | Any words on any page — dates, headings, paragraphs, the apply link | **The CMS** |
-| The whole team roster, once a year | **A spreadsheet upload** ([guide](roster-import/README.md)) |
+| The whole team roster, once a year | **Upload a spreadsheet and photos** ([guide](roster-import/README.md)) |
 
 Everything you change goes live on its own, about two minutes later.
 
@@ -94,7 +94,9 @@ larger than the first. Keep the second one short; it prints very big.
 
 If you want one of these changed, it needs a developer:
 
-- **The team roster.** Different tool — see the [roster guide](roster-import/README.md).
+- **The team roster.** Edited as a spreadsheet, not a form — see the
+  [roster guide](roster-import/README.md). You upload it, and the photos, from
+  **Roster spreadsheet** and **Roster photos** in the CMS sidebar.
 - **Photographs** anywhere other than the roster.
 - **Which drawing** appears on each service on the For Clients page. You can pick
   from the six that exist; there is no way to add a seventh.

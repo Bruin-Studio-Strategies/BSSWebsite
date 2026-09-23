@@ -14,11 +14,18 @@ need to install anything, and you do not need to know git.
 
 ## What you do
 
-1. Open this folder on github.com.
-2. **Add file → Upload files**, and drop in your new `roster.csv`. It replaces
-   the old one.
-3. Open the `photos` folder, upload the headshots the same way.
-4. Commit.
+In the CMS, in the sidebar:
+
+1. **Roster spreadsheet** — upload your new `roster.csv`. It replaces the old one.
+2. **Roster photos** — drag the headshots in.
+
+That is it. (You can also do this on github.com, in this folder, with
+**Add file → Upload files** — it is the same thing, and useful if the CMS is
+having a bad day.)
+
+**Upload the original photographs**, straight off the camera or the phone. Do
+not crop or shrink them first: the site makes its own small versions, and a
+photo under about 640x800 will look soft on a good screen. A 7 MB file is fine.
 
 A robot takes it from there: it checks the spreadsheet, resizes every
 photograph, and updates the site. Give it two or three minutes.

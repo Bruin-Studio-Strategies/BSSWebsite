@@ -393,10 +393,21 @@ defines — only `label` is copy.
 
 **The roster is replaced in bulk, not edited a person at a time.** It turns over
 all at once every year, and retyping 37 people through a CMS form is the job
-nobody does. The club drops `roster.csv` and a folder of photographs into
-`roster-import/` through github.com's upload button; the *Import roster* Action
-runs `scripts/import-roster.mjs` then `scripts/optimize-headshots.mjs`, builds,
-and commits the result. Locally that is `npm run roster`.
+nobody does. The club uploads `roster.csv` and the photographs into
+`roster-import/` — through the CMS's own **Roster spreadsheet** and **Roster
+photos** media folders, or github.com's upload button, which are the same commit
+— and the *Import roster* Action runs `scripts/import-roster.mjs`, builds, and
+commits the result. Locally that is `npm run roster`.
+
+**`rename: false` on both media folders is load-bearing.** The sheet's
+`photoFile` column names each photograph by the filename it arrived with, so
+letting the CMS slugify an upload breaks the match between a person and their
+picture. The importer does the renaming, to the slug, on the way into the
+archive.
+
+**The sheet is the single master for the roster.** `people.json` is generated
+and must not also become CMS-editable: an import rewrites it wholesale, so a
+person added through a form would be silently wiped by the next upload.
 
 **`slug` is a column, not something derived.** The existing slugs follow no rule
 anyone could rederive — "Allison McCabe" is filed as `Alli_Mccabe`,

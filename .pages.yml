@@ -22,6 +22,43 @@ settings:
   content:
     merge: true
 
+# A manual re-run of the roster import. Not needed for a normal upload, which
+# fires the workflow by itself — this is for re-deriving after a change to the
+# pipeline, or for retrying a run that failed.
+actions:
+  - name: rebuild-roster
+    label: Rebuild roster
+    workflow: roster.yml
+    ref: current
+
+# Where the roster's two uploads go, so the club never has to open github.com.
+# Both land in `roster-import/`, and the commit that puts them there fires the
+# *Import roster* workflow, which validates, rebuilds and deploys.
+#
+# `rename: false` on both is load-bearing. The spreadsheet's `photoFile` column
+# names each photograph by the filename it came out of the Drive folder with, so
+# slugifying an upload breaks the match between a person and their picture. The
+# upload keeps whatever the photographer called it; the import does the renaming,
+# to the slug, on the way into the archive.
+#
+# Upload originals. Nothing here is resized on the way in and nothing resized is
+# stored: the build derives every size from the original each time, so a 7 MB
+# camera file is not a problem and is preferable to a cropped thumbnail. A source
+# under 640x800 cannot fill the 2x slot and will look soft on a retina screen.
+media:
+  - name: roster-photos
+    label: Roster photos
+    input: roster-import/photos
+    output: /roster-import/photos
+    rename: false
+    extensions: [jpg, jpeg, png, JPG, JPEG, PNG]
+  - name: roster-sheet
+    label: Roster spreadsheet
+    input: roster-import
+    output: /roster-import
+    rename: false
+    extensions: [csv]
+
 content:
   # --- Recruitment -------------------------------------------------------
   # The page the club edits most: dates change every cycle.
