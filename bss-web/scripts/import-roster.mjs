@@ -12,8 +12,13 @@
  * Inputs, both at the repo root so they can be dropped in through github.com's
  * upload button without anyone touching git:
  *
- *   roster-import/roster.csv      one row per person
- *   roster-import/photos/         the headshots, named however they came
+ *   roster-import/sheet/roster.csv   one row per person
+ *   roster-import/photos/            the headshots, named however they came
+ *
+ * Two directories, neither inside the other, because the CMS mounts each as its
+ * own media browser: rooted at `roster-import/` the sheet's browser listed
+ * `photos/` as a subfolder, so the same folder appeared twice in the sidebar and
+ * it was not obvious which one a headshot belonged in.
  *
  * It files the photographs in the archive under each person's slug and writes
  * the roster. Nothing here resizes anything: headshots.js asks vite-imagetools
@@ -41,7 +46,7 @@ const ROOT = path.join(HERE, "..");
 const REPO = path.join(ROOT, "..");
 
 const IMPORT_DIR = path.join(REPO, "roster-import");
-const CSV_PATH = path.join(IMPORT_DIR, "roster.csv");
+const CSV_PATH = path.join(IMPORT_DIR, "sheet", "roster.csv");
 const PHOTO_DIR = path.join(IMPORT_DIR, "photos");
 
 const ARCHIVE_DIR = path.join(ROOT, "src", "pages", "TeamPage", "Headshots");
@@ -199,7 +204,7 @@ async function main() {
 
   const csvText = await readFile(CSV_PATH, "utf8").catch(() => {
     throw new Error(
-      `No roster at roster-import/roster.csv.\n` +
+      `No roster at roster-import/sheet/roster.csv.\n` +
         `Export the roster sheet as CSV (File > Download > Comma-separated values) ` +
         `and upload it there.`,
     );

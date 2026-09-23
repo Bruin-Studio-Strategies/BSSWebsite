@@ -5,7 +5,7 @@ need to install anything, and you do not need to know git.
 
 ## What you need
 
-1. **The roster as a spreadsheet.** Start from `roster.csv` in this folder —
+1. **The roster as a spreadsheet.** Start from `sheet/roster.csv` —
    it already has everyone currently on the site. Open it in Google Sheets,
    edit it there, then **File → Download → Comma-separated values (.csv)**.
 2. **The headshots**, downloaded from the photoshoot's Drive folder. Leave the

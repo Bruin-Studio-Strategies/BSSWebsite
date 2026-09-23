@@ -32,6 +32,10 @@ actions:
     ref: current
 
 # Where the roster's two uploads go, so the club never has to open github.com.
+# Each has its own directory and neither contains the other: rooted at
+# `roster-import/`, the sheet's browser listed `photos/` as a subfolder, so the
+# same folder showed up twice in the sidebar and it was not obvious which one a
+# headshot belonged in.
 # Both land in `roster-import/`, and the commit that puts them there fires the
 # *Import roster* workflow, which validates, rebuilds and deploys.
 #
@@ -54,8 +58,8 @@ media:
     extensions: [jpg, jpeg, png, JPG, JPEG, PNG]
   - name: roster-sheet
     label: Roster spreadsheet
-    input: roster-import
-    output: /roster-import
+    input: roster-import/sheet
+    output: /roster-import/sheet
     rename: false
     extensions: [csv]
 
