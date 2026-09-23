@@ -345,13 +345,27 @@ async function main() {
   // Everything below this line writes. Past this point the roster is known good.
 
   await mkdir(ARCHIVE_DIR, { recursive: true });
+
+  // A replacement photograph rarely arrives with the same extension as the one
+  // it replaces: the archive holds Kalani_Caetano.jpg and the new file is a
+  // .JPG off a camera. Windows treats those as one filename and overwrites, so
+  // this reads as working locally; Linux does not, and the Action would leave
+  // *both* in the archive. `headshots.js` keys on the basename, so the slug
+  // would then resolve to two different images and which one shipped would
+  // depend on directory order. Clear every existing file for the slug first.
+  const archived = await readdir(ARCHIVE_DIR).catch(() => []);
   for (const person of people) {
     if (!person.photo) continue;
+
     const extension = path.extname(person.photo);
-    await copyFile(
-      path.join(PHOTO_DIR, person.photo),
-      path.join(ARCHIVE_DIR, `${person.slug}${extension}`),
-    );
+    const replacing = `${person.slug}${extension}`;
+    for (const file of archived) {
+      if (path.basename(file, path.extname(file)) !== person.slug) continue;
+      if (file === replacing) continue;
+      await rm(path.join(ARCHIVE_DIR, file));
+    }
+
+    await copyFile(path.join(PHOTO_DIR, person.photo), path.join(ARCHIVE_DIR, replacing));
   }
 
   const record = people.map(({ photo, ...fields }) => fields);

@@ -418,6 +418,14 @@ CSV also carries `photoFile`, the filename exactly as it came out of the
 photoshoot Drive, which is what saves anyone renaming 37 files by hand. A
 returning member leaves it blank and keeps the headshot they have.
 
+**A replacement photograph clears the slug's old file first.** Camera exports
+are frequently `.JPG` where the archive holds `.jpg`, and Windows treats those
+as one filename while Linux does not: locally the copy overwrites and everything
+looks right, but the Action's runner would leave *both* in `Headshots/`, where
+`headshots.js` keys on the basename and the slug would resolve to two different
+images depending on directory order. Found by testing a photo swap, which is
+exactly the case that produces it.
+
 **Nothing is written until every row is checked.** The failure this replaces was
 silent: a slug that did not match its photograph rendered that person as their
 initials and nobody noticed. It now refuses the whole import and names each
