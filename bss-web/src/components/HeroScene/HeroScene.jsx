@@ -186,8 +186,22 @@ export default function HeroScene({
     const onScroll = () => {
       lastScroll.current = performance.now();
     };
+    // A backgrounded tab throttles or pauses requestAnimationFrame, so the frame
+    // after regaining visibility carries a delta spanning the whole time away.
+    // PerformanceMonitor reads that one frame as a catastrophic fps drop — the
+    // same false signal a scroll fling sends — and without this it could step the
+    // DPR ladder all the way to the floor (which also turns the wireframe pass
+    // off) for a device that was never actually struggling. Treating "just became
+    // visible" like "just scrolled" reuses the same ignore window.
+    const onVisibility = () => {
+      if (document.visibilityState === "visible") lastScroll.current = performance.now();
+    };
     window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
+    document.addEventListener("visibilitychange", onVisibility);
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      document.removeEventListener("visibilitychange", onVisibility);
+    };
   }, []);
   const adapt = (change) => {
     if (performance.now() - lastScroll.current < MONITOR_WINDOW_MS) return;
